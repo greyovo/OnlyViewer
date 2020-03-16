@@ -12,6 +12,4 @@ public class ImageModel {
         System.out.println("Test!");
     }
 
-
-
 }
