@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class MyApp extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Home.fxml"));
         primaryStage.setTitle("ImageManagement");
         Scene scene = new Scene(root, 1080, 720);
 //        scene.getStylesheets().add(MyApp.class.getResource("/css/").toExternalForm());
