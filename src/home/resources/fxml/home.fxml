@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Controller">
+<!--   <children>-->
+<!--      <Pane prefHeight="1080.0" prefWidth="720.0">-->
+<!--         <children>-->
+<!--            <JFXTextField alignment="CENTER" focusColor="#4363c3" layoutX="0.0" layoutY="0.0" prefHeight="48.0" prefWidth="280.0" text="听说只有聪明的人才看得到？" unFocusColor="WHITE">-->
+<!--               <font>-->
+<!--                  <Font size="20.0" />-->
+<!--               </font>-->
+<!--            </JFXTextField>-->
+<!--         </children>-->
+<!--      </Pane>-->
+<!--   </children>-->
+</StackPane>
