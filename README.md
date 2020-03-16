@@ -1,4 +1,4 @@
-# OrlyViewer
+# OnlyViewer
 > 一个专注图片管理与查看的系统
 > <p>仓库地址: https://gitee.com/kevin996/OrlyViewer
 
