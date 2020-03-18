@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * ProjName: OnlyViewer
- * FileName: ImageListModel
- * Author: Kevin
- * Time:2020/3/18 11:11
- * Describe: 文件夹内的图片列表
+ * @ProjName: OnlyViewer
+ * @ClassName: ImageListModel
+ * @Author: Kevin
+ * @Time:2020/3/18 11:11
+ * @Describe: 文件夹内的图片列表
  * 1.判断是否为图片 2.计算图片数 3.创建图片列表
  **/
 
@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class ImageListModel {
 
     // Image支持的五种格式
-    // 有多种方法检查 1.后缀 2. ImageIO 3.
+    // 有多种方法检查 1.后缀 2. ImageIO 3.Iterator
     // 1.简单地通过后缀判断不靠谱但是快
     // 2.利用ImageIO检查图片格式，支持jpg/jpeg/png/gif/bmp
     // 缺点 检查JPG的时候速度非常慢
@@ -35,16 +35,23 @@ public class ImageListModel {
     private static String type;
     // 判断文件是否为图片 支持jpg/jepg/png/gif/bmp,暂不支持psd
     public static boolean isSupportedImg(File file) throws IOException {
-        ImageInputStream iis = ImageIO.createImageInputStream(file);
-        Iterator iterator = ImageIO.getImageReaders(iis);
-        if (!iterator.hasNext())
+        try{
+            ImageInputStream iis = ImageIO.createImageInputStream(file);
+            Iterator iterator = ImageIO.getImageReaders(iis);
+            if (!iterator.hasNext())
+                return false;
+            else{
+                ImageReader ir = (ImageReader) iterator.next();
+                iis.close();
+                type = ir.getFormatName();
+                return true;
+            }
+        }catch (IllegalArgumentException e){
+            // 修复Bug: 遇到系统文件应该进行异常捕获
+//            System.out.println("无效文件");
             return false;
-        else{
-            ImageReader ir = (ImageReader) iterator.next();
-            iis.close();
-            type = ir.getFormatName();
-            return true;
         }
+
 
     }
 
@@ -69,11 +76,12 @@ public class ImageListModel {
     }
 
 
-    private static ArrayList<ImageModel> imageList = new ArrayList<>();
+    private static ArrayList<ImageModel> imageList;
     // init前提:文件夹里有image
     public static ArrayList<ImageModel> initImgList(String path){
         File file = new File(path);
         File[] files = file.listFiles();
+        imageList = new ArrayList<>(); // 初始化
         for (File f : files){
             try {
                 if (f.isFile() && isSupportedImg(f)){
@@ -92,9 +100,12 @@ public class ImageListModel {
     @Test
     public void Test1(){
 
-        String filePath = "C:\\Users\\Kevin\\Pictures\\MY STYLE";
+        String filePath = "H:\\Ding\\LIFE\\phone";
 
-        if (calcImgNum(filePath)>0){
+        if (calcImgNum(filePath)==0){
+            System.out.println("There is no image!");
+        }
+        else if (calcImgNum(filePath)>0){
             ArrayList<ImageModel> list = initImgList(filePath);
             for (ImageModel i : list){
                 System.out.println("imgName:"+i.getImageName()+" imgType:"+i.getImageType());
