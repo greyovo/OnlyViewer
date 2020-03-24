@@ -51,8 +51,6 @@ public class ImageListModel {
 //            System.out.println("无效文件");
             return false;
         }
-
-
     }
 
     // 创建列表前需要判断当前文件夹里有没有照片
