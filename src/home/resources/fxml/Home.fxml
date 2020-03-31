@@ -12,22 +12,6 @@
         <VBox prefHeight="${rootPane.height}" prefWidth="240" style="-fx-background-color: #FFFFFF;" styleClass=""
               BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER" prefHeight="23.0" prefWidth="149.0">
-                    <children>
-                        <JFXTextField prefHeight="36.0" prefWidth="154.0">
-                            <padding>
-                                <Insets right="8.0"/>
-                            </padding>
-                        </JFXTextField>
-                        <!--搜索按钮-->
-                        <JFXButton buttonType="RAISED" contentDisplay="CENTER" ripplerFill="#00000082"
-                                   style="-fx-font-size:18px;-fx-background-color:WHITE;" text="搜索">
-                            <HBox.margin>
-                                <Insets left="5.0"/>
-                            </HBox.margin>
-                        </JFXButton>
-                    </children>
-                </HBox>
                 <JFXTreeView prefHeight="${rootPane.height}">
                     <VBox.margin>
                         <Insets top="20.0"/>
@@ -46,12 +30,12 @@
 <!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
 <!--   顶部-->
     <top>
-      <HBox spacing="30" prefHeight="60" alignment="CENTER_LEFT" styleClass="toolbar">
+      <VBox spacing="30" prefHeight="60"  styleClass="toolbar">
          <JFXToolbar>
-            <leftItems>
 
+            <leftItems>
 <!--               后退按钮-->
-               <JFXRippler maskType="RECT" style="-fx-ripple-color:#FFFFFF;" position="BACK">
+               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
                   <StackPane style="-fx-padding:5;">
                      <ImageView>
                         <Image url="@../icons/back_96px.png"/>
@@ -60,7 +44,7 @@
                </JFXRippler>
 
 <!--               前进按钮-->
-               <JFXRippler maskType="RECT" style="-fx-ripple-color:#FFFFFF;" position="BACK">
+               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
                   <StackPane style="-fx-padding:5;">
                      <ImageView>
                         <Image url="@../icons/forward_96px.png"/>
@@ -69,7 +53,7 @@
                </JFXRippler>
 
 <!--               上层文件夹按钮-->
-               <JFXRippler maskType="RECT" style="-fx-ripple-color:#FFFFFF;" position="BACK">
+               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
                   <StackPane style="-fx-padding:5;">
                      <ImageView>
                         <Image url="@../icons/level_up_96px.png"/>
@@ -84,12 +68,22 @@
             </leftItems>
 
             <rightItems>
-
-
+                <HBox alignment="CENTER">
+                    <children>
+                        <JFXTextField prefWidth="160.0"
+                                      unFocusColor="white" focusColor="white"
+                                    styleClass="search-box">
+                        </JFXTextField>
+                        <!--搜索按钮-->
+                        <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
+                                   style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
+                        </JFXButton>
+                    </children>
+                </HBox>
             </rightItems>
 
          </JFXToolbar>
-      </HBox>
+      </VBox>
     </top>
 
 <!--   中间-->
