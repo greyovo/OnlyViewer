@@ -33,7 +33,6 @@ public class GenUtilModel {
     static String getFormatTime(long time){
         Date data = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String imgStandardTime = sdf.format(data);
-        return imgStandardTime;
+        return sdf.format(data);
     }
 }
