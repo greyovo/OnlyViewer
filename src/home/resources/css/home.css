@@ -1,4 +1,26 @@
 
+.normal-text-b{
+    -fx-font-size: 18.0px;
+    -fx-padding: 10;
+    -fx-text-fill: rgba(0, 0, 0, 0.90);
+}
+
+.normal-text-w{
+    -fx-font-size: 18.0px;
+    -fx-padding: 10;
+    -fx-text-fill: rgba(255, 255, 255, 0.90);
+}
+
+.small-text-b{
+    -fx-font-size: 16.0px;
+    -fx-padding: 5;
+    -fx-text-fill: rgba(0, 0, 0, 0.90);
+}
+
+.main-color{
+    -fx-fill:#009688;
+}
+
 /***主窗口样式***/
 .jfx-decorator {
     -fx-decorator-color: derive(#009688, -20%);
@@ -43,12 +65,31 @@
 }
 /*******************/
 
-/***图片缩略图与文字***/
+/***中间图片缩略图与文字***/
 .pic-list{
-    -fx-padding: 15;
+    -fx-padding: 10;
 }
 
-.pic-name{
-    -fx-text-fill: rgba(255, 255, 255, 1);
-    -fx-font-size: 17.0px;
+/***文件夹信息栏***/
+
+.combo-box{
+    -fx-padding:5px;
+}
+
+.normal-button{
+    -fx-font-size: 18.0px;
+    -fx-text-fill: rgba(0, 0, 0, 0.90);
+    -fx-padding:8px;
+}
+
+.play-icon{
+    -fx-pref-width: 60px;
+    -fx-pref-height: 60px;
+    -fx-min-width: -fx-pref-width;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-height: -fx-pref-height;
+    -fx-max-height: -fx-pref-height;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #009688;
+    -fx-background-radius: 60px;
 }

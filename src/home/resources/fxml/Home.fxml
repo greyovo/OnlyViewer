@@ -6,9 +6,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.Button?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
-    <!--   左边目录树-->
+    <!--   TODO 左边目录树-->
     <left>
         <VBox prefHeight="${rootPane.height}" prefWidth="240" style="-fx-background-color: #FFFFFF;" styleClass=""
               BorderPane.alignment="CENTER">
@@ -71,15 +74,19 @@
                 <rightItems>
                     <HBox alignment="CENTER">
                         <children>
+
                             <JFXTextField prefWidth="160.0"
                                           unFocusColor="white" focusColor="white"
                                           styleClass="search-box">
+
                             </JFXTextField>
+
                             <!--搜索按钮-->
                             <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
                                        style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
                             </JFXButton>
                         </children>
+
                     </HBox>
                 </rightItems>
 
@@ -89,69 +96,134 @@
 
     <!--   中间-->
     <center>
-        <VBox>
+        <StackPane fx:id="mainStackPane" alignment="BOTTOM_RIGHT">
+            <VBox prefWidth="${mainStackPane.prefWidth}" prefHeight="${mainStackPane.prefHeight}">
 
-            <HBox prefHeight="50">
-                <!--TODO　放置文件夹信息、刷新按钮和下拉排序菜单-->
-            </HBox>
+                <!--TODO 放置文件夹信息、刷新按钮和下拉排序菜单-->
+                <BorderPane prefHeight="50" style="-fx-padding:20">
 
-            <FlowPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;" layoutY="50"
-                      BorderPane.alignment="CENTER" styleClass="pic-list">
-                <children>
+                    <left>
+                        <StackPane>
+                            <Label text="X张图片，共XXX MB。" styleClass="normal-text-b" style="-fx-padding:10px"/>
+                        </StackPane>
+                    </left>
 
-                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                            <Image fx:id="image" url="@../sample/pic01.jpg"/>
-                            <VBox.margin>
-                                <Insets bottom="6"/>
-                            </VBox.margin>
-                        </ImageView>
-                        <Label fx:id="imageNameLabel" text="pic01.jpg" styleClass="img-name"/>
-                    </VBox>
+                    <right>
+                        <HBox prefWidth="300" alignment="CENTER_RIGHT">
+                            <JFXButton buttonType="FLAT" text="刷新" styleClass="normal-button">
+                                <HBox.margin>
+                                    <Insets right="10"/>
+                                </HBox.margin>
+                            </JFXButton>
 
-                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                            <Image  url="@../sample/pic02.jpg"/>
-                            <VBox.margin>
-                                <Insets bottom="6"/>
-                            </VBox.margin>
-                        </ImageView>
-                        <Label text="pic02.jpg" styleClass="img-name"/>
-                    </VBox>
+                            <JFXComboBox prefWidth="150" prefHeight="20" promptText="默认排序"
+                                         styleClass="combo-box normal-text-b"/>
+                        </HBox>
+                    </right>
 
-                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                            <Image  url="@../sample/pic03.jpg"/>
-                            <VBox.margin>
-                                <Insets bottom="6"/>
-                            </VBox.margin>
-                        </ImageView>
-                        <Label text="pic03.jpg" styleClass="img-name"/>
-                    </VBox>
+                </BorderPane>
 
-                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                            <Image  url="@../sample/pic04.jpg"/>
-                            <VBox.margin>
-                                <Insets bottom="6"/>
-                            </VBox.margin>
-                        </ImageView>
-                        <Label text="pic04.jpg" styleClass="img-name"/>
-                    </VBox>
+                <!--TODO 图片的缩略图-->
+                <FlowPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;" layoutY="50"
+                          BorderPane.alignment="CENTER" styleClass="pic-list">
+                    <children>
 
-                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                            <Image  url="@../sample/pic05.jpg"/>
-                            <VBox.margin>
-                                <Insets bottom="6"/>
-                            </VBox.margin>
-                        </ImageView>
-                        <Label text="pic05.jpg" styleClass="img-name"/>
-                    </VBox>
+                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                            <JFXRippler ripplerFill="white">
+                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image fx:id="image" url="@../sample/pic01.jpg"/>
+                                    <VBox.margin>
+                                        <Insets bottom="6"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </JFXRippler>
+                            <Label fx:id="imageNameLabel" text="pic01.jpg" styleClass="img-name"/>
+                        </VBox>
 
-                </children>
+                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                            <JFXRippler ripplerFill="white">
+                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image url="@../sample/pic02.jpg"/>
+                                    <VBox.margin>
+                                        <Insets bottom="6"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </JFXRippler>
+                            <Label text="pic02.jpg" styleClass="img-name"/>
+                        </VBox>
 
-            </FlowPane>
-        </VBox>
+                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                            <JFXRippler ripplerFill="white">
+                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image url="@../sample/pic03.jpg"/>
+                                    <VBox.margin>
+                                        <Insets bottom="6"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </JFXRippler>
+                            <Label text="pic03.jpg" styleClass="img-name"/>
+                        </VBox>
+
+                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                            <JFXRippler ripplerFill="white">
+                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image url="@../sample/pic04.jpg"/>
+                                    <VBox.margin>
+                                        <Insets bottom="6"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </JFXRippler>
+                            <Label text="pic04.jpg" styleClass="img-name"/>
+                        </VBox>
+
+                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                            <JFXRippler ripplerFill="white">
+                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image url="@../sample/pic05.jpg"/>
+                                    <VBox.margin>
+                                        <Insets bottom="6"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </JFXRippler>
+                            <Label text="pic05.jpg" styleClass="img-name"/>
+                        </VBox>
+                    </children>
+                </FlowPane>
+            </VBox>
+
+
+            <!--            <JFXRippler prefWidth="50" prefHeight="50" maskType="CIRCLE" ripplerFill="white">-->
+            <!--                            <ImageView preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">-->
+            <!--                                <Image url="@../icons/play-icon.png"/>-->
+            <!--                                <StackPane.margin>-->
+            <!--                                    <Insets topRightBottomLeft="50"/>-->
+            <!--                                </StackPane.margin>-->
+            <!--                            </ImageView>-->
+            <!--            </JFXRippler>-->
+
+
+            <!--右下角，幻灯片放映按钮-->
+            <!--FIXME 实现方法有点强硬，可能无法灵活添加更多按钮，需改善-->
+            <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
+                原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
+
+            <JFXButton fx:id="playButton" contentDisplay="GRAPHIC_ONLY"
+                       ripplerFill="white"
+                       styleClass="play-icon">
+                <StackPane.margin>
+                    <Insets topRightBottomLeft="55"/>
+                </StackPane.margin>
+            </JFXButton>
+            <ImageView fitHeight="28" preserveRatio="true">
+                <StackPane.margin>
+                    <Insets topRightBottomLeft="71"/>
+                </StackPane.margin>
+                <Image url="@../icons/play_96px.png"/>
+            </ImageView>
+
+
+        </StackPane>
+
     </center>
+
 </BorderPane>
