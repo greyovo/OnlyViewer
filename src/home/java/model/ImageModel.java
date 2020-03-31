@@ -18,7 +18,7 @@ public class ImageModel {
     private File imageFile;
     private String imageName;
     private long fileLength;
-    private String imageSize;
+//    private String imageSize;
 //    private String imageType; // 图片类型 依赖于ImageListModel
     private long imageLastModified; // 图片修改时间
 
