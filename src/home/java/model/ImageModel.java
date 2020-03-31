@@ -1,7 +1,7 @@
 package model;
 
 import lombok.Data;
-import org.junit.Test;
+
 import java.io.File;
 
 /**
@@ -11,21 +11,41 @@ import java.io.File;
  * @Describe: 单元图片类
  */
 
-//lombok自动完成getter/setter/toString
 @Data
 public class ImageModel {
 
     private String imageFilePath; // *绝对路径
     private File imageFile;
     private String imageName;
-    private long imageLength;
-    private String imageType;
+    private long fileLength;
+    private String imageSize;
+//    private String imageType; // 图片类型 依赖于ImageListModel
+    private long imageLastModified; // 图片修改时间
 
-    public ImageModel(String path){
-        this.imageFilePath = path; // 单个图片的绝对路径
-        this.imageFile = new File(path);
-        this.imageName = imageFile.getName();
-        this.imageLength = imageFile.length();
+    // 暂且先不考虑获取图片宽高，其耗时较多
+//    private int imageWidth;
+//    private int imageHeight;
+
+    public ImageModel(File file){
+        this.imageFile = file;
+        this.imageFilePath = file.getAbsolutePath();
+        this.imageName = file.getName();
+        this.fileLength = file.length();
     }
 
+    public ImageModel(String path){
+        this.imageFilePath = path;
+        this.imageFile = new File(path);
+        this.imageName = imageFile.getName();
+        this.fileLength = imageFile.length(); // 返回的单位是byte
+        this.imageLastModified = imageFile.lastModified();
+    }
+
+    public String getFormatSize(){
+        return GenUtilModel.getFormatSize(this.fileLength);
+    }
+
+    public String getFormatTime(){
+        return GenUtilModel.getFormatTime(this.imageLastModified);
+    }
 }
