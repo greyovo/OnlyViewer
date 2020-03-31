@@ -42,10 +42,10 @@ public class ImageModel {
     }
 
     public String getFormatSize(){
-        return GenUtilModel.getFormatSize(this.fileLength);
+        return home.java.model.GenUtilModel.getFormatSize(this.fileLength);
     }
 
     public String getFormatTime(){
-        return GenUtilModel.getFormatTime(this.imageLastModified);
+        return home.java.model.GenUtilModel.getFormatTime(this.imageLastModified);
     }
 }
