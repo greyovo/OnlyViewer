@@ -1,4 +1,4 @@
-package model;
+package home.java.model;
 
 import lombok.Data;
 

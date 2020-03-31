@@ -1,4 +1,4 @@
-package controllers;
+package home.java.controllers;
 
 import io.datafx.controller.ViewController;
 

@@ -1,7 +1,6 @@
-package myApp;
-
 import com.jfoenix.controls.JFXDecorator;
-import controllers.HomeController;
+
+import home.java.controllers.HomeController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
@@ -10,12 +9,15 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class MyApp extends Application{
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+public class Main extends Application{
 
     @FXMLViewFlowContext
     private ViewFlowContext flowContext;
@@ -38,10 +40,9 @@ public class MyApp extends Application{
 
         //设置标题栏左侧小图标
         //FIXME 无法使用相对路径加载中resources/icons/下的app.png 考虑换用getResource()
-        decorator.setGraphic(new ImageView("./app.png"));
-//        decorator.setGraphic(new ImageView("../resources/icons/app.png"));
+        decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));
 
-        //下面根据屏幕大小自适应设置长宽
+        //根据屏幕大小自适应设置长宽
         double width = 800;
         double height = 600;
         try {
@@ -55,7 +56,7 @@ public class MyApp extends Application{
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(MyApp.class.getResource("/css/home.css").toExternalForm());
+        stylesheets.addAll(Main.class.getResource("home/resources/css/home.css").toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.show();

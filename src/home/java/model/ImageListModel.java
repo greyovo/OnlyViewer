@@ -1,4 +1,4 @@
-package model;
+package home.java.model;
 
 import lombok.Data;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import home.java.model.ImageModel;
 
 /**
  * @ProjName: OnlyViewer
