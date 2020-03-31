@@ -13,6 +13,7 @@ import java.io.*;
  * @Author: Kevin
  * @Time:2020/3/22 0:00
  * @Describe: 对被选中的图片进行操作
+ * 1.复制 2.粘贴 3.删除 4.剪切 5.重命名
  **/
 
 public class SelectedModel {

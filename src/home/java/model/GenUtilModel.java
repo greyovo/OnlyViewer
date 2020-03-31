@@ -1,5 +1,8 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @ProjName: OnlyViewer
  * @ClassName: GenUtilModel
@@ -13,7 +16,7 @@ public class GenUtilModel {
     private static final double MB = 1024.0*1024.0;
     private static final double GB = 1024.0*1024.0*1024.0;
 
-    static String getStandardSize(long fileLength){
+    static String getFormatSize(long fileLength){
         String Standardsize = null;
         if (fileLength < KB){
             Standardsize = String.format("%d BYTE", fileLength);
@@ -27,5 +30,10 @@ public class GenUtilModel {
         return Standardsize;
     }
 
-
+    static String getFormatTime(long time){
+        Date data = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String imgStandardTime = sdf.format(data);
+        return imgStandardTime;
+    }
 }

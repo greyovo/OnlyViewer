@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @Author: Kevin
  * @Time:2020/3/18 11:11
  * @Describe: 文件夹内的图片列表
- * 1.判断是否为图片 2.计算图片数 3.创建图片列表
+ * 1.判断是否为图片 2.计算图片数 3.创建图片列表 4.计算文件夹所有图片的大小
  **/
 
 @Data
@@ -45,7 +45,7 @@ public class ImageListModel {
             if (!iterator.hasNext())
                 return false;
             else{
-                ImageReader ir = (ImageReader) iterator.next();
+//                ImageReader ir = (ImageReader) iterator.next();
 //                ir.setInput(iis, true);
 //                type = ir.getFormatName();
 //                width = ir.getWidth(0);
@@ -60,10 +60,11 @@ public class ImageListModel {
         }
     }
 
-    // 创建列表前需要判断当前文件夹里有没有照片,同时返回有多少张图片
+    private static File[] files;
+    // 创建列表前需要判断当前文件夹里有没有照片,同时返回有多少张图片 必须要调用*
     public static int calcImgNum(String path)  {
         File file = new File(path);
-        File[] files = file.listFiles();
+        files = file.listFiles(); // 主要是转成文件列表耗时
         if (files == null){
             return 0;
         }
@@ -82,14 +83,12 @@ public class ImageListModel {
 
 
     // init前提:文件夹里有image
-    public static ArrayList<ImageModel> initImgList(String path){
-        File file = new File(path);
-        File[] files = file.listFiles();
+    public static ArrayList<ImageModel> initImgList(int num){
         ArrayList<ImageModel> imageList = new ArrayList<>(); // 初始化
-        for (File f : files){
+        for (int i=0; i<num; i++){
             try {
-                if (f.isFile() && isSupportedImg(f)){
-                    ImageModel img = new ImageModel(f.getAbsolutePath());
+                if (files[i].isFile() && isSupportedImg(files[i])){
+                    ImageModel img = new ImageModel(files[i].getAbsolutePath());
 //                    img.setImageType(type);
                     imageList.add(img);
                 }
@@ -107,7 +106,7 @@ public class ImageListModel {
         for (ImageModel i:im){
             totalSize += i.getFileLength();
         }
-        return GenUtilModel.getStandardSize(totalSize);
+        return GenUtilModel.getFormatSize(totalSize);
     }
 
     // TODO 刷新文件夹功能
@@ -115,20 +114,24 @@ public class ImageListModel {
 
     @Test
     public void Test1(){
+        // [830MB, 350张] - 3s800ms
+        // [153MB, 140张] - 1s300ms
+        // ... 不涉及图片的read操作，时间复杂度与图片数量呈正相关
 
-        String filePath = "F:\\Ding\\Ding_photo\\HK Shenzhen\\HK";
+        String filePath = "F:\\Ding\\Ding_photo\\Phone Photo\\test";
 
         int imageNum = calcImgNum(filePath);
         if (imageNum==0){
             System.out.println("There is no image!");
         }
         else if (imageNum>0){
-            ArrayList<ImageModel> list = initImgList(filePath);
+            ArrayList<ImageModel> list = initImgList(imageNum);
             for (ImageModel i : list){
                 System.out.println("imgName:"+i.getImageName()+
-                        "\t\timgLastModified:"+i.getImageLastModified()+
-                        "\t\timgSize:"+i.getImageSize());
+                        "\t\timgLastModified:"+i.getFormatTime()+
+                        "\t\timgSize:"+i.getFormatSize());
             }
+            System.out.println("totalImgNum:" + imageNum);
             System.out.println("totalImgSize:" + getListImgSize(list));
         }
         System.out.println("测试成功!");
