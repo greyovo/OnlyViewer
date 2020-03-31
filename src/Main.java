@@ -39,7 +39,6 @@ public class Main extends Application{
         decorator.setCustomMaximize(true);
 
         //设置标题栏左侧小图标
-        //FIXME 无法使用相对路径加载中resources/icons/下的app.png 考虑换用getResource()
         decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));
 
         //根据屏幕大小自适应设置长宽

@@ -5,9 +5,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.shape.Rectangle?>
 <BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
-<!--   左边目录树-->
+    <!--   左边目录树-->
     <left>
         <VBox prefHeight="${rootPane.height}" prefWidth="240" style="-fx-background-color: #FFFFFF;" styleClass=""
               BorderPane.alignment="CENTER">
@@ -27,106 +28,130 @@
         </VBox>
     </left>
 
-<!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
-<!--   顶部-->
+    <!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
+    <!--   顶部-->
     <top>
-      <VBox spacing="30" prefHeight="60"  styleClass="toolbar">
-         <JFXToolbar>
+        <VBox spacing="30" prefHeight="60" styleClass="toolbar">
+            <JFXToolbar>
 
-            <leftItems>
-<!--               后退按钮-->
-               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                  <StackPane style="-fx-padding:5;">
-                     <ImageView>
-                        <Image url="@../icons/back_96px.png"/>
-                     </ImageView>
-                  </StackPane>
-               </JFXRippler>
+                <leftItems>
+                    <!--               后退按钮-->
+                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                        <StackPane style="-fx-padding:5;">
+                            <ImageView>
+                                <Image url="@../icons/back_96px.png"/>
+                            </ImageView>
+                        </StackPane>
+                    </JFXRippler>
 
-<!--               前进按钮-->
-               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                  <StackPane style="-fx-padding:5;">
-                     <ImageView>
-                        <Image url="@../icons/forward_96px.png"/>
-                     </ImageView>
-                  </StackPane>
-               </JFXRippler>
+                    <!--               前进按钮-->
+                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                        <StackPane style="-fx-padding:5;">
+                            <ImageView>
+                                <Image url="@../icons/forward_96px.png"/>
+                            </ImageView>
+                        </StackPane>
+                    </JFXRippler>
 
-<!--               上层文件夹按钮-->
-               <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                  <StackPane style="-fx-padding:5;">
-                     <ImageView>
-                        <Image url="@../icons/level_up_96px.png"/>
-                     </ImageView>
-                  </StackPane>
-               </JFXRippler>
+                    <!--               上层文件夹按钮-->
+                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                        <StackPane style="-fx-padding:5;">
+                            <ImageView>
+                                <Image url="@../icons/level_up_96px.png"/>
+                            </ImageView>
+                        </StackPane>
+                    </JFXRippler>
 
-               <StackPane>
-                  <Label styleClass="path-label">C:\Sample\这里放路径</Label>
-               </StackPane>
+                    <StackPane>
+                        <Label styleClass="path-label">C:\Sample\这里放路径</Label>
+                    </StackPane>
 
-            </leftItems>
+                </leftItems>
 
-            <rightItems>
-                <HBox alignment="CENTER">
-                    <children>
-                        <JFXTextField prefWidth="160.0"
-                                      unFocusColor="white" focusColor="white"
-                                    styleClass="search-box">
-                        </JFXTextField>
-                        <!--搜索按钮-->
-                        <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
-                                   style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
-                        </JFXButton>
-                    </children>
-                </HBox>
-            </rightItems>
+                <rightItems>
+                    <HBox alignment="CENTER">
+                        <children>
+                            <JFXTextField prefWidth="160.0"
+                                          unFocusColor="white" focusColor="white"
+                                          styleClass="search-box">
+                            </JFXTextField>
+                            <!--搜索按钮-->
+                            <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
+                                       style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
+                            </JFXButton>
+                        </children>
+                    </HBox>
+                </rightItems>
 
-         </JFXToolbar>
-      </VBox>
+            </JFXToolbar>
+        </VBox>
     </top>
 
-<!--   中间-->
+    <!--   中间-->
     <center>
-        <FlowPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;"
-                  BorderPane.alignment="CENTER">
-            <children>
-                <ImageView fitHeight="112.0" fitWidth="200.0">
-                    <image>
-                        <Image url="@../../../../../../素材与灵感/色卡/Miaka.jpg"/>
-                    </image>
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </FlowPane.margin>
-                </ImageView>
-                <ImageView fitHeight="112.0" fitWidth="200.0">
-                    <image>
-                        <Image url="@../../../../../../素材与灵感/色卡/Miaka.jpg"/>
-                    </image>
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </FlowPane.margin>
-                </ImageView>
-                <ImageView fitHeight="112.0" fitWidth="200.0">
-                    <image>
-                        <Image url="@../../../../../../素材与灵感/色卡/Miaka.jpg"/>
-                    </image>
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </FlowPane.margin>
-                </ImageView>
-                <ImageView fitHeight="112.0" fitWidth="200.0" layoutX="30.0" layoutY="30.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../../../素材与灵感/壁纸/7e661de5131c2bdf8786d01b947d283e.jpg"/>
-                    </image>
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </FlowPane.margin>
-                </ImageView>
-            </children>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-        </FlowPane>
+        <VBox>
+
+            <HBox prefHeight="50">
+                <!--TODO　放置文件夹信息、刷新按钮和下拉排序菜单-->
+            </HBox>
+
+            <FlowPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;" layoutY="50"
+                      BorderPane.alignment="CENTER" styleClass="pic-list">
+                <children>
+
+                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                            <Image fx:id="image" url="@../sample/pic01.jpg"/>
+                            <VBox.margin>
+                                <Insets bottom="6"/>
+                            </VBox.margin>
+                        </ImageView>
+                        <Label fx:id="imageNameLabel" text="pic01.jpg" styleClass="img-name"/>
+                    </VBox>
+
+                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                            <Image  url="@../sample/pic02.jpg"/>
+                            <VBox.margin>
+                                <Insets bottom="6"/>
+                            </VBox.margin>
+                        </ImageView>
+                        <Label text="pic02.jpg" styleClass="img-name"/>
+                    </VBox>
+
+                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                            <Image  url="@../sample/pic03.jpg"/>
+                            <VBox.margin>
+                                <Insets bottom="6"/>
+                            </VBox.margin>
+                        </ImageView>
+                        <Label text="pic03.jpg" styleClass="img-name"/>
+                    </VBox>
+
+                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                            <Image  url="@../sample/pic04.jpg"/>
+                            <VBox.margin>
+                                <Insets bottom="6"/>
+                            </VBox.margin>
+                        </ImageView>
+                        <Label text="pic04.jpg" styleClass="img-name"/>
+                    </VBox>
+
+                    <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                            <Image  url="@../sample/pic05.jpg"/>
+                            <VBox.margin>
+                                <Insets bottom="6"/>
+                            </VBox.margin>
+                        </ImageView>
+                        <Label text="pic05.jpg" styleClass="img-name"/>
+                    </VBox>
+
+                </children>
+
+            </FlowPane>
+        </VBox>
     </center>
 </BorderPane>

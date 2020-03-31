@@ -42,3 +42,13 @@
     -fx-text-fill: rgba(255, 255, 255, 0.90);
 }
 /*******************/
+
+/***图片缩略图与文字***/
+.pic-list{
+    -fx-padding: 15;
+}
+
+.pic-name{
+    -fx-text-fill: rgba(255, 255, 255, 1);
+    -fx-font-size: 17.0px;
+}
