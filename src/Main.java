@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -33,13 +34,9 @@ public class Main extends Application{
         flowContext = new ViewFlowContext();
         flowContext.register("Stage", primaryStage);
         flow.createHandler(flowContext).start(container);
-
-        //自定义JFX的窗口边框样式
-        JFXDecorator decorator = new JFXDecorator(primaryStage, container.getView());
+        JFXDecorator decorator = new JFXDecorator(primaryStage, container.getView());  //自定义JFX的窗口边框样式
         decorator.setCustomMaximize(true);
-
-        //设置标题栏左侧小图标
-        decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));
+        decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));  //设置标题栏左侧小图标
 
         //根据屏幕大小自适应设置长宽
         double width = 800;
@@ -57,6 +54,7 @@ public class Main extends Application{
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("home/resources/css/home.css").toExternalForm());
 
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/home/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
     }
