@@ -1,17 +1,23 @@
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
+
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 
@@ -104,18 +110,18 @@ public class Main2 extends Application{
     public void add_item2(TreeItem<File> in) throws IOException {
         File[] filelist = in.getValue().listFiles();
         //System.out.println(in.getValue().getName());
+        in.getChildren().remove(0,in.getChildren().size());
         if (filelist.length>0){
-            for (File item:filelist){
-                if (item.isDirectory()&item.canRead()){
-                    TreeItem<File> b = new TreeItem<>(item);
-                    if(!in.getChildren().contains(b)){
-                        in.getChildren().add(b);
-                    }
+            for (int i = 1;i<filelist.length;i++){
+                if (filelist[i].isDirectory()&filelist[i].canRead()&!filelist[i].isHidden()){
+                    TreeItem<File> b = new TreeItem<File>(filelist[i]);
+                    in.getChildren().add(b);
 
                 }
 
             }
         }
+
     }
 }
 
