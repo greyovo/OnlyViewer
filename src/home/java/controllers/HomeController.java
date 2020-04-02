@@ -141,7 +141,7 @@ public class HomeController {
         for (File root : rootList) {
             TreeItem<File> c = new TreeItem<>(root);
             try {
-                addItems(c);
+                addItems(c,0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -154,10 +154,16 @@ public class HomeController {
         //将节点输出为文件名称
         fileTreeView.setCellFactory(TextFieldTreeCell.forTreeView(new StringConverter<File>() {
 
+            //FileSystemView fsv = FileSystemView.getFileSystemView();
             @Override
             public String toString(File object) {
-                FileSystemView fsv = FileSystemView.getFileSystemView();
-
+                //简单判断是否为根目录，是则换一种方式显示
+                for(File isListRoots:rootList){
+                    if(object.toString().equals(isListRoots.toString())){
+                        //return fsv.getSystemDisplayName(object);
+                        return object.toString();
+                    }
+                }
                 return object.getName();
                 //return fsv.getSystemDisplayName(object);
             }
@@ -174,7 +180,7 @@ public class HomeController {
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
                 System.out.println(newValue.getValue().getAbsolutePath());
                 try {
-                    addItems(newValue);
+                    addItems(newValue,0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -182,17 +188,27 @@ public class HomeController {
         });
     }
 
-    public void addItems(TreeItem<File> in) throws IOException {
-        File[] fileList = in.getValue().listFiles();
-        //System.out.println(in.getValue().getName());
-        in.getChildren().remove(0, in.getChildren().size());
-        if (fileList.length > 0) {
-            for (int i = 1; i < fileList.length; i++) {
-                if (fileList[i].isDirectory() & fileList[i].canRead() & !fileList[i].isHidden()) {
-                    TreeItem<File> b = new TreeItem<File>(fileList[i]);
-                    in.getChildren().add(b);
-                }
+    public void addItems(TreeItem<File> in,int flag) throws IOException {
+        File[] filelist = in.getValue().listFiles();
+        if(filelist != null){
+            //System.out.println(in.getValue().getName());
+            if(flag==0){
+                in.getChildren().remove(0,in.getChildren().size());
+            }
 
+            if (filelist.length>0){
+                for (int i = 1;i<filelist.length;i++){
+                    if (filelist[i].isDirectory()&filelist[i].canRead()&!filelist[i].isHidden()){
+                        TreeItem<File> b = new TreeItem<File>(filelist[i]);
+                        if (flag<1){
+                            addItems(b,flag+1);
+
+                        }
+                        in.getChildren().add(b);
+
+                    }
+
+                }
             }
         }
     }
