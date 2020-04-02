@@ -72,7 +72,8 @@ public class HomeController {
         setFileTreeView();
 
         //这里换成你的本地路径
-        placeImages(ImageListModel.refreshList("D:\\Projects\\OnlyViewer\\src\\home\\resources\\icons"));
+        String path = "D:\\TestImg2";
+        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
 
 //    public void test() {
@@ -108,7 +109,7 @@ public class HomeController {
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
-            ImageView2 imageView2 = new ImageView2(new Image("File://"+im.getImageFilePath()));
+            ImageView2 imageView2 = new ImageView2(new Image("file:"+im.getImageFilePath()));
 //            ImageView2 imageView2 = new ImageView2(new Image("File://"+"F:/Pictures"));
 //            ImageView2 imageView2 = new ImageView2("File://"+im.getImageFilePath());
 //            ImageView2 imageView2 = new ImageView2(new Image("https://edu-image.nosdn.127.net/1f51fa06a0b14fa3809af4ab20a65e14.png?imageView&quality=100"));
