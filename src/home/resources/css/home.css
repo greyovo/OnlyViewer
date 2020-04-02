@@ -8,13 +8,19 @@
 .normal-text-w{
     -fx-font-size: 18.0px;
     -fx-padding: 10;
-    -fx-text-fill: rgba(255, 255, 255, 0.90);
+    -fx-text-fill: rgba(255, 255, 255, 1);
 }
 
 .small-text-b{
     -fx-font-size: 16.0px;
     -fx-padding: 5;
     -fx-text-fill: rgba(0, 0, 0, 0.90);
+}
+
+.small-text-2{
+    -fx-font-size: 16.0px;
+    -fx-padding: 5;
+    -fx-text-fill: rgba(255, 255, 255, 1.0);
 }
 
 .main-color{
@@ -65,9 +71,10 @@
 }
 /*******************/
 
-/***中间图片缩略图与文字***/
+/***每个图片缩略图自己的内边距***/
+/**/
 .pic-list{
-    -fx-padding: 10;
+    -fx-padding: 15;
 }
 
 /***文件夹信息栏***/

@@ -1,22 +1,33 @@
 package home.java.controllers;
 
 import com.jfoenix.controls.JFXTreeView;
+import home.java.components.ImageBox;
+import home.java.components.ImageLabel;
+import home.java.components.ImageView2;
+import home.java.components.RipplerImageView;
+import home.java.model.ImageListModel;
+import home.java.model.ImageModel;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import org.junit.Test;
 
 import javax.annotation.PostConstruct;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 主窗口界面的控制器
@@ -40,6 +51,15 @@ public class HomeController {
     @FXML
     private Image image;
 
+    @FXML
+    private ImageView2 imageView;
+
+    @FXML
+    private VBox imageVBox;
+
+    @FXML
+    private FlowPane imageListPane;
+
     public HomeController() {
     }
 
@@ -50,7 +70,61 @@ public class HomeController {
     public void init() throws Exception {
         System.out.println("Home Window init running...");
         setFileTreeView();
+
+        //这里换成你的本地路径
+        placeImages(ImageListModel.refreshList("D:\\Projects\\OnlyViewer\\src\\home\\resources\\icons"));
     }
+
+//    public void test() {
+//        ArrayList<VBox> imageBoxList = new ArrayList<>();
+//        //图片 - 缩略图
+//        new JFXPanel();
+//        ImageView2 imageView2 = new ImageView2(new Image("http://www.javafxchina.net/blog/wp-content/uploads/2015/08/08_03_03-basic-timeline.jpg"));
+//        RipplerImageView riv = new RipplerImageView(imageView2);
+//        //标签 - 文件名
+//        ImageLabel imageLabel = new ImageLabel(imageView2.getImage().toString());
+//        //装图片和文件名的盒子，一上一下放置图片和文件名
+//        ImageBox imageBox = new ImageBox(riv, imageLabel);
+//        imageBoxList.add(imageBox);
+//        imageListPane.getChildren().addAll(imageBoxList);
+//    }
+
+    /**
+     * 更新当前图片列表
+     *
+     * @param url 需要刷新的文件夹路径
+     */
+    private void refreshImagesList(String url) {
+        /*TODO @Kevin 在这里获取图片ArrayList后，调用下面的placeImages渲染到界面*/
+    }
+
+    /**
+     * 生成并往面板中放置图像组。
+     * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
+     */
+    private void placeImages(ArrayList<ImageModel> imageModelList) {
+
+        ArrayList<VBox> imageBoxList = new ArrayList<>();
+        System.out.println(imageModelList);
+        for (ImageModel im : imageModelList) {
+            //图片 - 缩略图
+            ImageView2 imageView2 = new ImageView2(new Image("File://"+im.getImageFilePath()));
+//            ImageView2 imageView2 = new ImageView2(new Image("File://"+"F:/Pictures"));
+//            ImageView2 imageView2 = new ImageView2("File://"+im.getImageFilePath());
+//            ImageView2 imageView2 = new ImageView2(new Image("https://edu-image.nosdn.127.net/1f51fa06a0b14fa3809af4ab20a65e14.png?imageView&quality=100"));
+            RipplerImageView riv = new RipplerImageView(imageView2);
+
+            //标签 - 文件名
+            ImageLabel imageLabel = new ImageLabel(im.getImageName());
+
+            //装图片和文件名的盒子，一上一下放置图片和文件名
+            ImageBox imageBox = new ImageBox(riv, imageLabel);
+
+            imageBoxList.add(imageBox);
+        }
+        imageListPane.getChildren().addAll(imageBoxList);
+    }
+
 
     /**
      * 设置左侧文件目录树
@@ -119,7 +193,6 @@ public class HomeController {
 
             }
         }
-
     }
 
 

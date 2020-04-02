@@ -91,7 +91,7 @@ public class ImageListModel {
 
     @Test
     public void Test1() throws IOException {
-        String filePath = "F:\\Ding\\LIFE\\phone";
+        String filePath = "D:\\Projects\\OnlyViewer\\src\\home\\resources\\sample";
         long timef;
         long timel;
         timef = System.currentTimeMillis();
@@ -101,11 +101,11 @@ public class ImageListModel {
         if (list.size()==0){
             System.out.println("There is no image!");
         }else {
-//            for (ImageModel i : list){
-//                System.out.println("imgName:"+i.getImageName()+
-//                        "\t\timgLastModified:"+i.getFormatTime()+
-//                        "\t\timgSize:"+i.getFormatSize());
-//            }
+            for (ImageModel i : list){
+                System.out.println("imgName:"+i.getImageName()+
+                        "\t\timgLastModified:"+i.getFormatTime()+
+                        "\t\timgSize:"+i.getFormatSize());
+            }
             System.out.println("totalImgNum:" + getListImgNum(list));
             System.out.println("totalImgSize:" + getListImgSize(list));
 //            timef = System.currentTimeMillis();

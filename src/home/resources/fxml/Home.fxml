@@ -9,6 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.control.Button?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import home.java.components.ImageView2?>
 <BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
     <!--   TODO 左边目录树-->
@@ -122,69 +123,22 @@
                 </BorderPane>
 
                 <!--TODO 图片的缩略图-->
-                <FlowPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;" layoutY="50"
+                <FlowPane fx:id="imageListPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;"
                           BorderPane.alignment="CENTER" styleClass="pic-list">
                     <children>
 
-                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
+                        <VBox fx:id="imageVBox" prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
                             <JFXRippler ripplerFill="white">
-                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image fx:id="image" url="@../sample/pic01.jpg"/>
-                                    <VBox.margin>
-                                        <Insets bottom="6"/>
-                                    </VBox.margin>
-                                </ImageView>
+                                <ImageView2 fx:id="imageView" fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
+                                    <Image fx:id="image" url="@../sample/pic02.jpg"/>
+<!--                                    <VBox.margin>-->
+<!--                                        <Insets bottom="10"/>-->
+<!--                                    </VBox.margin>-->
+                                </ImageView2>
                             </JFXRippler>
-                            <Label fx:id="imageNameLabel" text="pic01.jpg" styleClass="img-name"/>
+                            <Label fx:id="imageNameLabel"  textAlignment="CENTER" text="这个是静态且正常显示的图片"  style="-fx-padding:10 0 0 0;"/>
                         </VBox>
 
-                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                            <JFXRippler ripplerFill="white">
-                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image url="@../sample/pic02.jpg"/>
-                                    <VBox.margin>
-                                        <Insets bottom="6"/>
-                                    </VBox.margin>
-                                </ImageView>
-                            </JFXRippler>
-                            <Label text="pic02.jpg" styleClass="img-name"/>
-                        </VBox>
-
-                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                            <JFXRippler ripplerFill="white">
-                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image url="@../sample/pic03.jpg"/>
-                                    <VBox.margin>
-                                        <Insets bottom="6"/>
-                                    </VBox.margin>
-                                </ImageView>
-                            </JFXRippler>
-                            <Label text="pic03.jpg" styleClass="img-name"/>
-                        </VBox>
-
-                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                            <JFXRippler ripplerFill="white">
-                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image url="@../sample/pic04.jpg"/>
-                                    <VBox.margin>
-                                        <Insets bottom="6"/>
-                                    </VBox.margin>
-                                </ImageView>
-                            </JFXRippler>
-                            <Label text="pic04.jpg" styleClass="img-name"/>
-                        </VBox>
-
-                        <VBox prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                            <JFXRippler ripplerFill="white">
-                                <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image url="@../sample/pic05.jpg"/>
-                                    <VBox.margin>
-                                        <Insets bottom="6"/>
-                                    </VBox.margin>
-                                </ImageView>
-                            </JFXRippler>
-                            <Label text="pic05.jpg" styleClass="img-name"/>
-                        </VBox>
                     </children>
                 </FlowPane>
             </VBox>
