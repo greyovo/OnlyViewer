@@ -14,6 +14,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
+import javafx.scene.CacheHint;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.TextFieldTreeCell;
@@ -72,7 +74,7 @@ public class HomeController {
         setFileTreeView();
 
         //这里换成你的本地路径
-        String path = "D:\\TestImg2";
+        String path = "D:\\TestImg";
         placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
 
@@ -104,12 +106,11 @@ public class HomeController {
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     private void placeImages(ArrayList<ImageModel> imageModelList) {
-
         ArrayList<VBox> imageBoxList = new ArrayList<>();
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
-            ImageView2 imageView2 = new ImageView2(new Image("file:"+im.getImageFilePath()));
+            ImageView2 imageView2 = new ImageView2(new Image("File:"+im.getImageFilePath(),true));
 //            ImageView2 imageView2 = new ImageView2(new Image("File://"+"F:/Pictures"));
 //            ImageView2 imageView2 = new ImageView2("File://"+im.getImageFilePath());
 //            ImageView2 imageView2 = new ImageView2(new Image("https://edu-image.nosdn.127.net/1f51fa06a0b14fa3809af4ab20a65e14.png?imageView&quality=100"));
