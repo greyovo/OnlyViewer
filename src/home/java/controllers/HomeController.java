@@ -99,10 +99,10 @@ public class HomeController {
         scrollPane.setContent(imageListPane);
         scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
-        //这里换成你的本地路径
-        String path = "D:\\素材与灵感\\unsplash";
-        pathLabel.setText(path);
-        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
+//        //这里换成你的本地路径
+//        String path = "D:\\";
+//        pathLabel.setText(path);
+//        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
 
     /**
@@ -111,7 +111,7 @@ public class HomeController {
      * @param url 需要刷新的文件夹路径
      */
     private void refreshImagesList(String url) {
-        /*TODO @Kevin 在这里获取图片ArrayList后，调用下面的placeImages渲染到界面*/
+        placeImages(ImageListModel.refreshList(url));
     }
 
     /**
@@ -119,6 +119,7 @@ public class HomeController {
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     private void placeImages(ArrayList<ImageModel> imageModelList) {
+        imageListPane.getChildren().clear();
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
@@ -190,8 +191,10 @@ public class HomeController {
         fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
-                System.out.println(newValue.getValue().getAbsolutePath());
+                String path = newValue.getValue().getAbsolutePath();
+                System.out.println(path);
                 try {
+                    placeImages(ImageListModel.initImgList(path));
                     addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();
