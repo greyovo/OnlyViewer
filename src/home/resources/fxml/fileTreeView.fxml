@@ -8,7 +8,7 @@
             fx:controller="home.java.controllers.FileTreeViewController"
             minWidth="150">
 
-    <!-- FIXME 左边目录树-->
+    <!-- FIXME 此界面因为无法生效，暂时未启用 2020-4-6 -->
     <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
                  AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
                  fx:id="fileTreeView"/>

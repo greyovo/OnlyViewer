@@ -17,6 +17,8 @@ import java.util.ResourceBundle;
 /**
  * 左侧文件目录树
  *
+ * FIXME 此类因为无法生效，暂时未启用 2020-4-6
+ * 关联fxml：fileTreeView.fxml
  * @author tudou daren
  */
 public class FileTreeViewController implements Initializable {
