@@ -18,15 +18,14 @@ public class ImageView2 extends ImageView {
 
     {
         setImageDepth();
-        super.preserveRatioProperty().setValue(true);
-        super.setFitHeight(150);
-        super.setFitWidth(150);
+        preserveRatioProperty().setValue(true);
+        setFitHeight(150);
+        setFitWidth(150);
     }
 
     public ImageView2() {
         super();
     }
-
 
     public ImageView2(String url) {
         super(url);
