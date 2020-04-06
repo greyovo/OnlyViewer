@@ -8,20 +8,25 @@ import home.java.components.RipplerImageView;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import io.datafx.controller.ViewController;
+import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 import org.junit.Test;
 
@@ -29,7 +34,9 @@ import javax.annotation.PostConstruct;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * 主窗口界面的控制器
@@ -45,10 +52,7 @@ public class HomeController {
     private ViewFlowContext context;
 
     @FXML
-    private JFXTreeView<File> fileTreeView;
-
-    @FXML
-    private Label imageNameLabel;
+    private Label folderInfoLabel;
 
     @FXML
     private Image image;
@@ -60,7 +64,16 @@ public class HomeController {
     private VBox imageVBox;
 
     @FXML
-    private FlowPane imageListPane;
+    private FlowPane imageListPane = new FlowPane();
+
+    @FXML
+    private ToolBar infoBar;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private JFXTreeView<File> fileTreeView;
 
     public HomeController() {
     }
@@ -71,26 +84,22 @@ public class HomeController {
     @PostConstruct
     public void init() throws Exception {
         System.out.println("Home Window init running...");
-        setFileTreeView();
+
+        setFileTreeView(); //初始化目录树
+        infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
+
+        imageListPane.setPadding(new Insets(10));
+        imageListPane.setVgap(20);
+        imageListPane.setHgap(30);
+        imageListPane.setPrefWidth(scrollPane.getPrefWidth());
+
+        scrollPane.setContent(imageListPane);
+        scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
         //这里换成你的本地路径
-//        String path = "C:\\Users\\Kevin\\Pictures\\MY STYLE\\壁纸";
-//        placeImages(ImageListModel.initImgList(path.toString())); // 这里是要用初始化方法
+        String path = "D:\\Pictures\\照片\\Aero15 & Xiaomi MI8";
+        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
-
-//    public void test() {
-//        ArrayList<VBox> imageBoxList = new ArrayList<>();
-//        //图片 - 缩略图
-//        new JFXPanel();
-//        ImageView2 imageView2 = new ImageView2(new Image("http://www.javafxchina.net/blog/wp-content/uploads/2015/08/08_03_03-basic-timeline.jpg"));
-//        RipplerImageView riv = new RipplerImageView(imageView2);
-//        //标签 - 文件名
-//        ImageLabel imageLabel = new ImageLabel(imageView2.getImage().toString());
-//        //装图片和文件名的盒子，一上一下放置图片和文件名
-//        ImageBox imageBox = new ImageBox(riv, imageLabel);
-//        imageBoxList.add(imageBox);
-//        imageListPane.getChildren().addAll(imageBoxList);
-//    }
 
     /**
      * 更新当前图片列表
@@ -106,25 +115,24 @@ public class HomeController {
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     private void placeImages(ArrayList<ImageModel> imageModelList) {
-        ArrayList<VBox> imageBoxList = new ArrayList<>();
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
-            ImageView2 imageView2 = new ImageView2(new Image("File:"+im.getImageFilePath(),true));
-//            ImageView2 imageView2 = new ImageView2(new Image("File://"+"F:/Pictures"));
-//            ImageView2 imageView2 = new ImageView2("File://"+im.getImageFilePath());
-//            ImageView2 imageView2 = new ImageView2(new Image("https://edu-image.nosdn.127.net/1f51fa06a0b14fa3809af4ab20a65e14.png?imageView&quality=100"));
-            RipplerImageView riv = new RipplerImageView(imageView2);
-
-            //标签 - 文件名
-            ImageLabel imageLabel = new ImageLabel(im.getImageName());
-
-            //装图片和文件名的盒子，一上一下放置图片和文件名
-            ImageBox imageBox = new ImageBox(riv, imageLabel);
-
-            imageBoxList.add(imageBox);
+            ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
+                    120,
+                    120,
+                    true,
+                    false,
+                    true));
+            RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
+            ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
+            ImageBox imageBox = new ImageBox(riv, imageLabel); //装图片和文件名的盒子，一上一下放置图片和文件名
+            imageListPane.getChildren().add(imageBox);
         }
-        imageListPane.getChildren().addAll(imageBoxList);
+        //文件夹信息栏设置
+        int total = ImageListModel.getListImgNum(imageModelList);
+        String size = ImageListModel.getListImgSize(imageModelList);
+        folderInfoLabel.setText(total + "张图片 共" + size);
     }
 
 
@@ -141,7 +149,7 @@ public class HomeController {
         for (File root : rootList) {
             TreeItem<File> c = new TreeItem<>(root);
             try {
-                addItems(c,0);
+                addItems(c, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,8 +166,8 @@ public class HomeController {
             @Override
             public String toString(File object) {
                 //简单判断是否为根目录，是则换一种方式显示
-                for(File isListRoots:rootList){
-                    if(object.toString().equals(isListRoots.toString())){
+                for (File isListRoots : rootList) {
+                    if (object.toString().equals(isListRoots.toString())) {
                         //return fsv.getSystemDisplayName(object);
                         return object.toString();
                     }
@@ -178,9 +186,9 @@ public class HomeController {
         fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
-                System.out.println("click:"+newValue.getValue().getAbsolutePath());
+                System.out.println(newValue.getValue().getAbsolutePath());
                 try {
-                    addItems(newValue,0);
+                    addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -188,21 +196,20 @@ public class HomeController {
         });
     }
 
-    public void addItems(TreeItem<File> in,int flag) throws IOException {
+    public void addItems(TreeItem<File> in, int flag) throws IOException {
         File[] filelist = in.getValue().listFiles();
-        if(filelist != null){
+        if (filelist != null) {
             //System.out.println(in.getValue().getName());
-            if(flag==0){
-                in.getChildren().remove(0,in.getChildren().size());
+            if (flag == 0) {
+                in.getChildren().remove(0, in.getChildren().size());
             }
 
-            if (filelist.length>0){
-                for (int i = 1;i<filelist.length;i++){
-                    if (filelist[i].isDirectory()&filelist[i].canRead()&!filelist[i].isHidden()){
+            if (filelist.length > 0) {
+                for (int i = 1; i < filelist.length; i++) {
+                    if (filelist[i].isDirectory() & filelist[i].canRead() & !filelist[i].isHidden()) {
                         TreeItem<File> b = new TreeItem<File>(filelist[i]);
-                        if (flag<1){
-                            addItems(b,flag+1);
-
+                        if (flag < 1) {
+                            addItems(b, flag + 1);
                         }
                         in.getChildren().add(b);
 

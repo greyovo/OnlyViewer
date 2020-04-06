@@ -41,6 +41,10 @@ public class ImageModel {
         this.imageLastModified = imageFile.lastModified();
     }
 
+    private void init(){
+
+    }
+
     public String getFormatSize(){
         return home.java.model.GenUtilModel.getFormatSize(this.fileLength);
     }
