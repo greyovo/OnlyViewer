@@ -8,6 +8,7 @@ import home.java.components.RipplerImageView;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import io.datafx.controller.ViewController;
+import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 import org.junit.Test;
@@ -62,7 +64,7 @@ public class HomeController {
     private VBox imageVBox;
 
     @FXML
-    private TilePane imageListPane = new TilePane();
+    private FlowPane imageListPane = new FlowPane();
 
     @FXML
     private ToolBar infoBar;
@@ -82,15 +84,19 @@ public class HomeController {
     @PostConstruct
     public void init() throws Exception {
         System.out.println("Home Window init running...");
-        infoBar.setBackground(Background.EMPTY);
-        setFileTreeView();
 
-        imageListPane.setPadding(new Insets(5));
-        imageListPane.setVgap(10);
-        imageListPane.setHgap(10);
+        setFileTreeView(); //初始化目录树
+        infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
+
+        imageListPane.setPadding(new Insets(10));
+        imageListPane.setVgap(20);
+        imageListPane.setHgap(30);
+        imageListPane.setPrefWidth(scrollPane.getPrefWidth());
+
         scrollPane.setContent(imageListPane);
+        scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
-//        //这里换成你的本地路径
+        //这里换成你的本地路径
         String path = "D:\\Pictures\\照片\\Aero15 & Xiaomi MI8";
         placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
@@ -109,29 +115,24 @@ public class HomeController {
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     private void placeImages(ArrayList<ImageModel> imageModelList) {
-        ArrayList<VBox> imageBoxList = new ArrayList<>();
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
-            ImageView2 imageView2 = new ImageView2(new Image("File:" + im.getImageFilePath(), true));
-//            ImageView2 imageView2 = new ImageView2(new Image("File:"+"F:/Pictures"));
-//            ImageView2 imageView2 = new ImageView2(new Image("https://edu-image.nosdn.127.net/1f51fa06a0b14fa3809af4ab20a65e14.png?imageView&quality=100"));
-            RipplerImageView riv = new RipplerImageView(imageView2);
-
-            //标签 - 文件名
-            ImageLabel imageLabel = new ImageLabel(im.getImageName());
-
-            //装图片和文件名的盒子，一上一下放置图片和文件名
-            ImageBox imageBox = new ImageBox(riv, imageLabel);
-
-            imageBoxList.add(imageBox);
+            ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
+                    120,
+                    120,
+                    true,
+                    false,
+                    true));
+            RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
+            ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
+            ImageBox imageBox = new ImageBox(riv, imageLabel); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
-
-        //放置文件夹信息
+        //文件夹信息栏设置
         int total = ImageListModel.getListImgNum(imageModelList);
         String size = ImageListModel.getListImgSize(imageModelList);
-        folderInfoLabel.setText(total + "张图片  共" + size);
+        folderInfoLabel.setText(total + "张图片 共" + size);
     }
 
 
