@@ -38,20 +38,20 @@
                     <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"
                              prefHeight="33">
                         <StackPane>
-                            <Label fx:id="folderInfoLabel" text="X张图片，共XXX MB。" styleClass="normal-text-b"
+                            <Label fx:id="folderInfoLabel" styleClass="normal-text-b"
                                    style="-fx-padding:10px"/>
                         </StackPane>
                         <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
-                        <JFXButton buttonType="FLAT" text="刷新" styleClass="normal-button">
+                        <JFXButton fx:id="refreshButton" buttonType="FLAT" text="刷新" styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
-                        <JFXComboBox prefWidth="150" prefHeight="20" promptText="默认排序"
+                        <JFXComboBox fx:id="sortComboBox" prefWidth="150" prefHeight="20" promptText="默认排序"
                                      styleClass="combo-box normal-text-b"/>
                     </ToolBar>
 
-                    <!--TODO 缩略图们 -->
+                    <!--缩略图们 -->
                     <ScrollPane fx:id="scrollPane"
                                 fitToHeight="true" fitToWidth="true"
                                 AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"

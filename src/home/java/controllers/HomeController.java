@@ -1,5 +1,7 @@
 package home.java.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeView;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
@@ -14,9 +16,12 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.*;
@@ -24,6 +29,7 @@ import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import org.junit.Test;
 
@@ -75,6 +81,9 @@ public class HomeController {
     @FXML
     private Label pathLabel;
 
+    @FXML
+    private JFXButton refreshButton;
+
     public HomeController() {
     }
 
@@ -85,6 +94,7 @@ public class HomeController {
     public void init() throws Exception {
         System.out.println("Home Window init running...");
 
+        setWelcomePage();
         setFileTreeView(); //初始化目录树
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
 
@@ -96,10 +106,35 @@ public class HomeController {
         scrollPane.setContent(imageListPane);
         scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
+        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                refreshImagesList();
+            }
+        });
+
 //        //这里换成你的本地路径
 //        String path = "D:\\";
 //        pathLabel.setText(path);
 //        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
+    }
+
+    /**
+     * TODO 在无照片显示时显示欢迎页面 2020-4-7 00:17:17
+     * */
+    private void setWelcomePage() {
+        ImageView welcomeImage = new ImageView(new Image("home/resources/icons/app.png"));
+        Label welcomeLabel = new Label("欢迎使用!");
+        welcomeLabel.setFont(new Font("default",22));
+        VBox vBox = new VBox(welcomeImage,welcomeLabel);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPrefSize(imageListPane.getPrefWidth(),imageListPane.getPrefHeight());
+        AnchorPane anchorPane = new AnchorPane(vBox);
+        AnchorPane.setBottomAnchor(vBox,10.0);
+        AnchorPane.setTopAnchor(vBox,10.0);
+        AnchorPane.setLeftAnchor(vBox,10.0);
+        AnchorPane.setRightAnchor(vBox,10.0);
+        imageListPane.getChildren().addAll(anchorPane);
     }
 
     /**
@@ -108,26 +143,37 @@ public class HomeController {
      * @param url 需要刷新的文件夹路径
      */
     private void refreshImagesList(String url) {
-        placeImages(ImageListModel.refreshList(url));
+        placeImages(ImageListModel.refreshList(url), url);
+    }
+
+    private void refreshImagesList() {
+        placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
+        System.out.println("已刷新。");
     }
 
     /**
      * 生成并往面板中放置图像组。
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
-    private void placeImages(ArrayList<ImageModel> imageModelList) {
-        imageListPane.getChildren().clear();
-        System.out.println(imageModelList);
-        for (ImageModel im : imageModelList) {
-            //图片 - 缩略图
+    private void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
 
-            ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
-            imageListPane.getChildren().add(imageBox);
-        }
+        //地址栏更新
+        pathLabel.setText(folderPath);
+
         //文件夹信息栏设置
         int total = ImageListModel.getListImgNum(imageModelList);
         String size = ImageListModel.getListImgSize(imageModelList);
-        folderInfoLabel.setText(total + "张图片 共" + size);
+        if (!imageModelList.isEmpty()) {
+            folderInfoLabel.setText(total + " 张图片，共" + size);
+            imageListPane.getChildren().clear();
+        }
+        System.out.println(imageModelList);
+
+        //加载缩略图
+        for (ImageModel im : imageModelList) {
+            ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
+            imageListPane.getChildren().add(imageBox);
+        }
     }
 
 
@@ -184,7 +230,7 @@ public class HomeController {
                 String path = newValue.getValue().getAbsolutePath();
                 System.out.println(path);
                 try {
-                    placeImages(ImageListModel.initImgList(path));
+                    placeImages(ImageListModel.initImgList(path), path);
                     addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();

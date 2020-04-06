@@ -51,7 +51,7 @@
                 <BorderPane.margin>
                     <Insets left="20"/>
                 </BorderPane.margin>
-                <Label fx:id="pathLabel" styleClass="path-label">C:\Sample\这里放路径</Label>
+                <Label fx:id="pathLabel" styleClass="path-label"/>
             </JFXRippler>
 
         </leftItems>

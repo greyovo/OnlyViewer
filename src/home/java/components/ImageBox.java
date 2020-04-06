@@ -36,6 +36,7 @@ public class ImageBox extends VBox {
         ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
         this.getChildren().addAll(riv,imageLabel);
 
+        //设置文件信息tips
         String tooltip = String.format("名称: %s\n大小: %s",im.getImageName(),im.getFormatSize());
         Tooltip.install(this, new Tooltip(tooltip));
 

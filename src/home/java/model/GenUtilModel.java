@@ -19,7 +19,7 @@ public class GenUtilModel {
     static String getFormatSize(long fileLength){
         String Standardsize = null;
         if (fileLength < KB){
-            Standardsize = String.format("%d BYTE", fileLength);
+            Standardsize = String.format("%d Byte", fileLength);
         }else if(fileLength < MB){
             Standardsize = String.format("%.0f KB", fileLength/KB);
         }else if (fileLength < GB){
