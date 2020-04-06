@@ -10,172 +10,112 @@
 <?import javafx.scene.control.Button?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import home.java.components.ImageView2?>
-<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import home.java.components.ImageBox?>
+<?import home.java.components.RipplerImageView?>
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <AnchorPane>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
 
-    <!--   TODO 左边目录树-->
-    <left>
-        <VBox prefHeight="${rootPane.height}" prefWidth="240" style="-fx-background-color: #FFFFFF;" styleClass=""
-              BorderPane.alignment="CENTER">
-            <children>
-                <JFXTreeView fx:id="fileTreeView" prefHeight="${rootPane.height}">
+            <fx:include source="topToolBar.fxml"/>
 
-                </JFXTreeView>
-            </children>
-            <opaqueInsets>
-                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
-            </opaqueInsets>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-        </VBox>
-    </left>
+            <SplitPane VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.15">
 
-    <!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
-    <!--   顶部-->
-    <top>
-        <VBox spacing="30" prefHeight="60" styleClass="toolbar">
-            <JFXToolbar>
+                <!--左侧目录树-->
+                <!--                <fx:include source="fileTreeView.fxml"/>-->
 
-                <leftItems>
-                    <!--               后退按钮-->
-                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                        <StackPane style="-fx-padding:5;">
-                            <ImageView>
-                                <Image url="@../icons/back_96px.png"/>
-                            </ImageView>
-                        </StackPane>
-                    </JFXRippler>
+                <!-- TODO 左边目录树-->
+                <!--                <VBox prefHeight="${rootPane.height}" prefWidth="240" style="-fx-background-color: #FFFFFF;" styleClass=""-->
+                <!--                      BorderPane.alignment="CENTER">-->
+                <!--                    <children>-->
+                <!--                        <JFXTreeView fx:id="fileTreeView" prefHeight="${rootPane.height}">-->
+                <!--                        </JFXTreeView>-->
+                <!--                    </children>-->
+                <!--                    <opaqueInsets>-->
+                <!--                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>-->
+                <!--                    </opaqueInsets>-->
+                <!--                    <padding>-->
+                <!--                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>-->
+                <!--                    </padding>-->
+                <!--                </VBox>-->
+                <!--                <VBox>-->
+                <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
+                             AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                             fx:id="fileTreeView"/>
+                <!--                </VBox>-->
 
-                    <!--               前进按钮-->
-                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                        <StackPane style="-fx-padding:5;">
-                            <ImageView>
-                                <Image url="@../icons/forward_96px.png"/>
-                            </ImageView>
-                        </StackPane>
-                    </JFXRippler>
-
-                    <!--               上层文件夹按钮-->
-                    <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                        <StackPane style="-fx-padding:5;">
-                            <ImageView>
-                                <Image url="@../icons/level_up_96px.png"/>
-                            </ImageView>
-                        </StackPane>
-                    </JFXRippler>
-
-                    <StackPane>
-                        <Label styleClass="path-label">C:\Sample\这里放路径</Label>
-                    </StackPane>
-
-                </leftItems>
-
-                <rightItems>
-                    <HBox alignment="CENTER">
-                        <children>
-
-                            <JFXTextField prefWidth="160.0"
-                                          unFocusColor="white" focusColor="white"
-                                          styleClass="search-box">
-
-                            </JFXTextField>
-
-                            <!--搜索按钮-->
-                            <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
-                                       style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
-                            </JFXButton>
-                        </children>
-
-                    </HBox>
-                </rightItems>
-
-            </JFXToolbar>
-        </VBox>
-    </top>
-
-    <!--   中间-->
-    <center>
-        <StackPane fx:id="mainStackPane" alignment="BOTTOM_RIGHT">
-            <VBox prefWidth="${mainStackPane.prefWidth}" prefHeight="${mainStackPane.prefHeight}">
-
-                <!--TODO 放置文件夹信息、刷新按钮和下拉排序菜单-->
-                <BorderPane prefHeight="50" style="-fx-padding:20">
-
-                    <left>
+                <!--右侧 文件夹信息 + 缩略图群 -->
+                <AnchorPane>
+                    <!--TODO 放置文件夹信息、刷新按钮和下拉排序菜单-->
+                    <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                             prefHeight="33">
                         <StackPane>
-                            <Label text="X张图片，共XXX MB。" styleClass="normal-text-b" style="-fx-padding:10px"/>
+                            <Label fx:id="folderInfoLabel" text="X张图片，共XXX MB。" styleClass="normal-text-b"
+                                   style="-fx-padding:10px"/>
                         </StackPane>
-                    </left>
 
-                    <right>
-                        <HBox prefWidth="300" alignment="CENTER_RIGHT">
-                            <JFXButton buttonType="FLAT" text="刷新" styleClass="normal-button">
-                                <HBox.margin>
-                                    <Insets right="10"/>
-                                </HBox.margin>
-                            </JFXButton>
+                        <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
 
-                            <JFXComboBox prefWidth="150" prefHeight="20" promptText="默认排序"
-                                         styleClass="combo-box normal-text-b"/>
-                        </HBox>
-                    </right>
+                        <JFXButton buttonType="FLAT" text="刷新" styleClass="normal-button">
+                            <HBox.margin>
+                                <Insets right="10"/>
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXComboBox prefWidth="150" prefHeight="20" promptText="默认排序"
+                                     styleClass="combo-box normal-text-b"/>
+                    </ToolBar>
 
-                </BorderPane>
-
-                <!--TODO 图片的缩略图-->
-                <FlowPane fx:id="imageListPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F3F3F3;"
-                          BorderPane.alignment="CENTER" styleClass="pic-list">
-                    <children>
-
-                        <VBox fx:id="imageVBox" prefHeight="150" prefWidth="150" styleClass="pic-list" alignment="BOTTOM_CENTER">
-                            <JFXRippler ripplerFill="white">
-                                <ImageView2 fx:id="imageView" fitWidth="150.0" fitHeight="150.0" preserveRatio="true">
-                                    <Image fx:id="image" url="@../sample/pic02.jpg"/>
-<!--                                    <VBox.margin>-->
-<!--                                        <Insets bottom="10"/>-->
-<!--                                    </VBox.margin>-->
-                                </ImageView2>
-                            </JFXRippler>
-                            <Label fx:id="imageNameLabel"  textAlignment="CENTER" text="这个是静态且正常显示的图片"  style="-fx-padding:10 0 0 0;"/>
-                        </VBox>
-
-                    </children>
-                </FlowPane>
-            </VBox>
+                    <!--TODO 图片的缩略图们 -->
+                    <ScrollPane fx:id="scrollPane"
+                                style="-fx-border-color: grey;"
+                                minWidth="500"
+                                AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                                AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="60">
+                    </ScrollPane>
+                </AnchorPane>
 
 
-            <!--            <JFXRippler prefWidth="50" prefHeight="50" maskType="CIRCLE" ripplerFill="white">-->
-            <!--                            <ImageView preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">-->
-            <!--                                <Image url="@../icons/play-icon.png"/>-->
-            <!--                                <StackPane.margin>-->
-            <!--                                    <Insets topRightBottomLeft="50"/>-->
-            <!--                                </StackPane.margin>-->
-            <!--                            </ImageView>-->
-            <!--            </JFXRippler>-->
+                <!--                <FlowPane fx:id="imageListPane" prefHeight="200.0" prefWidth="200.0"-->
+                <!--                          style="-fx-background-color: F3F3F3;"-->
+                <!--                          BorderPane.alignment="CENTER" styleClass="pic-list">-->
+                <!--                    <VBox fx:id="imageVBox" prefHeight="150" prefWidth="150" styleClass="pic-list"-->
+                <!--                          alignment="BOTTOM_CENTER">-->
+                <!--                        <JFXRippler ripplerFill="white">-->
+                <!--                            <ImageView2 fx:id="imageView" fitWidth="150.0" fitHeight="150.0"-->
+                <!--                                        preserveRatio="true">-->
+                <!--                                <Image fx:id="image" url="@../sample/pic02.jpg"/>-->
+                <!--                                &lt;!&ndash;                                    <VBox.margin>&ndash;&gt;-->
+                <!--                                &lt;!&ndash;                                        <Insets bottom="10"/>&ndash;&gt;-->
+                <!--                                &lt;!&ndash;                                    </VBox.margin>&ndash;&gt;-->
+                <!--                            </ImageView2>-->
+                <!--                        </JFXRippler>-->
+                <!--                        <Label fx:id="imageNameLabel" textAlignment="CENTER" text="这个是静态且正常显示的图片"-->
+                <!--                               style="-fx-padding:10 0 0 0;"/>-->
+                <!--                    </VBox>-->
+                <!--                </FlowPane>-->
 
+            </SplitPane>
+        </VBox>
 
-            <!--右下角，幻灯片放映按钮-->
-            <!--FIXME 实现方法有点强硬，可能无法灵活添加更多按钮，需改善-->
-            <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
-                原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
+        <!--TODO 右下角，幻灯片放映按钮 -->
+        <!--FIXME 实现方法有点强硬，可能无法灵活添加更多按钮，需改善 -->
+        <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
+            原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
+        <!--    <JFXButton fx:id="playButton" contentDisplay="GRAPHIC_ONLY"-->
+        <!--               ripplerFill="white" styleClass="play-icon">-->
+        <!--        <StackPane.margin>-->
+        <!--            <Insets topRightBottomLeft="55"/>-->
+        <!--        </StackPane.margin>-->
+        <!--    </JFXButton>-->
+        <!--    <ImageView fitHeight="28" preserveRatio="true">-->
+        <!--        <StackPane.margin>-->
+        <!--            <Insets topRightBottomLeft="71"/>-->
+        <!--        </StackPane.margin>-->
+        <!--        <Image url="@../icons/play_96px.png"/>-->
+        <!--    </ImageView>-->
 
-            <JFXButton fx:id="playButton" contentDisplay="GRAPHIC_ONLY"
-                       ripplerFill="white"
-                       styleClass="play-icon">
-                <StackPane.margin>
-                    <Insets topRightBottomLeft="55"/>
-                </StackPane.margin>
-            </JFXButton>
-            <ImageView fitHeight="28" preserveRatio="true">
-                <StackPane.margin>
-                    <Insets topRightBottomLeft="71"/>
-                </StackPane.margin>
-                <Image url="@../icons/play_96px.png"/>
-            </ImageView>
-
-
-        </StackPane>
-
-    </center>
-
-</BorderPane>
+    </AnchorPane>
+</StackPane>

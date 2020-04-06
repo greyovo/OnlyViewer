@@ -14,16 +14,13 @@ import javafx.scene.layout.VBox;
  */
 public class ImageBox extends VBox {
 
-    {
-        super.setPrefHeight(150);
-        super.setPrefWidth(150);
-        super.setAlignment(Pos.BOTTOM_CENTER);
-        super.paddingProperty().setValue(new Insets(15.0));
-    }
-
     public ImageBox(RipplerImageView riv, ImageLabel imageLabel) {
-        super.getChildren().add(riv);
-        super.getChildren().add(imageLabel);
+        super();
+        setMaxSize(120,120);
+        setAlignment(Pos.BOTTOM_CENTER);
+        paddingProperty().setValue(new Insets(15.0));
+        this.getChildren().add(riv);
+        this.getChildren().add(imageLabel);
     }
 
 }

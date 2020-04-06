@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 public class ImageView2 extends ImageView {
 
     {
-        setImageDepth();
+//        setImageDepth();
         super.preserveRatioProperty().setValue(true);
         super.setFitHeight(150);
         super.setFitWidth(150);
