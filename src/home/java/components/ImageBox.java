@@ -1,12 +1,15 @@
 package home.java.components;
 
 import com.jfoenix.controls.JFXRippler;
-import javafx.geometry.Insets;
+import home.java.model.ImageModel;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+
+import javax.tools.Tool;
 
 /**
  * 用来存放图片和图片文件名的盒子。
@@ -21,16 +24,22 @@ public class ImageBox extends VBox {
         setAlignment(Pos.BOTTOM_CENTER);
     }
 
-    public ImageBox(JFXRippler riv, Label imageLabel) {
-        super();
-        this.getChildren().add(riv);
-        this.getChildren().add(imageLabel);
+
+    public ImageBox(ImageModel im){
+        ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
+                120,
+                120,
+                true,
+                true,
+                true));
+        RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
+        ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
+        this.getChildren().addAll(riv,imageLabel);
+
+        String tooltip = String.format("名称: %s\n大小: %s",im.getImageName(),im.getFormatSize());
+        Tooltip.install(this, new Tooltip(tooltip));
+
     }
 
-    public ImageBox(ImageView iv, Label imageLabel) {
-        super();
-        this.getChildren().add(iv);
-        this.getChildren().add(imageLabel);
-    }
 
 }

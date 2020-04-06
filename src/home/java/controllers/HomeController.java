@@ -19,10 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -123,15 +120,8 @@ public class HomeController {
         System.out.println(imageModelList);
         for (ImageModel im : imageModelList) {
             //图片 - 缩略图
-            ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
-                    120,
-                    120,
-                    true,
-                    true,
-                    true));
-            RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
-            ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
-            ImageBox imageBox = new ImageBox(riv, imageLabel); //装图片和文件名的盒子，一上一下放置图片和文件名
+
+            ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
         //文件夹信息栏设置

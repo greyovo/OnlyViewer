@@ -13,8 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
-<!--   顶部-->
+<!--顶部-->
 <?import javafx.geometry.Insets?>
 <VBox spacing="30" prefHeight="60" styleClass="toolbar"
       xmlns="http://javafx.com/javafx"
@@ -48,7 +47,6 @@
                 </StackPane>
             </JFXRippler>
 
-
             <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
                 <BorderPane.margin>
                     <Insets left="20"/>
@@ -70,7 +68,6 @@
                                style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
                     </JFXButton>
                 </children>
-
             </HBox>
         </rightItems>
 
