@@ -15,6 +15,7 @@
 
 <!--   TODO 对于重复出现的标签，要换用层叠样式(CSS)而不是内联样式 -->
 <!--   顶部-->
+<?import javafx.geometry.Insets?>
 <VBox spacing="30" prefHeight="60" styleClass="toolbar"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml">
@@ -47,9 +48,13 @@
                 </StackPane>
             </JFXRippler>
 
-            <StackPane>
-                <Label styleClass="path-label">C:\Sample\这里放路径</Label>
-            </StackPane>
+
+            <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+                <BorderPane.margin>
+                    <Insets left="20"/>
+                </BorderPane.margin>
+                <Label fx:id="pathLabel" styleClass="path-label">C:\Sample\这里放路径</Label>
+            </JFXRippler>
 
         </leftItems>
 

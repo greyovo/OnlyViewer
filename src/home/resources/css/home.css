@@ -59,8 +59,8 @@
 }
 
 .path-label {
-    -fx-font-size: 20.0px;
-    -fx-padding: 0 0 0 20;
+    -fx-font-size: 18.0px;
+    -fx-padding: 10 10 10 10;
     -fx-text-fill: rgba(255, 255, 255, 0.90);
 }
 

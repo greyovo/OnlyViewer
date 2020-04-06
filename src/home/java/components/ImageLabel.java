@@ -9,12 +9,15 @@ import static javafx.geometry.Pos.CENTER;
 
 public class ImageLabel extends Label {
 
+    {
+        setAlignment(CENTER);
+        setFont(Font.font(16));
+//        super.setWrapText(true);
+        setStyle("-fx-padding:15 0 0 0;");
+    }
+
     public ImageLabel(String text) {
         super(text);
-        super.setAlignment(CENTER);
-        super.setFont(Font.font(16));
-//        super.setWrapText(true);
-        super.setStyle("-fx-padding:10 0 0 0;");
     }
 
 }

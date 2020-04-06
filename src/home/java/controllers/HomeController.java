@@ -75,6 +75,9 @@ public class HomeController {
     @FXML
     private JFXTreeView<File> fileTreeView;
 
+    @FXML
+    private Label pathLabel;
+
     public HomeController() {
     }
 
@@ -90,14 +93,15 @@ public class HomeController {
 
         imageListPane.setPadding(new Insets(10));
         imageListPane.setVgap(20);
-        imageListPane.setHgap(30);
+        imageListPane.setHgap(20);
         imageListPane.setPrefWidth(scrollPane.getPrefWidth());
 
         scrollPane.setContent(imageListPane);
         scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
         //这里换成你的本地路径
-        String path = "D:\\Pictures\\照片\\Aero15 & Xiaomi MI8";
+        String path = "D:\\素材与灵感\\unsplash";
+        pathLabel.setText(path);
         placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
     }
 
@@ -122,7 +126,7 @@ public class HomeController {
                     120,
                     120,
                     true,
-                    false,
+                    true,
                     true));
             RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
             ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名

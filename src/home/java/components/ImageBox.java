@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 public class ImageBox extends VBox {
 
     {
-        setMaxSize(120,120);
+        setMaxSize(170,170);
         setAlignment(Pos.BOTTOM_CENTER);
     }
 
