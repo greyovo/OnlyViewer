@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXTreeView?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="home.java.controllers.FileTreeViewController"
+            minWidth="150">
+
+    <!-- FIXME 左边目录树-->
+    <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
+                 AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                 fx:id="fileTreeView"/>
+
+</AnchorPane>
