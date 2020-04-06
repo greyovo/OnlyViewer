@@ -74,8 +74,8 @@ public class HomeController {
         setFileTreeView();
 
         //这里换成你的本地路径
-        String path = "D:\\TestImg";
-        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
+//        String path = "C:\\Users\\Kevin\\Pictures\\MY STYLE\\壁纸";
+//        placeImages(ImageListModel.initImgList(path.toString())); // 这里是要用初始化方法
     }
 
 //    public void test() {
@@ -178,7 +178,7 @@ public class HomeController {
         fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
-                System.out.println(newValue.getValue().getAbsolutePath());
+                System.out.println("click:"+newValue.getValue().getAbsolutePath());
                 try {
                     addItems(newValue,0);
                 } catch (IOException e) {
