@@ -85,6 +85,9 @@ public class HomeController {
     @FXML
     private JFXButton refreshButton;
 
+    @FXML
+    private AnchorPane mainPane;
+
     public HomeController() {
     }
 
@@ -95,7 +98,6 @@ public class HomeController {
     public void init() throws Exception {
         System.out.println("Home Window init running...");
 
-        setWelcomePage();
         setFileTreeView(); //初始化目录树
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
 
@@ -108,21 +110,22 @@ public class HomeController {
         scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
         refreshButton.setOnAction(event -> refreshImagesList());
+        setWelcomePage();
     }
 
     /**
-     * TODO 在无照片显示时显示欢迎页面 2020-4-7 00:17:17
+     * 在初始启动时显示欢迎页面
      */
     private void setWelcomePage() {
-        ImageView welcomeImage = new ImageView(new Image("home/resources/icons/app.png"));
-        Label welcomeLabel = new Label("欢迎使用!");
-        welcomeLabel.setFont(new Font("default", 22));
-        VBox vBox = new VBox(welcomeImage, welcomeLabel);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setPrefSize(imageListPane.getPrefWidth(), imageListPane.getPrefHeight());
-        StackPane stackPane = new StackPane(vBox);
-        imageListPane.getChildren().add(stackPane);
+        ImageView welcomeImage = new ImageView(new Image("home/resources/images/welcome.png"));
+        welcomeImage.setFitWidth(400);
+        welcomeImage.setPreserveRatio(true);
+        HBox hBox = new HBox(welcomeImage);
+        hBox.setAlignment(Pos.CENTER);
+        StackPane stackPane = new StackPane(hBox);
+        scrollPane.setContent(stackPane);
     }
+
 
     /**
      * 更新当前图片列表
@@ -145,6 +148,7 @@ public class HomeController {
     private void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         // 每次点击就重置
         imageListPane.getChildren().clear();
+        scrollPane.setContent(imageListPane);
 
         //地址栏更新
         pathLabel.setText(folderPath);
