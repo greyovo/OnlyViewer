@@ -80,7 +80,7 @@ public class HomeController {
     private JFXTreeView<File> fileTreeView;
 
     @FXML
-    private JFXTextField pathLabel;
+    private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
 
     @FXML
     private JFXButton refreshButton;
@@ -159,7 +159,6 @@ public class HomeController {
             System.out.println(imageModelList);
         }
 
-        ArrayList<ImageBox> list = new ArrayList<>();
         //加载缩略图
         for (ImageModel im : imageModelList) {
             ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
