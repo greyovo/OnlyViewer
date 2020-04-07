@@ -156,6 +156,8 @@ public class HomeController {
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     private void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
+        // 每次点击就重置
+        imageListPane.getChildren().clear();
 
         //地址栏更新
         pathLabel.setText(folderPath);
@@ -163,10 +165,7 @@ public class HomeController {
         //文件夹信息栏设置
         int total = ImageListModel.getListImgNum(imageModelList);
         String size = ImageListModel.getListImgSize(imageModelList);
-        if (!imageModelList.isEmpty()) {
-            folderInfoLabel.setText(total + " 张图片，共" + size);
-            imageListPane.getChildren().clear();
-        }
+        folderInfoLabel.setText(total + " 张图片，共 " + size);
         System.out.println(imageModelList);
 
         //加载缩略图
