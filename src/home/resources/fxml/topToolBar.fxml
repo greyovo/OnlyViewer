@@ -16,8 +16,7 @@
 <!--顶部-->
 <?import javafx.geometry.Insets?>
 <VBox spacing="30" prefHeight="60" styleClass="toolbar"
-      xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
     <JFXToolbar fx:id="toolbar">
         <leftItems>
             <!--后退按钮-->
@@ -47,12 +46,17 @@
                 </StackPane>
             </JFXRippler>
 
-            <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+            <!-- 地址栏 -->
+            <!--            <JFXRippler maskType="FIT" ripplerFill="#FFFFFF">-->
+            <StackPane>
                 <BorderPane.margin>
-                    <Insets left="20"/>
+                    <Insets left="50"/>
                 </BorderPane.margin>
-                <Label fx:id="pathLabel" styleClass="path-label"/>
-            </JFXRippler>
+                <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="900"
+                              unFocusColor="white" focusColor="white"
+                              style="-fx-font-size:18px; -fx-text-fill:white;"/>
+            </StackPane>
+            <!--            </JFXRippler>-->
 
         </leftItems>
 

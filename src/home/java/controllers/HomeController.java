@@ -2,6 +2,7 @@ package home.java.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
@@ -79,7 +80,7 @@ public class HomeController {
     private JFXTreeView<File> fileTreeView;
 
     @FXML
-    private Label pathLabel;
+    private JFXTextField pathLabel;
 
     @FXML
     private JFXButton refreshButton;
@@ -106,35 +107,21 @@ public class HomeController {
         scrollPane.setContent(imageListPane);
         scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
-        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                refreshImagesList();
-            }
-        });
-
-//        //这里换成你的本地路径
-//        String path = "D:\\";
-//        pathLabel.setText(path);
-//        placeImages(ImageListModel.initImgList(path)); // 这里是要用初始化方法
+        refreshButton.setOnAction(event -> refreshImagesList());
     }
 
     /**
      * TODO 在无照片显示时显示欢迎页面 2020-4-7 00:17:17
-     * */
+     */
     private void setWelcomePage() {
         ImageView welcomeImage = new ImageView(new Image("home/resources/icons/app.png"));
         Label welcomeLabel = new Label("欢迎使用!");
-        welcomeLabel.setFont(new Font("default",22));
-        VBox vBox = new VBox(welcomeImage,welcomeLabel);
+        welcomeLabel.setFont(new Font("default", 22));
+        VBox vBox = new VBox(welcomeImage, welcomeLabel);
         vBox.setAlignment(Pos.CENTER);
-        vBox.setPrefSize(imageListPane.getPrefWidth(),imageListPane.getPrefHeight());
-        AnchorPane anchorPane = new AnchorPane(vBox);
-        AnchorPane.setBottomAnchor(vBox,10.0);
-        AnchorPane.setTopAnchor(vBox,10.0);
-        AnchorPane.setLeftAnchor(vBox,10.0);
-        AnchorPane.setRightAnchor(vBox,10.0);
-        imageListPane.getChildren().addAll(anchorPane);
+        vBox.setPrefSize(imageListPane.getPrefWidth(), imageListPane.getPrefHeight());
+        StackPane stackPane = new StackPane(vBox);
+        imageListPane.getChildren().add(stackPane);
     }
 
     /**
@@ -163,11 +150,16 @@ public class HomeController {
         pathLabel.setText(folderPath);
 
         //文件夹信息栏设置
-        int total = ImageListModel.getListImgNum(imageModelList);
-        String size = ImageListModel.getListImgSize(imageModelList);
-        folderInfoLabel.setText(total + " 张图片，共 " + size);
-        System.out.println(imageModelList);
+        if (imageModelList.isEmpty()) {
+            folderInfoLabel.setText("此文件夹下无可识别图片");
+        } else {
+            int total = ImageListModel.getListImgNum(imageModelList);
+            String size = ImageListModel.getListImgSize(imageModelList);
+            folderInfoLabel.setText(total + " 张图片，共 " + size);
+            System.out.println(imageModelList);
+        }
 
+        ArrayList<ImageBox> list = new ArrayList<>();
         //加载缩略图
         for (ImageModel im : imageModelList) {
             ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
