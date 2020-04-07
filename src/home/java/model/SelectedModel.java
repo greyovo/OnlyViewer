@@ -6,6 +6,10 @@ import lombok.Setter;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 /**
  * @ProjName: OnlyViewer
@@ -13,106 +17,119 @@ import java.io.*;
  * @Author: Kevin
  * @Time:2020/3/22 0:00
  * @Describe: 对被选中的图片进行操作
- * 1.复制 2.粘贴 3.删除 4.剪切 5.重命名
+ * 1.初始化源 2.粘贴 3.剪切 4.重命名 5.删除
  **/
 
 public class SelectedModel {
-    // 文件流操作
-    private static InputStream in;
-    private static OutputStream out;
-    private static BufferedInputStream bin;
-    private static BufferedOutputStream bout;
+    private static Path sourcePath;
+    private static Path targetPath;
 
-    @Getter @Setter
-    // 图片名字处理问题
-    private static String ImageName;
-    private static String ImageNewName;
+    // 修改路径
+    private static String otherPath(String newPath){
+        StringBuilder sb = new StringBuilder(32);
+        if (!newPath.endsWith("\\")){
+            sb.append(newPath).append("\\");
+        }else {
+            sb.append(newPath);
+        }
+        sb.append(sourcePath.getFileName().toString()); // 获得文件名
+//        System.out.println(sb);
+        return sb.toString();
+    }
 
-    // 复制功能创建缓冲对象
-    public static boolean copyImage(ImageModel im){
-        System.out.println(im.getImageFilePath());
-        File f = im.getImageFile();
-        ImageName = im.getImageName();
-        if (!f.exists()){
-            System.out.println("Image is not exist!");
-            return false;
-        }
-        try{
-            in = new FileInputStream(f);
-            bin = new BufferedInputStream(in);
-        }catch (FileNotFoundException e){
-            System.out.println("Can't find the image!");
-        }
-        System.out.println("Copy in buffer successfully!");
+    // 修改名字
+    private static String otherName(String newName){
+        StringBuilder sb = new StringBuilder(32);
+        String path = sourcePath.toString().substring(0, sourcePath.toString().lastIndexOf("\\"));
+        sb.append(path).append("\\").append(newName);
+        return sb.toString();
+    }
+
+    // 初始化源 复制/剪切/重命名/删除选项调用
+    public static boolean sourceImage(ImageModel im){
+        sourcePath = im.getImageFile().toPath();
+        return true;
+    }
+    // 重载
+    public static boolean sourceImage(File f){
+        sourcePath = f.toPath();
+        return true;
+    }
+    // 重载
+    public static boolean sourceImage(String path){
+        sourcePath = new File(path).toPath();
         return true;
     }
 
-    // 执行粘贴操作时 传入目的路径参数
-    public static boolean pasteImage(String path) {
-        File f = new File(path);
+
+
+    // 粘贴功能 如果遇到文件重复则覆盖
+    public static boolean pasteImage(String path){
+        targetPath = new File(otherPath(path)).toPath();
         try{
-            out = new FileOutputStream(f);
-            bout = new BufferedOutputStream(out);
-            // size代表读取的字节数
-            int size = 0;
-            while ((size = bin.read())!= -1){
-                bout.write(size);
-            }
-        }catch (FileNotFoundException e){
-            System.out.println("Can't find the paste path!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // 当执行close时缓冲区剩下的字节全部写入
-                bin.close();
-                bout.close();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        }catch (IOException e){
+            // TODO 选择框选择重复文件如何操作
+            return false;
+        }
+        return true;
+    }
+
+    // 剪切图片
+    public static boolean moveImage(String path){
+        targetPath = new File(otherPath(path)).toPath();
+        try{
+            Files.move(sourcePath, targetPath);
+        }catch (IOException e){
+            // TODO 选择框选择重复文件如何操作
+            return false;
+        }
+        return true;
+    }
+
+    // 重命名
+    public static boolean renameImage(String newName){
+        targetPath = new File(otherName(newName)).toPath();
+        try{
+            Files.move(sourcePath, targetPath);
+        }catch (IOException e){
+            // TODO 选择框选择重复文件如何操作
+            return false;
         }
         return true;
     }
 
     // 删除图片
-    public static boolean deleteImage(ImageModel im){
-        File f = im.getImageFile();
-        if (!f.exists()){
+    public static boolean deleteImage(){
+        try{
+            Files.delete(sourcePath);
+        }catch (IOException e){
+            System.out.println("删除失败!");
             return false;
         }
-        if (f.isFile()){
-            if(f.delete())
-                System.out.println("Delete image successfully!");
-            else
-                System.out.println("Delete image unsuccessfully!");
-        }
         return true;
     }
 
-    // TODO 剪切图片=复制粘贴后执行删除
-
-
-    // TODO 重命名图片
-    public static boolean renameImage(ImageModel im, String reName){
-        File f = im.getImageFile();
-//        f.renameTo(new File(reName));
-
-        return true;
-    }
 
 
     @Test
-    public void test(){
-        ImageModel im = new ImageModel("D:\\TestImg\\IMG_2503.JPG");
-        copyImage(im);
-        System.out.println("右键粘贴后");
-        if(pasteImage("D:/TestImg2/CopyTest.png"))
-            System.out.println("复制完成!");
-        else
-            System.out.println("复制失败!");
-        if(deleteImage(new ImageModel("D:\\TestImg2\\校园卡.jpg")))
-            System.out.println("删除成功!");
-        else
-            System.out.println("目标图片不存在!");
+    public void Test() {
+        /** 复制 686个 2.94G 1m28s
+            剪切 686个 2.94G 2.4s
+            删除 686个 2.94G 4.7s **/
+        try{
+            String path = "H:\\Ding\\test1";
+            ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
+            long timef = System.currentTimeMillis();
+            for (ImageModel s : ilist) {
+                sourceImage(s.getImageFilePath());
+                moveImage("H:\\Ding\\test2");
+            }
+            long timel = System.currentTimeMillis();
+            System.out.printf("耗时 %d ms\n", timel - timef);
+            System.out.println("剪切成功");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
