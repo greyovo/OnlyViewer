@@ -2,11 +2,13 @@ package home.java.components;
 
 import com.jfoenix.effects.JFXDepthManager;
 import com.sun.javafx.scene.layout.region.Margins;
+import display.DisplayWindow;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * 继承自JavaFX的ImageView。
@@ -21,14 +23,6 @@ public class ImageView2 extends ImageView {
         preserveRatioProperty().setValue(true);
         setFitHeight(150);
         setFitWidth(150);
-    }
-
-    public ImageView2() {
-        super();
-    }
-
-    public ImageView2(String url) {
-        super(url);
     }
 
     public ImageView2(Image image) {

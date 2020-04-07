@@ -1,6 +1,7 @@
 package home.java.components;
 
 import com.jfoenix.controls.JFXRippler;
+import display.DisplayWindow;
 import home.java.model.ImageModel;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -8,6 +9,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javax.tools.Tool;
 
@@ -25,6 +27,8 @@ public class ImageBox extends VBox {
     }
 
 
+
+
     public ImageBox(ImageModel im){
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 120,
@@ -39,6 +43,16 @@ public class ImageBox extends VBox {
         //设置文件信息tips
         String tooltip = String.format("名称: %s\n大小: %s",im.getImageName(),im.getFormatSize());
         Tooltip.install(this, new Tooltip(tooltip));
+
+        setOnMouseClicked(event -> {
+            DisplayWindow dw = new DisplayWindow();
+            try {
+                dw.setImage(new Image(im.getImageFile().toURI().toString()));
+                dw.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 
