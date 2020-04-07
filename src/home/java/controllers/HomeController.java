@@ -104,10 +104,8 @@ public class HomeController {
         imageListPane.setPadding(new Insets(10));
         imageListPane.setVgap(20);
         imageListPane.setHgap(20);
-        imageListPane.setPrefWidth(scrollPane.getPrefWidth());
 
         scrollPane.setContent(imageListPane);
-        scrollPane.setStyle("-fx-background-color: transparent;-fx-control-inner-background: transparent;"); //隐藏边框
 
         refreshButton.setOnAction(event -> refreshImagesList());
         setWelcomePage();

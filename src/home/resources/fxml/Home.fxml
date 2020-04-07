@@ -22,15 +22,18 @@
 
             <fx:include source="topToolBar.fxml"/>
 
-            <SplitPane VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2" style="-fx-background:white;">
+            <SplitPane VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2"
+                       style="-fx-background:white;">
 
                 <!--左侧目录树-->
                 <!--<fx:include source="fileTreeView.fxml"/>-->
 
                 <!-- TODO 左边目录树  -->
-                <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
-                             AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
-                             fx:id="fileTreeView"/>
+                <AnchorPane>
+                    <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
+                                 AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                                 fx:id="fileTreeView"/>
+                </AnchorPane>
 
                 <!-- 右侧 文件夹信息 + 缩略图群 -->
                 <AnchorPane fx:id="mainPane">
@@ -55,6 +58,7 @@
 
                     <ScrollPane fx:id="scrollPane"
                                 fitToHeight="true" fitToWidth="true"
+                                style="-fx-background-color: transparent;-fx-control-inner-background: transparent;"
                                 AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
                                 AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="70">
                     </ScrollPane>
