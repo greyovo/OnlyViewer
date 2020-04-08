@@ -30,6 +30,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
@@ -149,7 +150,8 @@ public class HomeController {
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
-
+        //设置初始加载数目,更改时需要更改滚动内的初始index值！！
+        int firstLoad = 5;
         //地址栏更新
         pathLabel.setText(folderPath);
 
@@ -163,11 +165,35 @@ public class HomeController {
             System.out.println(imageModelList);
         }
 
-        //加载缩略图
-        for (ImageModel im : imageModelList) {
-            ImageBox imageBox = new ImageBox(im); //装图片和文件名的盒子，一上一下放置图片和文件名
+        //初始加载缩略图
+        for (int i = 0;i<firstLoad;i++) {
+            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
+
+        //加载缩略图
+            imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
+                //初始加载后的位置
+                int index = 5;
+                @Override
+                public void handle(ScrollEvent event) {
+                    if(event.getDeltaY()<=0&&index<imageModelList.size()){
+                      index =loadPic(imageModelList,imageListPane,index);
+
+                    }
+                }
+            });
+
+    }
+
+    private int loadPic(ArrayList<ImageModel> imageModelList,FlowPane imageListPane,int index){
+        //滚动时的刷新速度
+        int speed = 2;
+            for (int i = index;i<=index+speed;i++) {
+                ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
+                imageListPane.getChildren().add(imageBox);
+            }
+            return index+speed;
     }
 
 
