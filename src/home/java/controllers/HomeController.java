@@ -25,12 +25,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.junit.Test;
 
@@ -175,7 +177,7 @@ public class HomeController {
      * @author tudou daren
      */
     private void setFileTreeView() {
-
+        //定义目录树
         File[] rootList = File.listRoots();
         TreeItem<File> a = new TreeItem<>(rootList[0]);
 
@@ -192,33 +194,52 @@ public class HomeController {
         fileTreeView.setRoot(a);
         fileTreeView.setShowRoot(false);
 
-        //将节点输出为文件名称
-        fileTreeView.setCellFactory(TextFieldTreeCell.forTreeView(new StringConverter<File>() {
-
-            //FileSystemView fsv = FileSystemView.getFileSystemView();
+        //自定义单元格，设置展开箭头为图片
+        fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
             @Override
-            public String toString(File object) {
-                //简单判断是否为根目录，是则换一种方式显示
-                for (File isListRoots : rootList) {
-                    if (object.toString().equals(isListRoots.toString())) {
-                        //return fsv.getSystemDisplayName(object);
-                        return object.toString();
+            public TreeCell<File> call(TreeView<File> param) {
+                TreeCell<File> treeCell = new TreeCell<File>(){
+                    @Override
+                    protected void updateItem(File item, boolean empty) {
+
+                        if (empty == false){
+                            super.updateItem(item, empty);
+                            HBox hBox = new HBox();
+                            Label label = new Label(isListRoots(item));
+                            hBox.getChildren().add(label);
+                            this.setGraphic(hBox);
+                            if(this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
+                                javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/opened_folder.png");
+                                folderImage.setPreserveRatio(true);
+                                folderImage.setFitWidth(15);
+                                this.setDisclosureNode(folderImage);
+                                this.setGraphic(hBox);
+                            }
+                            else if(!this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
+                                javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/folder.png");
+                                folderImage.setPreserveRatio(true);
+                                folderImage.setFitWidth(15);
+                                this.setDisclosureNode(folderImage);
+                                this.setGraphic(hBox);
+                            }
+
+                        }
+                        else if (empty == true){
+                            this.setGraphic(null);
+                            this.setDisclosureNode(null);
+                        }
                     }
-                }
-                return object.getName();
-                //return fsv.getSystemDisplayName(object);
+                };
+                return treeCell;
             }
+        });
 
-            @Override
-            public File fromString(String string) {
-                return null;
-            }
-        }));
 
         //获取点击操作并刷新当前结点
         fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
+                //此处点击可获得文件夹绝对路径
                 String path = newValue.getValue().getAbsolutePath();
                 System.out.println(path);
                 try {
@@ -231,10 +252,11 @@ public class HomeController {
         });
     }
 
+    //递归将节点加入目录树中
     public void addItems(TreeItem<File> in, int flag) throws IOException {
         File[] filelist = in.getValue().listFiles();
+        //flag判断当前遍历的层数
         if (filelist != null) {
-            //System.out.println(in.getValue().getName());
             if (flag == 0) {
                 in.getChildren().remove(0, in.getChildren().size());
             }
@@ -247,13 +269,20 @@ public class HomeController {
                             addItems(b, flag + 1);
                         }
                         in.getChildren().add(b);
-
                     }
-
                 }
             }
         }
     }
-
+    //判断是否为根目录
+    public String isListRoots(File item){
+        File[] rootlist = File.listRoots();
+        for(File isListRoots:rootlist){
+            if(item.toString().equals(isListRoots.toString())){
+                return item.toString();
+            }
+        }
+        return item.getName();
+    }
 
 }
