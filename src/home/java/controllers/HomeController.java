@@ -237,14 +237,14 @@ public class HomeController {
                             if(this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
                                 javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
-                                folderImage.setFitWidth(15);
+                                folderImage.setFitWidth(22);
                                 this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
                             }
                             else if(!this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
                                 javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/folder.png");
                                 folderImage.setPreserveRatio(true);
-                                folderImage.setFitWidth(15);
+                                folderImage.setFitWidth(22);
                                 this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
                             }

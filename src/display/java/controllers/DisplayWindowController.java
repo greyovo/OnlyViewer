@@ -10,11 +10,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
+import org.junit.Test;
 
 import javax.annotation.PostConstruct;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static javafx.application.Application.launch;
 
 //@ViewController(value = "/fxml/displayWindow.fxml", title = "Display Window")
 public class DisplayWindowController implements Initializable {
@@ -37,16 +40,6 @@ public class DisplayWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-    }
-
-    public void setImage(Image image) throws Exception {
-        init();
-        this.image = image;
-        this.imageView = new ImageView(image);
-        System.out.println(image.getWidth() + "*" + image.getHeight());
-        imageView.setPreserveRatio(true);
-        imageView.setSmooth(true);
-//        imageView.setFitHeight(height*0.8);
     }
 
 }

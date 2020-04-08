@@ -52,7 +52,7 @@
                 <BorderPane.margin>
                     <Insets left="50"/>
                 </BorderPane.margin>
-                <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="900"
+                <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="550"
                               unFocusColor="white" focusColor="white"
                               style="-fx-font-size:18px; -fx-text-fill:white;"/>
             </StackPane>
