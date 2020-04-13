@@ -28,7 +28,7 @@ public class ImageBox extends VBox {
         setAlignment(Pos.BOTTOM_CENTER);
     }
 
-    public ImageBox(ImageModel im){
+
 
     public ImageBox(ImageModel im) {
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
