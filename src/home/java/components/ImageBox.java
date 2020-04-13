@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import javax.tools.Tool;
 
-
 /**
  * 用来存放图片和图片文件名的盒子。
  * 继承{@link VBox}，添加特定的样式。
@@ -29,6 +28,7 @@ public class ImageBox extends VBox {
         setAlignment(Pos.BOTTOM_CENTER);
     }
 
+    public ImageBox(ImageModel im){
 
     public ImageBox(ImageModel im) {
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
@@ -62,7 +62,6 @@ public class ImageBox extends VBox {
                 // TODO 鼠标右键菜单
 
             }
-
         });
 
     }
