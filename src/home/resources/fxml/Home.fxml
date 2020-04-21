@@ -22,14 +22,14 @@
 
             <fx:include source="topToolBar.fxml"/>
 
-            <SplitPane VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2"
+            <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2"
                        style="-fx-background:white;">
 
                 <!--左侧目录树-->
                 <!--<fx:include source="fileTreeView.fxml"/>-->
 
                 <!-- TODO 左边目录树  -->
-                <AnchorPane>
+                <AnchorPane fx:id="folderPane">
                     <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
                                  AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
                                  fx:id="fileTreeView"/>
