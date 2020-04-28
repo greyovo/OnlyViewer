@@ -17,18 +17,20 @@ public class Util {
     //TODO 其他功能
 
     // 每天可识别50000次
-    public static String ocr(String path){
-        String re = AIP.OCR(path);
-        if (re == null){
+    // mode默认情况为ENG，模式指的是使用该模式下的标点符号，非识别中英文参数
+    // mode可选参数 AIP.ENG / AIP.CHI
+    public static String ocr(String path, int mode) {
+        String re = AIP.OCR(path, mode);
+        if (re == null) {
             System.out.println("识别失败！");
         }
         return re;
     }
 
-    public static boolean delete(String path){
+    public static boolean delete(String path) {
         // 弹出警告
         SelectedModel.sourceImage(path);
-        if (SelectedModel.deleteImage()){
+        if (SelectedModel.deleteImage()) {
             return true;
         }
         System.out.println("删除失败！");
@@ -36,16 +38,16 @@ public class Util {
     }
 
     @Test
-    public void Test(){
+    public void Test() {
         // 测试样例
         String path1 = "src/display/java/model/1.jpg";
         String path2 = "src/display/java/model/2.jpg";
         String path3 = "src/display/java/model/3.jpg";
-        File file = new File(path1);
-        if (!file.exists()){
+        File file = new File(path2);
+        if (!file.exists()) {
             System.out.println("图片不存在!");
         }
-        String s = ocr(path1);
+        String s = ocr(path3, AIP.getENG());
         System.out.println(s);
     }
 }
