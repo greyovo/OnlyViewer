@@ -43,8 +43,8 @@ public class Main extends Application{
         double height = 600;
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
-            width = bounds.getWidth() / 1.26;
-            height = bounds.getHeight() / 1.26;
+            width = bounds.getWidth() / 1.4;
+            height = bounds.getHeight() / 1.4;
         } catch (Exception e){
             e.printStackTrace();
         }

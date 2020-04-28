@@ -89,7 +89,12 @@ public class HomeController {
     private JFXButton refreshButton;
 
     @FXML
-    private AnchorPane mainPane;
+    private AnchorPane folderPane;
+
+    @FXML
+    private SplitPane splitPane;
+
+
 
     public HomeController() {
     }
@@ -109,6 +114,8 @@ public class HomeController {
         imageListPane.setHgap(20);
 
         scrollPane.setContent(imageListPane);
+
+        SplitPane.setResizableWithParent(folderPane,false);
 
         refreshButton.setOnAction(event -> refreshImagesList());
         setWelcomePage();
