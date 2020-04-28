@@ -43,11 +43,14 @@ public class Util {
         String path1 = "src/display/java/model/1.jpg";
         String path2 = "src/display/java/model/2.jpg";
         String path3 = "src/display/java/model/3.jpg";
-        File file = new File(path2);
+
+        // 改变参数
+        String choose = path1;
+        File file = new File(choose);
         if (!file.exists()) {
             System.out.println("图片不存在!");
         }
-        String s = ocr(path3, AIP.getENG());
+        String s = ocr(choose, AIP.getENG());
         System.out.println(s);
     }
 }
