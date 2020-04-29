@@ -42,7 +42,9 @@ public class AIP {
             String imgStr = GenAIP.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
 
-            String param = "image=" + imgParam;
+            // Body部分放置请求参数
+            // 可自动检测图像朝向
+            String param = "image=" + imgParam + "&detect_direction=true";
 
             // 此获取Token方法每三十日需要更新一次
             String accessToken = GenAIP.getAuth(API_KEY, SECRET_KEY);
