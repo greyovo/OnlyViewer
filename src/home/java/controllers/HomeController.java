@@ -122,12 +122,9 @@ public class HomeController {
         refreshButton.setOnAction(event -> refreshImagesList());
 
         sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
-        sortComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null)
-                    refreshImagesList(newValue);
-            }
+        sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                refreshImagesList(newValue);
         });
         setWelcomePage();
     }
@@ -188,35 +185,38 @@ public class HomeController {
         }
 
         //初始加载缩略图
-        for (int i = 0;i<firstLoad;i++) {
+        for (int i = 0; i<firstLoad; i++) {
             ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
         //加载缩略图
-            imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
-                //初始加载后的位置
-                int index = 5;
-                @Override
-                public void handle(ScrollEvent event) {
-                    if(event.getDeltaY()<=0&&index<imageModelList.size()){
-                      index =loadPic(imageModelList,imageListPane,index);
-
-                    }
+        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            //初始加载后的位置
+            int index = firstLoad-1;
+            @Override
+            public void handle(ScrollEvent event) {
+                index++;
+                if(event.getDeltaY()<=0 && index<imageModelList.size()){
+//                    WAR/WAW ERROR
+//                    index = loadPic(imageModelList, imageListPane, index);
+                    ImageBox imageBox = new ImageBox(imageModelList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    imageListPane.getChildren().add(imageBox);
                 }
-            });
-
-    }
-
-    private int loadPic(ArrayList<ImageModel> imageModelList,FlowPane imageListPane,int index){
-        //滚动时的刷新速度
-        int speed = 2;
-            for (int i = index;i<=index+speed;i++) {
-                ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
-                imageListPane.getChildren().add(imageBox);
             }
-            return index+speed;
+        });
+
     }
+
+//    private int loadPic(ArrayList<ImageModel> imageModelList, FlowPane imageListPane, int index){
+//        //滚动时的刷新速度 一张一张
+//        int speed = 1;
+//        for (int i = index; i<=index+speed && i<imageModelList.size()  ; i++) {
+//            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
+//            imageListPane.getChildren().add(imageBox);
+//        }
+//        return index+speed;
+//    }
 
 
     /**
