@@ -10,6 +10,7 @@ import home.java.components.ImageView2;
 import home.java.components.RipplerImageView;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
+import home.java.model.SortParam;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
@@ -94,7 +95,8 @@ public class HomeController {
     @FXML
     private SplitPane splitPane;
 
-
+    @FXML
+    private JFXComboBox<String> sortComboBox;
 
     public HomeController() {
     }
@@ -118,6 +120,15 @@ public class HomeController {
         SplitPane.setResizableWithParent(folderPane,false);
 
         refreshButton.setOnAction(event -> refreshImagesList());
+
+        sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
+        sortComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null)
+                    refreshImagesList(newValue);
+            }
+        });
         setWelcomePage();
     }
 
@@ -137,16 +148,19 @@ public class HomeController {
 
     /**
      * 更新当前图片列表
-     *
-     * @param url 需要刷新的文件夹路径
      */
-    private void refreshImagesList(String url) {
-        placeImages(ImageListModel.refreshList(url), url);
-    }
+//    private void refreshImagesList(String url) {
+//        placeImages(ImageListModel.refreshList(url), url);
+//    }
 
     private void refreshImagesList() {
         placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
         System.out.println("已刷新。");
+    }
+
+    private void refreshImagesList(String sort) {
+        placeImages(ImageListModel.sortList(pathLabel.getText(), sort), pathLabel.getText());
+        System.out.println("已排序。");
     }
 
     /**
@@ -158,7 +172,8 @@ public class HomeController {
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         //设置初始加载数目,更改时需要更改滚动内的初始index值！！
-        int firstLoad = 5;
+        // 修改了firstLoad 取值为列表与15之间的最小值
+        int firstLoad = Math.min(imageModelList.size(), 15);
         //地址栏更新
         pathLabel.setText(folderPath);
 
