@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @ProjName: OnlyViewer
@@ -89,6 +90,30 @@ public class ImageListModel {
         return list;
     }
 
+    // 对文件夹排序 mode->排序模式
+    public static ArrayList<ImageModel> sortList(String path, String mode){
+        ArrayList<ImageModel> list = refreshList(path);
+        if (mode.equals(SortParam.SBND)) {
+            Collections.reverse(list);
+            return list;
+        } else if (mode.equals(SortParam.SBSR)) {
+            list.sort(new SortBySize());
+            return list;
+        } else if (mode.equals(SortParam.SBSD)) {
+            list.sort(new SortBySize());
+            Collections.reverse(list);
+            return list;
+        } else if (mode.equals(SortParam.SBDR)) {
+            list.sort(new SortByDate());
+            return list;
+        } else if (mode.equals(SortParam.SBDD)) {
+            list.sort(new SortByDate());
+            Collections.reverse(list);
+            return list;
+        }
+
+        return list;
+    }
     @Test
     public void Test1() throws IOException {
         String filePath = "D:\\Projects\\OnlyViewer\\src\\home\\resources\\sample";
@@ -108,11 +133,6 @@ public class ImageListModel {
             }
             System.out.println("totalImgNum:" + getListImgNum(list));
             System.out.println("totalImgSize:" + getListImgSize(list));
-//            timef = System.currentTimeMillis();
-//            refreshList(filePath);
-//            System.out.println("刷新成功！");
-//            timel = System.currentTimeMillis();
-//            System.out.printf("耗时：%d ms\n", (timel-timef));
         }
 
         System.out.println("测试成功!");
