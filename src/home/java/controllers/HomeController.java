@@ -36,6 +36,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.Test;
 
 import javax.annotation.PostConstruct;
@@ -98,6 +100,9 @@ public class HomeController {
     @FXML
     private JFXComboBox<String> sortComboBox;
 
+    @Setter @Getter
+    private boolean IsClickCombobox = false;
+
     public HomeController() {
     }
 
@@ -123,8 +128,12 @@ public class HomeController {
 
         sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
         sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null)
+            if (newValue != null) {
                 refreshImagesList(newValue);
+                if (!IsClickCombobox)
+                    setIsClickCombobox(true);
+            }
+
         });
         setWelcomePage();
     }
@@ -292,6 +301,9 @@ public class HomeController {
                 System.out.println(path);
                 try {
                     placeImages(ImageListModel.initImgList(path), path);
+                    // 只要点击一次排序后以后每次进入新页面就置为"默认排序"
+                    if (IsClickCombobox)
+                        sortComboBox.setValue("默认排序");
                     addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();
