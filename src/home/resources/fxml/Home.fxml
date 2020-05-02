@@ -5,28 +5,83 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.control.Button?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import home.java.components.ImageView2?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToolBar?>
-<?import home.java.components.ImageBox?>
-<?import home.java.components.RipplerImageView?>
-<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="home.java.controllers.HomeController2">
     <AnchorPane>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="0.0">
 
-            <fx:include source="TopToolBar.fxml"/>
+            <VBox alignment="CENTER_LEFT" styleClass="toolbar">
+                <JFXToolbar fx:id="toolbar">
+                    <leftItems>
+                        <!--后退按钮-->
+                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                            <StackPane style="-fx-padding:5;">
+                                <ImageView>
+                                    <Image url="@../icons/back_96px.png"/>
+                                </ImageView>
+                            </StackPane>
+                        </JFXRippler>
 
-            <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2"
-                       style="-fx-background:white;">
+                        <!--前进按钮-->
+                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                            <StackPane style="-fx-padding:5;">
+                                <ImageView>
+                                    <Image url="@../icons/forward_96px.png"/>
+                                </ImageView>
+                            </StackPane>
+                        </JFXRippler>
+
+                        <!--上层文件夹按钮-->
+                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
+                            <StackPane style="-fx-padding:5;">
+                                <ImageView>
+                                    <Image url="@../icons/level_up_96px.png"/>
+                                </ImageView>
+                            </StackPane>
+                        </JFXRippler>
+
+                        <!-- 地址栏 -->
+                        <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+                            <!--                        <Pane>-->
+                            <BorderPane.margin>
+                                <Insets left="50"/>
+                            </BorderPane.margin>
+                            <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="330"
+                                          unFocusColor="white" focusColor="white"
+                                          style="-fx-font-size:18px; -fx-text-fill:white;"/>
+                            <!--                        </Pane>-->
+                        </JFXRippler>
+
+                    </leftItems>
+
+                    <rightItems>
+                        <HBox alignment="CENTER_RIGHT">
+                            <children>
+                                <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+                                    <JFXTextField prefWidth="160.0"
+                                                  unFocusColor="white" focusColor="white"
+                                                  styleClass="search-box">
+                                    </JFXTextField>
+                                </JFXRippler>
+                                <!--搜索按钮-->
+                                <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
+                                           style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                    </rightItems>
+
+                </JFXToolbar>
+            </VBox>
+
+
+            <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" dividerPositions="0.2" style="-fx-background:white;">
 
                 <!--左侧目录树-->
-                <!--<fx:include source="FileTreeView.fxml"/>-->
 
                 <AnchorPane fx:id="folderPane">
                     <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
@@ -54,7 +109,6 @@
                     </ToolBar>
 
                     <!--缩略图们 -->
-
                     <ScrollPane fx:id="scrollPane"
                                 fitToHeight="true" fitToWidth="true"
                                 style="-fx-background-color: transparent;-fx-control-inner-background: transparent;"
@@ -63,32 +117,33 @@
                     </ScrollPane>
 
                 </AnchorPane>
-
             </SplitPane>
+
         </VBox>
 
+
         <!--TODO 右下角，幻灯片放映按钮 -->
-        <!--FIXME 实现方法有点强硬，可能无法灵活添加更多按钮，需改善 -->
+        <!--实现方法有点强硬，可能无法灵活添加更多按钮，需改善 -->
         <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
             原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
+
     </AnchorPane>
 
-    <JFXDialog fx:id="dialog">
-        <JFXDialogLayout>
-            <heading>
-                <Label>JFoenix Dialog</Label>
-            </heading>
-            <body>
-                <Label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.
-                </Label>
-            </body>
-            <actions>
-                <JFXButton fx:id="acceptButton" styleClass="dialog-accept">ACCEPT</JFXButton>
-            </actions>
-        </JFXDialogLayout>
-    </JFXDialog>
-
+    <!--    <JFXDialog fx:id="dialog">-->
+    <!--        <JFXDialogLayout>-->
+    <!--            <heading>-->
+    <!--                <Label>JFoenix Dialog</Label>-->
+    <!--            </heading>-->
+    <!--            <body>-->
+    <!--                <Label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed-->
+    <!--                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut-->
+    <!--                    enim ad minim veniam, quis nostrud exercitation ullamco laboris-->
+    <!--                    nisi ut aliquip ex ea commodo consequat.-->
+    <!--                </Label>-->
+    <!--            </body>-->
+    <!--            <actions>-->
+    <!--                <JFXButton fx:id="acceptButton" styleClass="dialog-accept">ACCEPT</JFXButton>-->
+    <!--            </actions>-->
+    <!--        </JFXDialogLayout>-->
+    <!--    </JFXDialog>-->
 </StackPane>

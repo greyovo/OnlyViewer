@@ -7,16 +7,14 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Main extends Application{
 
@@ -25,37 +23,27 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         primaryStage.setTitle("OnlyViewer");
-
-        /* Copy from JFoenix Demo */
-        Flow flow = new Flow(HomeController.class);
-        DefaultFlowContainer container = new DefaultFlowContainer();
-        flowContext = new ViewFlowContext();
-        flowContext.register("Stage", primaryStage);
-        flow.createHandler(flowContext).start(container);
-        JFXDecorator decorator = new JFXDecorator(primaryStage, container.getView());  //自定义JFX的窗口边框样式
-        decorator.setCustomMaximize(true);
-        decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));  //设置标题栏左侧小图标
 
         //根据屏幕大小自适应设置长宽
         double width = 800;
         double height = 600;
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
-            width = bounds.getWidth() / 1.4;
-            height = bounds.getHeight() / 1.4;
+            width = bounds.getWidth() / 1.45;
+            height = bounds.getHeight() / 1.45;
         } catch (Exception e){
             e.printStackTrace();
         }
-        Scene scene = new Scene(decorator, width, height);
+
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/home2.fxml"));
+        Scene scene = new Scene(new JFXDecorator(primaryStage, root), width, height);
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("home/resources/css/home.css").toExternalForm());
-//        scene.getStylesheets().add(Main.class.getResource("home/resources/css/jfoenix-components.css").toExternalForm());
 
-
+//        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icons/app.png")));
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/home/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();

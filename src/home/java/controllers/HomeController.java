@@ -9,21 +9,15 @@ import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SortParam;
 import io.datafx.controller.ViewController;
-import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.JFXPanel;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
@@ -35,10 +29,8 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.junit.Test;
 
 import javax.annotation.PostConstruct;
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -46,18 +38,12 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
- * 主窗口界面的控制器
+ * 主窗口界面的控制器。
  *
  * @author Grey
- * @since 2020.04.02
  */
 
-@ViewController(value = "/fxml/Home.fxml", title = "Home Window")
-public class HomeController {
-
-    @FXMLViewFlowContext
-    private ViewFlowContext context;
-
+public class HomeController implements Initializable {
     @FXML
     private Label folderInfoLabel;
 
@@ -109,8 +95,8 @@ public class HomeController {
     /**
      * 初始化FXML文件
      */
-    @PostConstruct
-    public void init() throws Exception {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Home Window init running...");
 
         setFileTreeView(); //初始化目录树
@@ -343,7 +329,6 @@ public class HomeController {
         }
         return item.getName();
     }
-
 
 
 }
