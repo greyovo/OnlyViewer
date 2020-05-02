@@ -20,13 +20,13 @@
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="0.0">
 
-            <fx:include source="topToolBar.fxml"/>
+            <fx:include source="TopToolBar.fxml"/>
 
             <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" orientation="HORIZONTAL" dividerPositions="0.2"
                        style="-fx-background:white;">
 
                 <!--左侧目录树-->
-                <!--<fx:include source="fileTreeView.fxml"/>-->
+                <!--<fx:include source="FileTreeView.fxml"/>-->
 
                 <AnchorPane fx:id="folderPane">
                     <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
@@ -65,14 +65,30 @@
                 </AnchorPane>
 
             </SplitPane>
-
         </VBox>
 
         <!--TODO 右下角，幻灯片放映按钮 -->
         <!--FIXME 实现方法有点强硬，可能无法灵活添加更多按钮，需改善 -->
         <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
             原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
-
-
     </AnchorPane>
+
+    <JFXDialog fx:id="dialog">
+        <JFXDialogLayout>
+            <heading>
+                <Label>JFoenix Dialog</Label>
+            </heading>
+            <body>
+                <Label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.
+                </Label>
+            </body>
+            <actions>
+                <JFXButton fx:id="acceptButton" styleClass="dialog-accept">ACCEPT</JFXButton>
+            </actions>
+        </JFXDialogLayout>
+    </JFXDialog>
+
 </StackPane>

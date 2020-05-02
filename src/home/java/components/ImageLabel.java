@@ -7,6 +7,11 @@ import javafx.scene.text.Font;
 
 import static javafx.geometry.Pos.CENTER;
 
+/**
+ * 图片文件名标签，添加特定样式
+ *
+ * @author Grey
+ */
 public class ImageLabel extends Label {
 
     {

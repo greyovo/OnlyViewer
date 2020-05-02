@@ -23,6 +23,12 @@
     -fx-text-fill: rgba(255, 255, 255, 1.0);
 }
 
+.popup-menu-text{
+    -fx-font-size: 17.0px;
+    -fx-padding: 3;
+    -fx-text-fill: rgba(0, 0, 0, 1);
+}
+
 .main-color{
     -fx-fill:#009688;
 }
@@ -99,4 +105,120 @@
     -jfx-button-type: RAISED;
     -fx-background-color: #009688;
     -fx-background-radius: 60px;
+}
+
+
+/* 右键菜单样式 */
+.context-menu{
+	-fx-padding:2;
+	-fx-border-width:0;
+	-fx-background-color:rgb(242,242,242,0.96); /*0.87*/
+	/*-fx-background-radius:2px;*/
+	/*-fx-effect:dropshadow(three-pass-box, #F2F2F2, 1, 0, 0, 0);*/ 
+} 
+
+/* 菜单栏选中并移动到二级菜单时一级选中菜单的样式 */
+.menu-bar > .container > .menu-button:showing{ 
+    
+    -fx-background-color: #CCCCCE;
+    -fx-border-color: #CCCCCE;
+}
+
+.menu-button{
+	-fx-padding:1 4 1 4;
+	-fx-border-width:1;
+	-fx-border-color:#F0F0F0;
+}
+.menu-button:hover{
+	-fx-background-color:#CCCCCE;
+	-fx-border-color:#CCCCCE;
+}
+.menu-button > .label,.menu-item > .label{
+	-fx-text-fill:BLACK;
+}
+.menu-item:focused{
+    -fx-background-color:#CCCCCE; 
+}
+.menu:focused > .right-container > .arrow{
+    -fx-background-color:#CCCCCE;
+}
+
+
+
+
+/*******************************************************************************
+*                                                                              *
+* JFX List View                                                                *
+*                                                                              *
+*******************************************************************************/
+
+.jfx-list-cell {
+    -fx-background-insets: 0.0;
+    -fx-text-fill: BLACK;
+}
+
+.jfx-list-cell:odd,
+.jfx-list-cell:even {
+    -fx-background-color: WHITE;
+}
+
+.jfx-list-cell:filled:hover,
+.jfx-list-cell:selected .label {
+    -fx-text-fill: black;
+}
+
+.jfx-list-cell .jfx-rippler {
+    -jfx-rippler-fill: GRAY;
+}
+
+
+/* .jfx-list-view {
+    -fx-background-insets: 0.0;
+    -jfx-cell-horizontal-margin: 0.0;
+    -jfx-cell-vertical-margin: 5.0;
+    -jfx-vertical-gap: 10.0;
+    -jfx-expanded: false;
+} */
+
+/* .custom-jfx-list-view .jfx-list-cell:odd:selected > .jfx-rippler > StackPane,
+.custom-jfx-list-view .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+} */
+
+.custom-jfx-list-view {
+    -fx-background-insets: 0.0;
+    -jfx-cell-horizontal-margin: 0.0;
+    /* -jfx-cell-vertical-margin: 5.0; */
+    -jfx-expanded: false;
+    -fx-max-width: 33.0px;
+    /* important to hide the list change of height */
+    -fx-background-color: TRANSPARENT;
+}
+
+/* .custom-jfx-list-view .jfx-rippler {
+    -jfx-rippler-fill: RED;
+} */
+
+/* .custom-jfx-list-view1 {
+    -jfx-vertical-gap: 10.0;
+    -fx-pref-width: 150px;
+    -fx-background-color: transparent;
+} */
+
+
+/* .custom-jfx-list-view-icon-container {
+    -fx-pref-width: 40px;
+} */
+
+.custom-jfx-list-view .sublist-item {
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 1 0;
+}
+
+.custom-jfx-list-view .jfx-list-cell .sublist-header > .drop-icon {
+    -fx-background-color: GRAY;
+}
+
+.custom-jfx-list-view .jfx-list-cell:filled:hover .sublist-header > .drop-icon {
+    -fx-background-color: BLACK;
 }

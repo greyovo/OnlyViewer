@@ -1,31 +1,33 @@
 package home.java.components;
 
-import com.jfoenix.animation.JFXNodesAnimation;
-import com.jfoenix.controls.JFXRippler;
+import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.effects.JFXDepthManager;
 import display.DisplayWindow;
+import home.java.controllers.PopupMenuController;
 import home.java.model.ImageModel;
-import home.java.model.SelectedModel;
-import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.IOException;
 
 
 /**
- * 用来存放图片{@link ImageView2}和图片文件名{@link ImageLabel}的盒子。
- * 继承{@link VBox}，添加特定的样式。
+ * 主窗口缩略图单元。
+ * 用来包装图片{@link ImageView2}和图片文件名{@link ImageLabel}。
+ * 继承自{@link VBox}，添加特定的样式。
  *
  * @author Grey
  */
+@Getter @Setter
 public class ImageBox extends VBox {
 
     {
@@ -35,6 +37,8 @@ public class ImageBox extends VBox {
 
     private ImageModel im;
     private ImageView2 imageView2;
+    private MouseImageMenu menu = new MouseImageMenu(im);
+    private JFXPopup popUpMenu;
 
     public ImageBox(ImageModel im) {
         this.im = im;
@@ -54,12 +58,22 @@ public class ImageBox extends VBox {
         Tooltip.install(this, new Tooltip(tooltip));
 
         setMouseAction();
-
+        try {
+            setPopUpMenu();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void setMouseAction() {
+    private void setPopUpMenu() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
+        loader.setController(new PopupMenuController(this));
+        popUpMenu = new JFXPopup(loader.load());
+        popUpMenu.setAutoHide(true);
+    }
 
-        MouseImageMenu menu = new MouseImageMenu(im);
+
+    private void setMouseAction() {
 
         //鼠标点击事件
         setOnMouseClicked(event -> {
@@ -76,7 +90,10 @@ public class ImageBox extends VBox {
                 }
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 // TODO 鼠标右键菜单
-                menu.show(this, event.getScreenX(),event.getScreenY());
+//                menu.show(this, event.getScreenX(),event.getScreenY());
+                popUpMenu.show(this,
+                        JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT,
+                        100,100);
             }
         });
 
@@ -91,8 +108,5 @@ public class ImageBox extends VBox {
             JFXDepthManager.setDepth(this, 0);
         };
         this.setOnMouseExited(mouseExitImage);
-
     }
-
-
 }

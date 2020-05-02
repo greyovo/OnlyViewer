@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.scene.control.*?>
+
+<JFXListView fx:id="popupList" styleClass="popup-list-view"
+             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+             onMouseClicked="#action">
+
+    <Label styleClass="popup-menu-text">复制</Label>
+    <Label styleClass="popup-menu-text">剪切</Label>
+    <Label styleClass="popup-menu-text">重命名</Label>
+    <Label styleClass="popup-menu-text" style="-fx-text-fill:RED;">删除</Label>
+
+</JFXListView>

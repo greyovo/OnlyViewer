@@ -1,11 +1,12 @@
 package home.java.components;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -20,6 +21,10 @@ import java.util.Optional;
 public class MouseImageMenu extends ContextMenu {
 
     private static MouseImageMenu instance;
+
+    public MouseImageMenu(){
+        getStyleClass().setAll();
+    }
 
     /**
      * 针对对图片右键点击出现的菜单选择
@@ -61,7 +66,23 @@ public class MouseImageMenu extends ContextMenu {
                 alert.close();
             }
         });
+
+        delete.setOnAction(event -> {
+//            System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
+//            alert.setTitle("删除文件");
+//            alert.setContentText("删除文件:" + im.getImageName());
+
+//            if (result.get() == ButtonType.OK) {
+//                SelectedModel.sourceImage(im.getImageFilePath());
+//                SelectedModel.deleteImage();
+//                System.out.println("删除成功!");
+//            } else if (result.get() == ButtonType.CANCEL) {
+//                System.out.println("您取消删除了喔~");
+//                alert.close();
+//            }
+        });
         getItems().addAll(copy, move, reName, delete);
+
     }
 
     public static ContextMenu getInstance(ImageModel im) {

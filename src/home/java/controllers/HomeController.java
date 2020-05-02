@@ -1,9 +1,6 @@
 package home.java.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeView;
+import com.jfoenix.controls.*;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
 import home.java.components.ImageView2;
@@ -100,6 +97,9 @@ public class HomeController {
     @FXML
     private JFXComboBox<String> sortComboBox;
 
+    @FXML
+    private JFXDialog dialog;
+
     @Setter @Getter
     private boolean IsClickCombobox = false;
 
@@ -122,7 +122,7 @@ public class HomeController {
 
         scrollPane.setContent(imageListPane);
 
-        SplitPane.setResizableWithParent(folderPane,false);
+        SplitPane.setResizableWithParent(folderPane, false);
 
         refreshButton.setOnAction(event -> refreshImagesList());
 
@@ -158,7 +158,6 @@ public class HomeController {
 //    private void refreshImagesList(String url) {
 //        placeImages(ImageListModel.refreshList(url), url);
 //    }
-
     private void refreshImagesList() {
         placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
         System.out.println("已刷新。");
@@ -194,7 +193,7 @@ public class HomeController {
         }
 
         //初始加载缩略图
-        for (int i = 0; i<firstLoad; i++) {
+        for (int i = 0; i < firstLoad; i++) {
             ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
@@ -202,11 +201,12 @@ public class HomeController {
         //加载缩略图
         imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
             //初始加载后的位置
-            int index = firstLoad-1;
+            int index = firstLoad - 1;
+
             @Override
             public void handle(ScrollEvent event) {
                 index++;
-                if(event.getDeltaY()<=0 && index<imageModelList.size()){
+                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
 //                    WAR/WAW ERROR
 //                    index = loadPic(imageModelList, imageListPane, index);
                     ImageBox imageBox = new ImageBox(imageModelList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
@@ -255,33 +255,31 @@ public class HomeController {
         fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
             @Override
             public TreeCell<File> call(TreeView<File> param) {
-                TreeCell<File> treeCell = new TreeCell<File>(){
+                TreeCell<File> treeCell = new TreeCell<File>() {
                     @Override
                     protected void updateItem(File item, boolean empty) {
 
-                        if (empty == false){
+                        if (!empty) {
                             super.updateItem(item, empty);
                             HBox hBox = new HBox();
                             Label label = new Label(isListRoots(item));
                             hBox.getChildren().add(label);
                             this.setGraphic(hBox);
-                            if(this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
-                                javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/opened_folder.png");
+                            if (this.getTreeItem().isExpanded() && this.getDisclosureNode() == null) {
+                                ImageView folderImage = new ImageView("icons/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
-                            }
-                            else if(!this.getTreeItem().isExpanded() == true&&this.getDisclosureNode()==null){
-                                javafx.scene.image.ImageView folderImage = new javafx.scene.image.ImageView("icons/folder.png");
+                            } else if (!this.getTreeItem().isExpanded() && this.getDisclosureNode() == null) {
+                                ImageView folderImage = new ImageView("icons/folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
                             }
 
-                        }
-                        else if (empty == true){
+                        } else if (empty) {
                             this.setGraphic(null);
                             this.setDisclosureNode(null);
                         }
@@ -334,15 +332,18 @@ public class HomeController {
             }
         }
     }
+
     //判断是否为根目录
-    public String isListRoots(File item){
+    public String isListRoots(File item) {
         File[] rootlist = File.listRoots();
-        for(File isListRoots:rootlist){
-            if(item.toString().equals(isListRoots.toString())){
+        for (File isListRoots : rootlist) {
+            if (item.toString().equals(isListRoots.toString())) {
                 return item.toString();
             }
         }
         return item.getName();
     }
+
+
 
 }

@@ -53,6 +53,8 @@ public class Main extends Application{
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("home/resources/css/home.css").toExternalForm());
+//        scene.getStylesheets().add(Main.class.getResource("home/resources/css/jfoenix-components.css").toExternalForm());
+
 
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/home/resources/icons/app.png")));
         primaryStage.setScene(scene);
