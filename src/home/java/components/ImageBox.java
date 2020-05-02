@@ -1,22 +1,26 @@
 package home.java.components;
 
 import com.jfoenix.controls.JFXRippler;
+import com.jfoenix.effects.JFXDepthManager;
 import display.DisplayWindow;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
+import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import javax.tools.Tool;
 
 /**
- * 用来存放图片和图片文件名的盒子。
+ * 用来存放图片{@link ImageView2}和图片文件名{@link ImageLabel}的盒子。
  * 继承{@link VBox}，添加特定的样式。
  *
  * @author Grey
@@ -27,7 +31,6 @@ public class ImageBox extends VBox {
         setMaxSize(170, 170);
         setAlignment(Pos.BOTTOM_CENTER);
     }
-
 
 
     public ImageBox(ImageModel im) {
@@ -45,6 +48,7 @@ public class ImageBox extends VBox {
         String tooltip = String.format("名称: %s\n大小: %s", im.getImageName(), im.getFormatSize());
         Tooltip.install(this, new Tooltip(tooltip));
 
+        //鼠标点击事件
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 // TODO 鼠标左键单击图片显示选中框
@@ -60,9 +64,20 @@ public class ImageBox extends VBox {
                 }
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 // TODO 鼠标右键菜单
-
             }
         });
+
+        //当鼠标指向时
+        EventHandler<? super MouseEvent> mouseEnterImage = (EventHandler<MouseEvent>) event -> {
+            JFXDepthManager.setDepth(this, 3);
+        };
+        this.setOnMouseMoved(mouseEnterImage);
+
+        //当鼠标离开时
+        EventHandler<? super MouseEvent> mouseExitImage = (EventHandler<MouseEvent>) event -> {
+            JFXDepthManager.setDepth(this, 0);
+        };
+        this.setOnMouseExited(mouseExitImage);
 
     }
 

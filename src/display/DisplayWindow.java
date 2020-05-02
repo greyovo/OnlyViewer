@@ -14,20 +14,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.junit.Test;
 
+/**
+ * 图片单独展示窗口
+ *
+ * @author Grey
+ */
 public class DisplayWindow extends Application {
 
     @FXMLViewFlowContext
     private ViewFlowContext flowContext;
 
-    private double width = 800;
-    private double height = 600;
-
+    private double windowWidth = 800;     //窗口宽度
+    private double windowHeight = 600;    //窗口高度
 
     private ImageView imageView;
 
     private Image image;
+
+    private double ratio; // 图片比例（宽/高），用于决定是适应图片的高度还是宽度
 
     @Override
     public void init() throws Exception {
@@ -35,8 +40,8 @@ public class DisplayWindow extends Application {
         //根据屏幕大小自适应设置长宽
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
-            width = bounds.getWidth() / 1.5;
-            height = bounds.getHeight() / 1.5;
+            windowWidth = bounds.getWidth() / 1.5;
+            windowHeight = bounds.getHeight() / 1.5;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,26 +49,11 @@ public class DisplayWindow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        init();
-
-        /* Copy from JFoenix Demo */
-//        Flow flow = new Flow(DisplayWindowController.class);
-//        DefaultFlowContainer container = new DefaultFlowContainer();
-//        flowContext = new ViewFlowContext();
-//        flowContext.register("Stage", stage);
-//        flow.createHandler(flowContext).start(container);
-//        JFXDecorator decorator = new JFXDecorator(stage, container.getView());  //自定义JFX的窗口边框样式
-//        decorator.setCustomMaximize(true);
-//        decorator.setGraphic(new ImageView("/home/resources/icons/app.png"));  //设置标题栏左侧小图标
-//        decorator.setContent(anchorPane);
-//        Scene scene = new Scene(decorator, width, height);
 
         Parent root = FXMLLoader.load(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
-        Scene scene = new Scene(new JFXDecorator(stage, root), width, height);
+        Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
         StackPane stackPane = (StackPane) root;
 
-        /*FIXME 若图片宽度过长可能无法显示完全*/
-//        if (imageView.fitHeightProperty().greaterThan(stackPane.heightProperty()).get())
         imageView.fitHeightProperty().bind(stackPane.heightProperty());
         if (imageView.fitWidthProperty().greaterThan(stackPane.widthProperty()).get())
             imageView.fitWidthProperty().bind(stackPane.widthProperty());
@@ -84,8 +74,16 @@ public class DisplayWindow extends Application {
         init();
         this.image = image;
         this.imageView = new ImageView(image);
-        System.out.println(image.getWidth() + "*" + image.getHeight());
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
+
+        ratio = image.getWidth() / image.getHeight();
+        if (ratio > 1) {
+            imageView.setFitWidth(windowWidth);
+        } else {
+            imageView.setFitHeight(windowHeight);
+        }
+
+        System.out.println(image.getWidth() + "*" + image.getHeight());
     }
 }
