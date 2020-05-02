@@ -36,7 +36,7 @@ public class Main extends Application{
             e.printStackTrace();
         }
 
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/home2.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/home.fxml"));
         Scene scene = new Scene(new JFXDecorator(primaryStage, root), width, height);
 
         //加载css样式文件
