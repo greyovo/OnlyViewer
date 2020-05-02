@@ -1,6 +1,9 @@
 package display;
 
 import com.jfoenix.controls.JFXDecorator;
+import display.java.controllers.DisplayWindowController;
+import home.java.model.ImageListModel;
+import home.java.model.ImageModel;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Application;
@@ -15,6 +18,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * 图片单独展示窗口
  *
@@ -22,15 +27,15 @@ import javafx.stage.Stage;
  */
 public class DisplayWindow extends Application {
 
-    @FXMLViewFlowContext
-    private ViewFlowContext flowContext;
-
-    private double windowWidth = 800;     //窗口宽度
-    private double windowHeight = 600;    //窗口高度
+    public static double windowWidth = 800;     //窗口宽度
+    public static double windowHeight = 600;    //窗口高度
 
     private ImageView imageView;
-
     private Image image;
+    private ImageModel im;
+    private ArrayList<ImageModel> imageModelArrayList;
+    private StackPane stackPane;
+    private  DisplayWindowController dwController;
 
     private double ratio; // 图片比例（宽/高），用于决定是适应图片的高度还是宽度
 
@@ -50,15 +55,20 @@ public class DisplayWindow extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
+        Parent root = fxmlLoader.load();
+        dwController = fxmlLoader.getController();
+
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
-        StackPane stackPane = (StackPane) root;
+//        StackPane stackPane = (StackPane) root;
+        stackPane = dwController.getStackPane();
 
         imageView.fitHeightProperty().bind(stackPane.heightProperty());
-        if (imageView.fitWidthProperty().greaterThan(stackPane.widthProperty()).get())
-            imageView.fitWidthProperty().bind(stackPane.widthProperty());
-
-        stackPane.getChildren().add(imageView);
+        imageView.fitWidthProperty().bind(stackPane.widthProperty());
+//        dwController.getStackPane().getChildren().add(imageView);
+        dwController.setImageView(imageView);
+        dwController.getStackPane().getChildren().add(dwController.getImageView());
+//        dwController.setImage(im.getImageFile().toURI().toString());
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -68,15 +78,18 @@ public class DisplayWindow extends Application {
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
+
     }
 
-    public void setImage(Image image) throws Exception {
+    public void setImage(ImageModel im) throws Exception {
         init();
-        this.image = image;
+        this.im = im;
+        this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
+        //适应图片比例，避免宽度过大显示不全
         ratio = image.getWidth() / image.getHeight();
         if (ratio > 1) {
             imageView.setFitWidth(windowWidth);
@@ -84,6 +97,9 @@ public class DisplayWindow extends Application {
             imageView.setFitHeight(windowHeight);
         }
 
-        System.out.println(image.getWidth() + "*" + image.getHeight());
+        System.out.println("image size:\n"+image.getWidth() + "*" + image.getHeight());
+
+        imageModelArrayList = ImageListModel.refreshList(im.getImageFilePath());
+        System.out.println("In display window - current list:\n"+imageModelArrayList);
     }
 }

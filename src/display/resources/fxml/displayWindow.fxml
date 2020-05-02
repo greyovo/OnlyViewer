@@ -9,7 +9,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <StackPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="display.java.controllers.DisplayWindowController">
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="stackPane"
+           fx:controller="display.java.controllers.DisplayWindowController">
+
+    <ImageView fx:id="imageView">
+
+    </ImageView>
 
 </StackPane>

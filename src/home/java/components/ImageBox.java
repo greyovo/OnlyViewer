@@ -83,7 +83,7 @@ public class ImageBox extends VBox {
                 // 鼠标左键双击看大图
                 DisplayWindow dw = new DisplayWindow();
                 try {
-                    dw.setImage(new Image(im.getImageFile().toURI().toString()));
+                    dw.setImage(im);
                     dw.start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();

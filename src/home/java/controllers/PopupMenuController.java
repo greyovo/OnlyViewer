@@ -13,26 +13,41 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class PopupMenuController {
+public class PopupMenuController implements Initializable {
 
     @FXML
     private JFXListView<?> popupList;
 
-    @FXMLViewFlowContext
-    private ViewFlowContext context;
+    private ImageModel im;
+    private ImageBox imageBox;
+    private JFXDialog dialog;
 
-    ImageModel im;
-    ImageBox imageBox;
-    JFXDialog dialog;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     public PopupMenuController(ImageBox imageBox) {
+        this.imageBox = imageBox;
+        this.im = imageBox.getIm();
+        try {
+            setDeleteDialog();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setImageBox(ImageBox imageBox){
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
         try {
