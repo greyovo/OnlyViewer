@@ -31,7 +31,7 @@ public class Main extends Application{
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
             width = bounds.getWidth() / 1.45;
-            height = bounds.getHeight() / 1.45;
+            height = bounds.getHeight() / 1.35;
         } catch (Exception e){
             e.printStackTrace();
         }
