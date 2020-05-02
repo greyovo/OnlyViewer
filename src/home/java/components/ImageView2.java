@@ -1,16 +1,9 @@
 package home.java.components;
 
 import com.jfoenix.effects.JFXDepthManager;
-import com.sun.javafx.scene.layout.region.Margins;
-import display.DisplayWindow;
-import javafx.animation.ScaleTransition;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+
 
 /**
  * 继承自JavaFX的ImageView。

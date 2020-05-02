@@ -28,7 +28,6 @@
                 <!--左侧目录树-->
                 <!--<fx:include source="fileTreeView.fxml"/>-->
 
-                <!-- TODO 左边目录树  -->
                 <AnchorPane fx:id="folderPane">
                     <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
                                  AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
@@ -37,7 +36,7 @@
 
                 <!-- 右侧 文件夹信息 + 缩略图群 -->
                 <AnchorPane fx:id="mainPane">
-                    <!--TODO 放置文件夹信息、刷新按钮和下拉排序菜单-->
+                    <!--TODO 放置下拉排序菜单-->
                     <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"
                              prefHeight="33">
                         <StackPane>

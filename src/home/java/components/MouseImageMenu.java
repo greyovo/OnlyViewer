@@ -13,19 +13,20 @@ import java.util.Optional;
  * @ProjName: OnlyViewer
  * @ClassName: MouseImageMenu
  * @Author: Kevin
- * @Time:2020/4/13 15:06
+ * @Time: 2020/4/13 15:06
  * @Describe:
  **/
 
 public class MouseImageMenu extends ContextMenu {
+
+    private static MouseImageMenu instance;
+
     /**
      * 针对对图片右键点击出现的菜单选择
      *
      * @param im ImageModel
      */
-    private static MouseImageMenu instance;
-
-    private MouseImageMenu(ImageModel im) {
+    public MouseImageMenu(ImageModel im) {
         MenuItem copy = new MenuItem("  复制(C)  ");
         MenuItem move = new MenuItem("  剪切(T)  ");
         MenuItem reName = new MenuItem("  重命名(M)  ");
