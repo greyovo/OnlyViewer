@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,9 +45,13 @@ public class HomeController implements Initializable {
     public JFXButton pasteButton;
 
     @FXML
+    public AnchorPane mainPane;
+
+    @FXML
     private Label folderInfoLabel;
 
     @FXML
+    @Getter
     private StackPane rootPane;
 
     @FXML
@@ -92,6 +97,9 @@ public class HomeController implements Initializable {
     @Getter
     private boolean IsClickCombobox = false;
 
+    @Getter
+    private JFXSnackbar snackbar;
+
     public HomeController() {
     }
 
@@ -106,6 +114,7 @@ public class HomeController implements Initializable {
         Util.controllers.put(this.getClass().getSimpleName(), this);
 
         setFileTreeView(); //初始化目录树
+        snackbar = new JFXSnackbar(rootPane);
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
 
         imageListPane.setPadding(new Insets(10));
@@ -116,10 +125,17 @@ public class HomeController implements Initializable {
 
         SplitPane.setResizableWithParent(folderPane, false);
 
-        refreshButton.setOnAction(event -> refreshImagesList());
+        refreshButton.setOnAction(event -> {
+            refreshImagesList();
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
+        });
+
         pasteButton.setOnAction(event -> {
-            SelectedModel.pasteImage(pathLabel.getText());
-            System.out.println("已粘贴");
+            if (SelectedModel.pasteImage(pathLabel.getText())) {
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
+            } else {
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
+            }
             refreshImagesList();
         });
 
@@ -263,14 +279,14 @@ public class HomeController implements Initializable {
 
                             this.setGraphic(hBox);
 
-                            if (this.getTreeItem().isExpanded() ) {
+                            if (this.getTreeItem().isExpanded()) {
                                 ImageView folderImage = new ImageView("icons/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片
                                 //this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
-                            } else if (!this.getTreeItem().isExpanded() ) {
+                            } else if (!this.getTreeItem().isExpanded()) {
                                 ImageView folderImage = new ImageView("icons/folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
@@ -321,7 +337,7 @@ public class HomeController implements Initializable {
 
             if (filelist.length > 0) {
                 for (int i = 1; i < filelist.length; i++) {
-                    if (filelist[i].isDirectory()  & !filelist[i].isHidden()) {
+                    if (filelist[i].isDirectory() & !filelist[i].isHidden()) {
                         TreeItem<File> b = new TreeItem<File>(filelist[i]);
                         if (flag < 1) {
                             addItems(b, flag + 1);
@@ -374,6 +390,8 @@ public class HomeController implements Initializable {
             SelectedModel.deleteImage();
             dialog.close();
             System.out.println("删除成功!");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("删除成功"));    //显示删除成功通知。
+            refreshImagesList();
         });
 
         layout.setActions(cancel, confirm);
@@ -382,7 +400,7 @@ public class HomeController implements Initializable {
     }
 
     //FIXME 还没想到怎么将按钮事件回传
-    public boolean callReplaceDialog(ImageModel im){
+    public boolean callReplaceDialog(ImageModel im) {
         AtomicBoolean replace = new AtomicBoolean(false);
 
         JFXButton confirm = new JFXButton("替换");
@@ -393,7 +411,7 @@ public class HomeController implements Initializable {
         Label heading = new Label("存在同名文件");
         heading.getStyleClass().add("dialog-heading");
 
-        Label body = new Label( "存在同名文件，是否替换？此操作不可逆。");
+        Label body = new Label("存在同名文件，是否替换？此操作不可逆。");
         body.getStyleClass().add("dialog-body");
 
         JFXDialog dialog = new JFXDialog();

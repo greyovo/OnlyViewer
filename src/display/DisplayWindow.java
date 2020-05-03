@@ -4,8 +4,6 @@ import com.jfoenix.controls.JFXDecorator;
 import display.java.controllers.DisplayWindowController;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
-import io.datafx.controller.flow.context.FXMLViewFlowContext;
-import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +53,7 @@ public class DisplayWindow extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/DisplayWindow.fxml"));
         Parent root = fxmlLoader.load();
         dwController = fxmlLoader.getController();
 
@@ -68,7 +66,6 @@ public class DisplayWindow extends Application {
 //        dwController.getStackPane().getChildren().add(imageView);
         dwController.setImageView(imageView);
         dwController.getStackPane().getChildren().add(dwController.getImageView());
-//        dwController.setImage(im.getImageFile().toURI().toString());
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
