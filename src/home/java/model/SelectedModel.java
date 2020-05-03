@@ -117,8 +117,7 @@ public class SelectedModel {
                 try {
                     Files.copy(sourcePath, targetPath);
                 } catch (IOException e) {
-                    // 复制失败
-                    return false;
+                    return false; // 复制失败
                 }
             } else {
                 // 情况2
@@ -126,22 +125,23 @@ public class SelectedModel {
                 try {
                     Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    // 复制失败
-                    return false;
+                    return false;// 复制失败
                 }
             }
+            return true;
+
         } else if (option == 1) {
             //剪切粘贴
             targetPath = new File(otherPath(path)).toPath();
             try {
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                // 剪切失败
-                return false;
+                return false;// 剪切失败
             }
             option = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
+            return true;
         }
-        return true;
+        return false;
     }
 
 //    // 剪切图片 目前如果遇到文件重复则直接覆盖
