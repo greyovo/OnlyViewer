@@ -256,25 +256,28 @@ public class HomeController implements Initializable {
                             super.updateItem(item, empty);
                             HBox hBox = new HBox();
                             Label label = new Label(isListRoots(item));
-                            hBox.getChildren().add(label);
+
                             this.setGraphic(hBox);
-                            if (this.getTreeItem().isExpanded() && this.getDisclosureNode() == null) {
+
+                            if (this.getTreeItem().isExpanded() ) {
                                 ImageView folderImage = new ImageView("icons/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
-                                this.setDisclosureNode(folderImage);
+                                hBox.getChildren().add(folderImage);//加图片
+                                //this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
-                            } else if (!this.getTreeItem().isExpanded() && this.getDisclosureNode() == null) {
+                            } else if (!this.getTreeItem().isExpanded() ) {
                                 ImageView folderImage = new ImageView("icons/folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
-                                this.setDisclosureNode(folderImage);
+                                hBox.getChildren().add(folderImage);//加图片
+
                                 this.setGraphic(hBox);
                             }
-
+                            hBox.getChildren().add(label);//加文字
                         } else if (empty) {
                             this.setGraphic(null);
-                            this.setDisclosureNode(null);
+
                         }
                     }
                 };
@@ -314,7 +317,7 @@ public class HomeController implements Initializable {
 
             if (filelist.length > 0) {
                 for (int i = 1; i < filelist.length; i++) {
-                    if (filelist[i].isDirectory() & filelist[i].canRead() & !filelist[i].isHidden()) {
+                    if (filelist[i].isDirectory()  & !filelist[i].isHidden()) {
                         TreeItem<File> b = new TreeItem<File>(filelist[i]);
                         if (flag < 1) {
                             addItems(b, flag + 1);
