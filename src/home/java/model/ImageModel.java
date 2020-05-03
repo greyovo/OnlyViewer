@@ -15,11 +15,11 @@ import java.io.File;
 public class ImageModel {
 
     private String imageFilePath; // *绝对路径
+    private String imageParentPath; // 图片所在文件夹路径
     private File imageFile;
     private String imageName;
+    private String imageType;
     private long fileLength;
-//    private String imageSize;
-//    private String imageType; // 图片类型 依赖于ImageListModel
     private long imageLastModified; // 图片修改时间
 
     // 暂且先不考虑获取图片宽高，其耗时较多
@@ -29,14 +29,19 @@ public class ImageModel {
     public ImageModel(File file){
         this.imageFile = file;
         this.imageFilePath = file.getAbsolutePath();
+        this.imageParentPath = file.getParent();
         this.imageName = file.getName();
+        this.imageType = imageName.substring(imageName.indexOf(".")+1).toLowerCase();
         this.fileLength = file.length();
+        this.imageLastModified = file.lastModified();
     }
 
     public ImageModel(String path){
         this.imageFilePath = path;
         this.imageFile = new File(path);
+        this.imageParentPath = imageFile.getParent();
         this.imageName = imageFile.getName();
+        this.imageType = imageName.substring(imageName.indexOf(".")+1).toLowerCase();
         this.fileLength = imageFile.length(); // 返回的单位是byte
         this.imageLastModified = imageFile.lastModified();
     }
