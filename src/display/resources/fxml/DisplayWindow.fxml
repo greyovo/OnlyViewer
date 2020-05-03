@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<?import com.jfoenix.controls.JFXToolbar?>
-<?import com.jfoenix.controls.JFXRippler?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
 <?import com.jfoenix.controls.JFXButton?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -25,8 +17,9 @@
     <HBox fx:id="toolbar" alignment="CENTER"
           styleClass="bottom-toolbar" maxHeight="22" maxWidth="300">
 
-        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
-        style="-fx-background-radius: 11 0 0 11;">
+        <JFXButton buttonType="FLAT" onAction="#zoomIn"
+                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   style="-fx-background-radius: 11 0 0 11;">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/zoom_in.png"/>
@@ -34,7 +27,8 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white">
+        <JFXButton buttonType="FLAT" onAction="#zoomOut"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/zoom_out.png"/>
@@ -42,7 +36,8 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" onAction="#showPreviousImg" styleClass="bottom-toolbar-button" ripplerFill="white">
+        <JFXButton buttonType="FLAT" onAction="#showPreviousImg"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/previous.png"/>
@@ -50,7 +45,8 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" onAction="#showNextImg" styleClass="bottom-toolbar-button" ripplerFill="white">
+        <JFXButton buttonType="FLAT" onAction="#showNextImg"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/next.png"/>
@@ -58,7 +54,8 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white">
+        <JFXButton buttonType="FLAT" onAction="#ocr"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/ocr.png"/>
@@ -66,17 +63,15 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
-        style="-fx-background-radius: 0 11 11 0;">
+        <JFXButton buttonType="FLAT" onAction="#delete"
+                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   style="-fx-background-radius: 0 11 11 0;">
             <graphic>
                 <ImageView fitWidth="50" preserveRatio="true">
                     <Image url="@../icons/delete.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
-
-
     </HBox>
-
 
 </StackPane>

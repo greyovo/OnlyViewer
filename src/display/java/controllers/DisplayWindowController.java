@@ -66,6 +66,17 @@ public class DisplayWindowController implements Initializable {
         System.out.println("cur list:\n"+imageModelArrayList);
     }
 
+    //TODO 放大缩小
+    @FXML
+    private void zoomIn(){
+        System.out.println("放大");
+    }
+
+    @FXML
+    private void zoomOut(){
+        System.out.println("缩小");
+    }
+
     //TODO 下一张图
     @FXML
     private void showNextImg(){
@@ -78,4 +89,15 @@ public class DisplayWindowController implements Initializable {
         System.out.println("上一张");
     }
 
+    //TODO OCR
+    @FXML
+    private void ocr(){
+        System.out.println("OCR");
+    }
+
+    //TODO 删除
+    @FXML
+    private void delete(){
+        System.out.println("删除");
+    }
 }
