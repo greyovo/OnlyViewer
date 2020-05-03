@@ -43,11 +43,13 @@ public class PopupMenuController implements Initializable {
             case 0:
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
+                SelectedModel.setOption(0);
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
+                SelectedModel.setOption(1);
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:
