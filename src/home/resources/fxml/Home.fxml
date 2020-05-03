@@ -17,32 +17,32 @@
             <VBox alignment="CENTER_LEFT" styleClass="toolbar">
                 <JFXToolbar fx:id="toolbar">
                     <leftItems>
-                        <!--后退按钮-->
-                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                            <StackPane style="-fx-padding:5;">
+                        <!--TODO 后退按钮-->
+                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
                                 <ImageView>
                                     <Image url="@../icons/back_96px.png"/>
                                 </ImageView>
-                            </StackPane>
-                        </JFXRippler>
+                            </graphic>
+                        </JFXButton>
 
-                        <!--前进按钮-->
-                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                            <StackPane style="-fx-padding:5;">
+                        <!--TODO 前进按钮-->
+                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
                                 <ImageView>
                                     <Image url="@../icons/forward_96px.png"/>
                                 </ImageView>
-                            </StackPane>
-                        </JFXRippler>
+                            </graphic>
+                        </JFXButton>
 
-                        <!--上层文件夹按钮-->
-                        <JFXRippler maskType="CIRCLE" ripplerFill="#FFFFFF">
-                            <StackPane style="-fx-padding:5;">
+                        <!--TODO 上层文件夹按钮-->
+                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
                                 <ImageView>
                                     <Image url="@../icons/level_up_96px.png"/>
                                 </ImageView>
-                            </StackPane>
-                        </JFXRippler>
+                            </graphic>
+                        </JFXButton>
 
                         <!-- 地址栏 -->
                         <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">

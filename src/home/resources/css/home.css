@@ -64,6 +64,11 @@
     -fx-padding:10;
 }
 
+.toolbar-button{
+    -fx-background-radius:100px;
+    -fx-padding:5;
+}
+
 .path-label {
     -fx-font-size: 18.0px;
     -fx-padding: 10 10 10 10;
