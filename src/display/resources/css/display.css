@@ -24,10 +24,21 @@
 
 /* 工具栏样式 */
 .bottom-toolbar{
-    -fx-background-color:#009688;
-    -fx-padding:10;
+    -fx-background-color:rgba(50,50,50,0.65);
+    -fx-background-radius: 11px;
+    -jfx-rippler-fill:WHITE;
+    /* -fx-padding:10; */
     -fx-font-size: 18.0px;
-    -fx-padding: 10 10 10 10;
-    -fx-text-fill: rgba(0, 0, 0, 0.9);
+    /* -fx-padding: 10 10 10 10; */
+    /* -fx-margin: 30px; */
+}
+
+.bottom-toolbar-button{
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -jfx-rippler-fill:WHITE;
+    -fx-font-size: 18.0px;
+    
+    /* -fx-font-weight: BOLD; */
+    /* -fx-padding: 0.7em 0.8em; */
 }
 

@@ -25,8 +25,8 @@ import java.util.ArrayList;
  */
 public class DisplayWindow extends Application {
 
-    public double windowWidth = 800;     //窗口宽度
-    public double windowHeight = 600;    //窗口高度
+    public static double windowWidth = 800;     //窗口宽度
+    public static double windowHeight = 600;    //窗口高度
 
     private ImageModel im;
     DisplayWindowController dwController;

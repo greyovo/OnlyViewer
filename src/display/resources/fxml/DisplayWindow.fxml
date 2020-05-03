@@ -22,5 +22,61 @@
 
     </ImageView>
 
+    <HBox fx:id="toolbar" alignment="CENTER"
+          styleClass="bottom-toolbar" maxHeight="22" maxWidth="300">
+
+        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
+        style="-fx-background-radius: 11 0 0 11;">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/zoom_in.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/zoom_out.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showPreviousImg" styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/previous.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showNextImg" styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/next.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/ocr.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
+        style="-fx-background-radius: 0 11 11 0;">
+            <graphic>
+                <ImageView fitWidth="50" preserveRatio="true">
+                    <Image url="@../icons/delete.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+
+    </HBox>
+
 
 </StackPane>
