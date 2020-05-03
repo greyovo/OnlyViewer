@@ -1,5 +1,6 @@
 package home.java.model;
 
+import com.sun.jna.platform.FileUtils;
 import lombok.NonNull;
 import lombok.Setter;
 import org.junit.Test;
@@ -169,8 +170,11 @@ public class SelectedModel {
     // 删除图片
     public static boolean deleteImage() {
         // TODO 回收机制
+        FileUtils fileUtils = FileUtils.getInstance();
         try {
-            Files.delete(sourcePath);
+            if (fileUtils.hasTrash()) {
+                fileUtils.moveToTrash(new File[] { (sourcePath.toFile()) });
+            }
         } catch (IOException e) {
             System.out.println("删除失败!");
             return false;

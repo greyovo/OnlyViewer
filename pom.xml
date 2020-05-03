@@ -75,6 +75,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 2020/5/3 -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -371,9 +371,11 @@ public class HomeController implements Initializable {
 
         confirm.setOnAction(event -> {
             SelectedModel.setSourcePath(im.getImageFilePath());
-            SelectedModel.deleteImage();
+            if (SelectedModel.deleteImage()) {
+                refreshImagesList();
+                System.out.println("删除成功!");
+            }
             dialog.close();
-            System.out.println("删除成功!");
         });
 
         layout.setActions(cancel, confirm);
