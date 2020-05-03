@@ -169,7 +169,7 @@ public class SelectedModel {
 
     // 删除图片
     public static boolean deleteImage() {
-        // TODO 回收机制
+        // 删除图片文件进入回收站，不直接删除
         FileUtils fileUtils = FileUtils.getInstance();
         try {
             if (fileUtils.hasTrash()) {
