@@ -2,14 +2,13 @@ package home.java.controllers;
 
 import com.jfoenix.controls.*;
 import home.java.components.DeleteDialogController;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXListView;
 import home.java.components.ImageBox;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 
-import io.datafx.controller.flow.context.FXMLViewFlowContext;
-import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -17,9 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PopupMenuController implements Initializable {
@@ -61,14 +58,14 @@ public class PopupMenuController implements Initializable {
         switch (popupList.getSelectionModel().getSelectedIndex()) {
             case 0:
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
-                SelectedModel.sourceImage(im.getImageFilePath());
+                SelectedModel.setSourcePath(im.getImageFilePath());
+                SelectedModel.setOption(0);
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
-                SelectedModel.sourceImage(im.getImageFilePath());
+                SelectedModel.setSourcePath(im.getImageFilePath());
+                SelectedModel.setOption(1);
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:

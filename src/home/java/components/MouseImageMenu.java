@@ -1,12 +1,8 @@
 package home.java.components;
 
-import com.jfoenix.animation.alert.JFXAlertAnimation;
-import com.jfoenix.controls.*;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -39,11 +35,11 @@ public class MouseImageMenu extends ContextMenu {
 
         copy.setOnAction(event -> {
             System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
-            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.setSourcePath(im.getImageFilePath());
         });
         move.setOnAction(event -> {
             System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
-            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.setSourcePath(im.getImageFilePath());
         });
         reName.setOnAction(event -> {
             System.out.println("点击重命名 重命名图片源:" + im.getImageFilePath());
@@ -58,7 +54,7 @@ public class MouseImageMenu extends ContextMenu {
             alert.setContentText("删除文件:" + im.getImageName());
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                SelectedModel.sourceImage(im.getImageFilePath());
+                SelectedModel.setSourcePath(im.getImageFilePath());
                 SelectedModel.deleteImage();
                 System.out.println("删除成功!");
             } else if (result.get() == ButtonType.CANCEL) {

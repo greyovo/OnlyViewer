@@ -1,6 +1,7 @@
 package home.java.model;
 
 import lombok.NonNull;
+import lombok.Setter;
 import org.junit.Test;
 
 import java.io.*;
@@ -27,6 +28,9 @@ public class SelectedModel {
      */
     private static Path sourcePath;
     private static Path targetPath;
+
+    @Setter // 选择复制/剪切 0->复制 1->剪切
+    private static int option = -1;
 
     // 检查路径后缀
     private static String checkPath(String path) {
@@ -71,73 +75,85 @@ public class SelectedModel {
     }
 
     // 初始化源 复制/剪切/重命名/删除选项调用
-    public static boolean sourceImage(@NonNull ImageModel im) {
+    public static boolean setSourcePath(@NonNull ImageModel im) {
         sourcePath = im.getImageFile().toPath();
         return true;
     }
 
-    public static boolean sourceImage(@NonNull File f) {
+    public static boolean setSourcePath(@NonNull File f) {
         sourcePath = f.toPath();
         return true;
     }
 
-    public static boolean sourceImage(String path) {
+    public static boolean setSourcePath(String path) {
         sourcePath = new File(path).toPath();
         return true;
     }
 
 
-    // 粘贴功能 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
+    // 粘贴功能 -> 选择复制 or 剪切
+    // 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
     //                             -> 2.若是不同文件，则直接REPLACE
     // TODO  遇到重命名应询问是否覆盖
     public static boolean pasteImage(String path) {
-        if (getBeforePath().equals(path)) {
-            // 情况1
-            boolean flag = false;
-            String[] flist = new File(path).list();
-            String sourceFileName = sourcePath.getFileName().toString();
-            for (String s : flist) {
-                if (sourceFileName.equals(s) & !flag) {
-                    targetPath = new File(copyName(path)).toPath();
-                    flag = true;
+        if (option == 0){
+            if (getBeforePath().equals(path)) {
+                // 情况1
+                boolean flag = false;
+                String[] flist = new File(path).list();
+                String sourceFileName = sourcePath.getFileName().toString();
+                for (String s : flist) {
+                    if (sourceFileName.equals(s) & !flag) {
+                        targetPath = new File(copyName(path)).toPath();
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    targetPath = new File(otherPath(path)).toPath();
+                }
+                try {
+                    Files.copy(sourcePath, targetPath);
+                } catch (IOException e) {
+                    // 复制失败
+                    return false;
+                }
+            } else {
+                // 情况2
+                targetPath = new File(otherPath(path)).toPath();
+                try {
+                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    // 复制失败
+                    return false;
                 }
             }
-            if (!flag) {
-                targetPath = new File(otherPath(path)).toPath();
-            }
-            try {
-                Files.copy(sourcePath, targetPath);
-            } catch (IOException e) {
-                // 复制失败
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            // 情况2
+        } else if (option == 1) {
             targetPath = new File(otherPath(path)).toPath();
             try {
-                Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-
+                Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                e.printStackTrace();
-                // 复制失败
+                // 剪切失败
                 return false;
             }
         }
+        // 复制/剪切完了以后就置 -1->按粘贴键没反应
+        option = -1;
         return true;
     }
 
-    // 剪切图片 目前如果遇到文件重复则直接覆盖
-    public static boolean moveImage(String path) {
-        targetPath = new File(otherPath(path)).toPath();
-        try {
-            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            // 剪切失败
-            return false;
-        }
-        return true;
-    }
+//    // 剪切图片 目前如果遇到文件重复则直接覆盖
+//    public static boolean moveImage(String path) {
+//        targetPath = new File(otherPath(path)).toPath();
+//        try {
+//            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (IOException e) {
+//            // 剪切失败
+//            return false;
+//        }
+//        // 复制/剪切完了以后就置 -1->按粘贴键没反应
+//        option = -1;
+//        return true;
+//    }
 
     // 重命名 重复命名直接覆盖
     public static boolean renameImage(String newName) {
@@ -173,7 +189,7 @@ public class SelectedModel {
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
             for (ImageModel s : ilist) {
-                sourceImage(s.getImageFilePath());
+                setSourcePath(s.getImageFilePath());
                 deleteImage();
             }
             long timel = System.currentTimeMillis();

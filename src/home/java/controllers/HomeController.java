@@ -386,7 +386,7 @@ public class HomeController implements Initializable {
         });
 
         confirm.setOnAction(event -> {
-            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.setSourcePath(im.getImageFilePath());
             SelectedModel.deleteImage();
             dialog.close();
             System.out.println("删除成功!");
@@ -427,7 +427,7 @@ public class HomeController implements Initializable {
         });
 
         confirm.setOnAction(event -> {
-            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.setSourcePath(im.getImageFilePath());
             SelectedModel.deleteImage();
             dialog.close();
             replace.set(true);
