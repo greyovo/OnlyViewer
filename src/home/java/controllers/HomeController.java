@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 主窗口界面的控制器。
@@ -39,6 +40,9 @@ import java.util.ResourceBundle;
  */
 
 public class HomeController implements Initializable {
+    @FXML
+    public JFXButton pasteButton;
+
     @FXML
     private Label folderInfoLabel;
 
@@ -113,6 +117,11 @@ public class HomeController implements Initializable {
         SplitPane.setResizableWithParent(folderPane, false);
 
         refreshButton.setOnAction(event -> refreshImagesList());
+        pasteButton.setOnAction(event -> {
+            SelectedModel.pasteImage(pathLabel.getText());
+            System.out.println("已粘贴");
+            refreshImagesList();
+        });
 
         sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
         sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -340,7 +349,7 @@ public class HomeController implements Initializable {
 
         JFXButton confirm = new JFXButton("删除");
         JFXButton cancel = new JFXButton("取消");
-        confirm.getStyleClass().add("dialog-confirm");
+        confirm.getStyleClass().add("dialog-confirm-red");
         cancel.getStyleClass().add("dialog-cancel");
 
         Label heading = new Label("确认删除");
@@ -372,5 +381,46 @@ public class HomeController implements Initializable {
         dialog.show(rootPane);
     }
 
+    //FIXME 还没想到怎么将按钮事件回传
+    public boolean callReplaceDialog(ImageModel im){
+        AtomicBoolean replace = new AtomicBoolean(false);
+
+        JFXButton confirm = new JFXButton("替换");
+        JFXButton cancel = new JFXButton("取消");
+        confirm.getStyleClass().add("dialog-confirm");
+        cancel.getStyleClass().add("dialog-cancel");
+
+        Label heading = new Label("存在同名文件");
+        heading.getStyleClass().add("dialog-heading");
+
+        Label body = new Label( "存在同名文件，是否替换？此操作不可逆。");
+        body.getStyleClass().add("dialog-body");
+
+        JFXDialog dialog = new JFXDialog();
+        dialog.setOverlayClose(true);
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(heading);
+        layout.setBody(body);
+
+        cancel.setOnAction(event -> {
+            dialog.close();
+            System.out.println("取消替换。");
+            replace.set(false);
+        });
+
+        confirm.setOnAction(event -> {
+            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.deleteImage();
+            dialog.close();
+            replace.set(true);
+            System.out.println("替换成功!");
+        });
+
+        layout.setActions(cancel, confirm);
+        dialog.setContent(layout);
+        dialog.show(rootPane);
+
+        return replace.get();
+    }
 
 }

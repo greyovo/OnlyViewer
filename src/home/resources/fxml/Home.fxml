@@ -99,13 +99,18 @@
                                    style="-fx-padding:10px"/>
                         </StackPane>
                         <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
+                        <JFXButton fx:id="pasteButton" buttonType="FLAT" text="粘贴" styleClass="normal-button">
+                            <HBox.margin>
+                                <Insets right="10"/>
+                            </HBox.margin>
+                        </JFXButton>
                         <JFXButton fx:id="refreshButton" buttonType="FLAT" text="刷新" styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
-                        <JFXComboBox fx:id="sortComboBox" prefWidth="150" prefHeight="20" promptText="默认排序"
-                                     styleClass="combo-box normal-text-b"/>
+                        <JFXComboBox fx:id="sortComboBox" prefWidth="220" prefHeight="20" promptText="  按名称升序"
+                                     styleClass="combo-box"/>
                     </ToolBar>
 
                     <!--缩略图们 -->

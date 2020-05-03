@@ -1,6 +1,5 @@
 package home.java.model;
 
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.junit.Test;
@@ -95,6 +94,7 @@ public class SelectedModel {
     // 粘贴功能 -> 选择复制 or 剪切
     // 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
     //                             -> 2.若是不同文件，则直接REPLACE
+    // TODO  遇到重命名应询问是否覆盖
     public static boolean pasteImage(String path) {
         if (option == 0){
             if (getBeforePath().equals(path)) {
@@ -127,7 +127,7 @@ public class SelectedModel {
                     return false;
                 }
             }
-        } else if (option == 1){
+        } else if (option == 1) {
             targetPath = new File(otherPath(path)).toPath();
             try {
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -143,7 +143,15 @@ public class SelectedModel {
 
 //    // 剪切图片 目前如果遇到文件重复则直接覆盖
 //    public static boolean moveImage(String path) {
-//
+//        targetPath = new File(otherPath(path)).toPath();
+//        try {
+//            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (IOException e) {
+//            // 剪切失败
+//            return false;
+//        }
+//        // 复制/剪切完了以后就置 -1->按粘贴键没反应
+//        option = -1;
 //        return true;
 //    }
 
