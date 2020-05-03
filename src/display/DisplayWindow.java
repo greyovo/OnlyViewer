@@ -25,16 +25,11 @@ import java.util.ArrayList;
  */
 public class DisplayWindow extends Application {
 
-    public static double windowWidth = 800;     //窗口宽度
-    public static double windowHeight = 600;    //窗口高度
+    public double windowWidth = 800;     //窗口宽度
+    public double windowHeight = 600;    //窗口高度
 
-    private ImageView imageView;
-    private Image image;
     private ImageModel im;
-    private ArrayList<ImageModel> imageModelArrayList;
-    private StackPane stackPane;
-
-    private double ratio; // 图片比例（宽/高），用于决定是适应图片的高度还是宽度
+    DisplayWindowController dwController;
 
     @Override
     public void init() throws Exception {
@@ -51,20 +46,13 @@ public class DisplayWindow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
+
         Parent root = fxmlLoader.load();
-        DisplayWindowController dwController = fxmlLoader.getController();
-
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
-//        StackPane stackPane = (StackPane) root;
-        stackPane = dwController.getStackPane();
 
-        imageView.fitHeightProperty().bind(stackPane.heightProperty());
-        imageView.fitWidthProperty().bind(stackPane.widthProperty());
-//        dwController.getStackPane().getChildren().add(imageView);
-        dwController.setImageView(imageView);
-        dwController.getStackPane().getChildren().add(dwController.getImageView());
+        dwController = fxmlLoader.getController();
+        dwController.initImage(im);
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -74,28 +62,10 @@ public class DisplayWindow extends Application {
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
-        dwController.test();
     }
 
     public void setImage(ImageModel im) throws Exception {
         init();
         this.im = im;
-        this.image = new Image(im.getImageFile().toURI().toString());
-        this.imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setSmooth(true);
-
-        //适应图片比例，避免宽度过大显示不全
-        ratio = image.getWidth() / image.getHeight();
-        if (ratio > 1) {
-            imageView.setFitWidth(windowWidth);
-        } else {
-            imageView.setFitHeight(windowHeight);
-        }
-
-        System.out.println("image size:\n"+image.getWidth() + "*" + image.getHeight());
-
-        imageModelArrayList = ImageListModel.refreshList(im.getImageFilePath());
-        System.out.println("In display window - current list:\n"+imageModelArrayList);
     }
 }
