@@ -242,3 +242,17 @@
     /* -fx-font-weight: BOLD; */
     -fx-padding: 0.7em 0.8em;
  }
+
+ /*******************************************************************************
+ *                                                                             *
+ * JFX SnackBar                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+ .jfx-snackbar-content {
+    -fx-background-color: #323232;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+}

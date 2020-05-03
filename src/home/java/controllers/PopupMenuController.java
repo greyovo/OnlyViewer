@@ -1,5 +1,7 @@
 package home.java.controllers;
 
+import com.jfoenix.controls.*;
+import home.java.components.DeleteDialogController;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXListView;
 import home.java.components.ImageBox;
@@ -8,6 +10,11 @@ import home.java.model.SelectedModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import lombok.Getter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,12 +26,21 @@ public class PopupMenuController implements Initializable {
 
     private ImageModel im;
     private ImageBox imageBox;
-    private JFXDialog dialog;
+    private HomeController hc;
+
+    @Getter
+    private JFXSnackbar snackbar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //将本类的实例添加到全局映射中
         Util.controllers.put(this.getClass().getSimpleName(), this);
+
+        //获取HomeController实例
+        hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
+
+        //信息条初始化
+        snackbar = new JFXSnackbar(hc.getRootPane());
     }
 
     public PopupMenuController(ImageBox imageBox) {
@@ -44,12 +60,14 @@ public class PopupMenuController implements Initializable {
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
                 SelectedModel.setOption(0);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
                 SelectedModel.setOption(1);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:
@@ -58,10 +76,7 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
-                //TODO 弹窗修改为Material Design样式
                 System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
-                HomeController hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
-                System.out.println(hc);
                 hc.callDeleteDialog(im);
                 imageBox.getPopUpMenu().hide();
                 break;
