@@ -97,7 +97,9 @@ public class SelectedModel {
     //                             -> 2.若是不同文件，则直接REPLACE
     // TODO  遇到重命名应询问是否覆盖
     public static boolean pasteImage(String path) {
+
         if (option == 0){
+            //复制粘贴
             if (getBeforePath().equals(path)) {
                 // 情况1
                 boolean flag = false;
@@ -129,6 +131,7 @@ public class SelectedModel {
                 }
             }
         } else if (option == 1) {
+            //剪切粘贴
             targetPath = new File(otherPath(path)).toPath();
             try {
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -136,9 +139,8 @@ public class SelectedModel {
                 // 剪切失败
                 return false;
             }
+            option = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
         }
-        // 复制/剪切完了以后就置 -1->按粘贴键没反应
-        option = -1;
         return true;
     }
 
