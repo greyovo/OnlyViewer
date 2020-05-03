@@ -60,12 +60,14 @@ public class PopupMenuController implements Initializable {
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
                 SelectedModel.setOption(0);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
                 SelectedModel.setOption(1);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:

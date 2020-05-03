@@ -382,14 +382,13 @@ public class HomeController implements Initializable {
 
         cancel.setOnAction(event -> {
             dialog.close();
-            System.out.println("取消删除。");
+            System.out.println("取消删除");
         });
 
         confirm.setOnAction(event -> {
             SelectedModel.setSourcePath(im.getImageFilePath());
             SelectedModel.deleteImage();
             dialog.close();
-            System.out.println("删除成功!");
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("删除成功"));    //显示删除成功通知。
             refreshImagesList();
         });
