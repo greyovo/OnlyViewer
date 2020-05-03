@@ -89,6 +89,7 @@ public class SelectedModel {
 
     // 粘贴功能 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
     //                             -> 2.若是不同文件，则直接REPLACE
+    // TODO  遇到重命名应询问是否覆盖
     public static boolean pasteImage(String path) {
         if (getBeforePath().equals(path)) {
             // 情况1
@@ -108,6 +109,7 @@ public class SelectedModel {
                 Files.copy(sourcePath, targetPath);
             } catch (IOException e) {
                 // 复制失败
+                e.printStackTrace();
                 return false;
             }
         } else {
@@ -115,7 +117,9 @@ public class SelectedModel {
             targetPath = new File(otherPath(path)).toPath();
             try {
                 Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+
             } catch (IOException e) {
+                e.printStackTrace();
                 // 复制失败
                 return false;
             }
