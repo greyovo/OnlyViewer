@@ -1,27 +1,15 @@
 package home.java.controllers;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXPopup;
-import home.java.components.DeleteDialogController;
 import home.java.components.ImageBox;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 
-import io.datafx.controller.flow.context.FXMLViewFlowContext;
-import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PopupMenuController implements Initializable {
@@ -54,12 +42,12 @@ public class PopupMenuController implements Initializable {
         switch (popupList.getSelectionModel().getSelectedIndex()) {
             case 0:
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
-                SelectedModel.sourceImage(im.getImageFilePath());
+                SelectedModel.setSourcePath(im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
-                SelectedModel.sourceImage(im.getImageFilePath());
+                SelectedModel.setSourcePath(im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:

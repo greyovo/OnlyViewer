@@ -71,23 +71,24 @@ public class SelectedModel {
     }
 
     // 初始化源 复制/剪切/重命名/删除选项调用
-    public static boolean sourceImage(@NonNull ImageModel im) {
+    public static boolean setSourcePath(@NonNull ImageModel im) {
         sourcePath = im.getImageFile().toPath();
         return true;
     }
 
-    public static boolean sourceImage(@NonNull File f) {
+    public static boolean setSourcePath(@NonNull File f) {
         sourcePath = f.toPath();
         return true;
     }
 
-    public static boolean sourceImage(String path) {
+    public static boolean setSourcePath(String path) {
         sourcePath = new File(path).toPath();
         return true;
     }
 
 
-    // 粘贴功能 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
+    // 粘贴功能 -> 选择复制 or 剪切
+    // 目前如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
     //                             -> 2.若是不同文件，则直接REPLACE
     public static boolean pasteImage(String path) {
         if (getBeforePath().equals(path)) {
@@ -169,7 +170,7 @@ public class SelectedModel {
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
             for (ImageModel s : ilist) {
-                sourceImage(s.getImageFilePath());
+                setSourcePath(s.getImageFilePath());
                 deleteImage();
             }
             long timel = System.currentTimeMillis();

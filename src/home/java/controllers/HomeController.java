@@ -18,16 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -366,7 +361,7 @@ public class HomeController implements Initializable {
         });
 
         confirm.setOnAction(event -> {
-            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.setSourcePath(im.getImageFilePath());
             SelectedModel.deleteImage();
             dialog.close();
             System.out.println("删除成功!");

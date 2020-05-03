@@ -29,7 +29,7 @@ public class Util {
 
     public static boolean delete(String path) {
         // 弹出警告
-        SelectedModel.sourceImage(path);
+        SelectedModel.setSourcePath(path);
         if (SelectedModel.deleteImage()) {
             return true;
         }
