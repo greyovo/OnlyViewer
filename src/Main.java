@@ -16,10 +16,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Main extends Application{
 
     @FXMLViewFlowContext
     private ViewFlowContext flowContext;
+
+    public static Map<String, Object> controllers = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

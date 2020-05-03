@@ -200,3 +200,37 @@
 .popup-list-view {
     -fx-pref-width: 120.0px;
 }
+
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX Dialog                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+ .jfx-dialog-overlay-pane {
+    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.1);
+}
+
+ .dialog-heading{
+    -fx-font-size: 20.0px;
+    -fx-font-weight: BOLD;
+ }
+
+ .dialog-body{
+    -fx-font-size: 18.0px;
+ }
+
+ .dialog-confirm{
+    -fx-text-fill: RED;
+    /* -fx-font-weight: BOLD; */
+    -fx-font-size: 16.0px;
+    -fx-padding: 0.7em 0.8em;
+ }
+
+ .dialog-cancel{
+    -fx-text-fill: #009688;
+    -fx-font-size: 16.0px;
+    /* -fx-font-weight: BOLD; */
+    -fx-padding: 0.7em 0.8em;
+ }

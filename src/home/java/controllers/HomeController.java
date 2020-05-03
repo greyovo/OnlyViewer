@@ -7,10 +7,9 @@ import home.java.components.ImageView2;
 import home.java.components.RipplerImageView;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
+import home.java.model.SelectedModel;
 import home.java.model.SortParam;
-import io.datafx.controller.ViewController;
-import io.datafx.controller.flow.context.FXMLViewFlowContext;
-import io.datafx.controller.flow.context.ViewFlowContext;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -25,12 +24,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +46,9 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
     @FXML
     private Label folderInfoLabel;
+
+    @FXML
+    private StackPane rootPane;
 
     @FXML
     private Image image;
@@ -86,7 +89,8 @@ public class HomeController implements Initializable {
     @FXML
     private JFXDialog dialog;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean IsClickCombobox = false;
 
     public HomeController() {
@@ -98,6 +102,9 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Home Window init running...");
+
+        //将本类的实例添加到全局映射中
+        Util.controllers.put(this.getClass().getSimpleName(), this);
 
         setFileTreeView(); //初始化目录树
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
@@ -328,6 +335,43 @@ public class HomeController implements Initializable {
             }
         }
         return item.getName();
+    }
+
+    //确认删除的对话框
+    public void callDeleteDialog(ImageModel im) {
+
+        JFXButton confirm = new JFXButton("删除");
+        JFXButton cancel = new JFXButton("取消");
+        confirm.getStyleClass().add("dialog-confirm");
+        cancel.getStyleClass().add("dialog-cancel");
+
+        Label heading = new Label("确认删除");
+        heading.getStyleClass().add("dialog-heading");
+
+        Label body = new Label("删除文件: " + im.getImageName() + "\n\n此操作不可逆。");
+        body.getStyleClass().add("dialog-body");
+
+        JFXDialog dialog = new JFXDialog();
+        dialog.setOverlayClose(true);
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(heading);
+        layout.setBody(body);
+
+        cancel.setOnAction(event -> {
+            dialog.close();
+            System.out.println("取消删除。");
+        });
+
+        confirm.setOnAction(event -> {
+            SelectedModel.sourceImage(im.getImageFilePath());
+            SelectedModel.deleteImage();
+            dialog.close();
+            System.out.println("删除成功!");
+        });
+
+        layout.setActions(cancel, confirm);
+        dialog.setContent(layout);
+        dialog.show(rootPane);
     }
 
 
