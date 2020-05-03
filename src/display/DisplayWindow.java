@@ -33,7 +33,6 @@ public class DisplayWindow extends Application {
     private ImageModel im;
     private ArrayList<ImageModel> imageModelArrayList;
     private StackPane stackPane;
-    private  DisplayWindowController dwController;
 
     private double ratio; // 图片比例（宽/高），用于决定是适应图片的高度还是宽度
 
@@ -53,9 +52,9 @@ public class DisplayWindow extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/DisplayWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
         Parent root = fxmlLoader.load();
-        dwController = fxmlLoader.getController();
+        DisplayWindowController dwController = fxmlLoader.getController();
 
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 //        StackPane stackPane = (StackPane) root;
@@ -75,7 +74,7 @@ public class DisplayWindow extends Application {
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
-
+        dwController.test();
     }
 
     public void setImage(ImageModel im) throws Exception {

@@ -8,6 +8,11 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import com.jfoenix.controls.JFXRippler?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import com.jfoenix.controls.JFXButton?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
@@ -16,5 +21,6 @@
     <ImageView fx:id="imageView">
 
     </ImageView>
+
 
 </StackPane>

@@ -1,6 +1,8 @@
 package display.java.controllers;
 
+import com.jfoenix.controls.JFXToolbar;
 import display.DisplayWindow;
+import home.java.controllers.Util;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import io.datafx.controller.ViewController;
@@ -31,10 +33,14 @@ public class DisplayWindowController implements Initializable {
     @FXML @Getter
     public StackPane stackPane;
 
+    public JFXToolbar toolbar;
+
     @FXML @Setter @Getter
     private ImageView imageView;
 
     private Image image;
+
+    private ImageModel imageModel;
 
     public ArrayList<ImageModel> imageModelArrayList;
 
@@ -44,6 +50,17 @@ public class DisplayWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        Util.controllers.put(this.getClass().getSimpleName(),this);
+
     }
+
+    public void test(){
+        System.out.println("imageView in controller: "+imageView);
+    }
+
+    public void setImageModel(){
+
+    }
+
 
 }

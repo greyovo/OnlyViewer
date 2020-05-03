@@ -21,3 +21,13 @@
     -jfx-size: 15;
     -fx-background-color: WHITE;
 }
+
+/* 工具栏样式 */
+.bottom-toolbar{
+    -fx-background-color:#009688;
+    -fx-padding:10;
+    -fx-font-size: 18.0px;
+    -fx-padding: 10 10 10 10;
+    -fx-text-fill: rgba(0, 0, 0, 0.9);
+}
+
