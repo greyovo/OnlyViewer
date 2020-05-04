@@ -3,6 +3,7 @@ package home.java.model;
 import com.sun.jna.platform.FileUtils;
 import lombok.NonNull;
 import lombok.Setter;
+import net.coobird.thumbnailator.Thumbnails;
 import org.junit.Test;
 
 import java.io.*;
@@ -10,6 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 
 /**
  * @ProjName: OnlyViewer
@@ -65,15 +69,17 @@ public class SelectedModel {
         return sb.toString();
     }
 
-    // 分割.jpg后缀 复制时重复名字处理
-    private static String copyName(String newPath) {
+    // 分割.jpg后缀 处理名字前半部分冲突
+    private static String suffixName(String newPath, String suffix) {
         StringBuilder sb = new StringBuilder(32);
         String sourceName = sourcePath.getFileName().toString();
         String nameBefore = sourceName.substring(0, sourceName.indexOf(".")); // 只有一个名字 没有.
         String nameAfter = sourceName.substring(sourceName.indexOf(".")); // 带有. .jpg
-        sb.append(checkPath(newPath)).append(nameBefore).append("_copy").append(nameAfter);
+        sb.append(checkPath(newPath)).append(nameBefore).append(suffix).append(nameAfter);
         return sb.toString();
     }
+
+
 
     // 初始化源 复制/剪切/重命名/删除选项调用
     public static boolean setSourcePath(@NonNull ImageModel im) {
@@ -86,8 +92,8 @@ public class SelectedModel {
         return true;
     }
 
-    public static boolean setSourcePath(String path) {
-        sourcePath = new File(path).toPath();
+    public static boolean setSourcePath(String imagePath) {
+        sourcePath = new File(imagePath).toPath();
         return true;
     }
 
@@ -107,7 +113,7 @@ public class SelectedModel {
                 String sourceFileName = sourcePath.getFileName().toString();
                 for (String s : flist) {
                     if (sourceFileName.equals(s) & !flag) {
-                        targetPath = new File(copyName(path)).toPath();
+                        targetPath = new File(suffixName(path, "_copy")).toPath();
                         flag = true;
                     }
                 }
@@ -184,6 +190,50 @@ public class SelectedModel {
         return true;
     }
 
+    private static double getAccuracy(double imageSize) {
+        double accuracy = 0;
+        if (imageSize < 1024*5) {
+            accuracy = 0.8;
+        } else if (imageSize < 1024*8) {
+            accuracy = 0.65;
+        } else if (imageSize < 1024*10) {
+            accuracy = 0.6;
+        } else {
+            accuracy = 0.55;
+        }
+        return accuracy;
+    }
+
+    // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近 返回值是新的文件夹
+    public static boolean compressImage(String imagePath, int desSize) {
+        sourcePath = new File(imagePath).toPath();
+        byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());
+        if (imageBytes == null || imageBytes.length < desSize * 1024){
+            // 不需要压缩了
+            return false;
+        }
+        double accuracy = 0;
+        try {
+            System.out.println("进行压缩");
+            if (imageBytes.length > desSize * 1024) {
+                accuracy = getAccuracy(imageBytes.length / 1024.0);
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream(imageBytes.length);
+                Thumbnails.of(bis)
+                        .scale(accuracy)
+                        .outputQuality(accuracy)
+                        .toOutputStream(bos);
+                imageBytes = bos.toByteArray();
+            }
+            System.out.println("压缩完毕");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        String newImagePath = suffixName(getBeforePath(), "_press");
+        File newFile = new File(newImagePath);
+        GenUtilModel.getFileByByte(imageBytes, newFile);
+        return true;
+    }
 
     @Test
     public void Test() {
