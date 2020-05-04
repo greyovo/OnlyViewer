@@ -1,8 +1,7 @@
 package home.java.components;
 
-import io.datafx.controller.ViewController;
 
-@ViewController()
+
 public class DeleteDialogController {
 
     ImageBox imageBox;

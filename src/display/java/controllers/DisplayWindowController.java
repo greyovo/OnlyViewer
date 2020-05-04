@@ -1,8 +1,7 @@
 package display.java.controllers;
 
-import com.jfoenix.controls.JFXToolbar;
 import display.DisplayWindow;
-import home.java.controllers.Util;
+import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import javafx.event.EventHandler;
@@ -10,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -19,6 +17,8 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.management.MXBean;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -48,7 +48,7 @@ public class DisplayWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Util.controllers.put(this.getClass().getSimpleName(), this);
+        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         toolbar.translateYProperty().bind(stackPane.heightProperty().divide(5).multiply(2));
     }
 

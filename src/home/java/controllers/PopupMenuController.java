@@ -1,8 +1,6 @@
 package home.java.controllers;
 
 import com.jfoenix.controls.*;
-import home.java.components.DeleteDialogController;
-import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXListView;
 import home.java.components.ImageBox;
 import home.java.model.ImageModel;
@@ -10,10 +8,6 @@ import home.java.model.SelectedModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import lombok.Getter;
 
 import java.net.URL;
@@ -33,11 +27,11 @@ public class PopupMenuController implements Initializable {
 
     public PopupMenuController() {
         //将本类的实例添加到全局映射中
-        Util.controllers.put(this.getClass().getSimpleName(), this);
+        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
 //        System.out.println("put PopupMenuCon in Map...");
 
         //获取HomeController实例
-        hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
+        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 //        System.out.println("hc in PopMenuCon: " + hc);
     }
 

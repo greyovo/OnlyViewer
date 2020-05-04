@@ -21,13 +21,14 @@ import java.io.IOException;
 
 
 /**
- * 主窗口缩略图单元。
+ * 主窗口的缩略图单元。
  * 用来包装图片{@link ImageView2}和图片文件名{@link ImageLabel}。
  * 继承自{@link VBox}，添加特定的样式。
  *
  * @author Grey
  */
-@Getter @Setter
+@Getter
+@Setter
 public class ImageBox extends VBox {
 
     {
@@ -37,9 +38,13 @@ public class ImageBox extends VBox {
 
     private ImageModel im;
     private ImageView2 imageView2;
-    private MouseImageMenu menu = new MouseImageMenu(im);
     private JFXPopup popUpMenu;
 
+    /**
+     * 构造器，初始化一个缩略图单元
+     *
+     * @param im 图片文件类
+     */
     public ImageBox(ImageModel im) {
         this.im = im;
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
@@ -48,9 +53,9 @@ public class ImageBox extends VBox {
                 true,
                 true,
                 true));
-        this.imageView2 = imageView;
-        RipplerImageView riv = new RipplerImageView(imageView); //一个水波纹点击效果的包装
-        ImageLabel imageLabel = new ImageLabel(im.getImageName()); //标签 - 文件名
+        this.imageView2 = imageView;                                //图片
+        RipplerImageView riv = new RipplerImageView(imageView);     //一个水波纹点击效果的包装
+        ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
         this.getChildren().addAll(riv, imageLabel);
 
         //设置文件信息tips
@@ -58,21 +63,26 @@ public class ImageBox extends VBox {
         Tooltip.install(this, new Tooltip(tooltip));
 
         setMouseAction();
+        setPopUpMenu();
+    }
+
+    /**
+     * 加载右键菜单
+     */
+    private void setPopUpMenu() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
+        loader.setController(new PopupMenuController(this));
         try {
-            setPopUpMenu();
+            popUpMenu = new JFXPopup(loader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setPopUpMenu() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
-        loader.setController(new PopupMenuController(this));
-        popUpMenu = new JFXPopup(loader.load());
         popUpMenu.setAutoHide(true);
     }
 
-
+    /**
+     * 鼠标对图片的操作反馈
+     */
     private void setMouseAction() {
 
         //鼠标点击事件
@@ -89,11 +99,11 @@ public class ImageBox extends VBox {
                     e.printStackTrace();
                 }
             } else if (event.getButton() == MouseButton.SECONDARY) {
-                // TODO 鼠标右键菜单
-//                menu.show(this, event.getScreenX(),event.getScreenY());
+                // 鼠标右键菜单
                 popUpMenu.show(this,
-                        JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT,
-                        100,100);
+                        JFXPopup.PopupVPosition.TOP,
+                        JFXPopup.PopupHPosition.LEFT,
+                        100, 100);
             }
         });
 
