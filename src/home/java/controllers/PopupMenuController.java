@@ -10,6 +10,7 @@ import home.java.model.SelectedModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import lombok.Getter;
 
 import java.net.URL;
@@ -22,6 +23,7 @@ public class PopupMenuController implements Initializable {
 
     private ImageModel im;
     private ImageBox imageBox;
+    private Image image;
     private HomeController hc;
 
     @Getter
@@ -47,6 +49,7 @@ public class PopupMenuController implements Initializable {
         this();
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
+        image = imageBox.getImageView2().getImage();
     }
 
     public void setImageBox(ImageBox imageBox) {
@@ -83,15 +86,17 @@ public class PopupMenuController implements Initializable {
                 System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
 //                hc.callDeleteDialog(im);
                 new CustomDialog(hc, DialogType.DELETE, im,
-                        "删除图片",
-                        "删除文件: " + im.getImageName() + "\n\n你可以在回收站处找回。").show();
+                        "确认删除",
+                        "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             case 4:
                 StringBuilder info = new StringBuilder();
-                info.append("大小：").append(im.getFormatSize()).append("\n\n");
-                info.append("位置：").append(im.getImageFilePath()).append("\n\n");
-                info.append("修改日期：").append(im.getFormatTime()).append("\n\n");
+                info.append("尺寸：").append(image.getWidth()).append("*").append(image.getHeight()).append("\n");
+                info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
+                info.append("大小：").append(im.getFormatSize()).append("\n");
+                info.append("日期：").append(im.getFormatTime()).append("\n");
+                info.append("\n位置：").append(im.getImageFilePath()).append("\n");
                 new CustomDialog(hc, DialogType.INFO, im,
                         im.getImageName(), info.toString()).show();
                 imageBox.getPopUpMenu().hide();
