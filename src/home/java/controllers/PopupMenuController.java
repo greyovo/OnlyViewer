@@ -34,11 +34,11 @@ public class PopupMenuController implements Initializable {
     public PopupMenuController() {
         //将本类的实例添加到全局映射中
         Util.controllers.put(this.getClass().getSimpleName(), this);
-        System.out.println("put PopupMenuCon in Map...");
+//        System.out.println("put PopupMenuCon in Map...");
 
         //获取HomeController实例
         hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
-        System.out.println("hc in PopMenuCon: " + hc);
+//        System.out.println("hc in PopMenuCon: " + hc);
     }
 
     @Override
