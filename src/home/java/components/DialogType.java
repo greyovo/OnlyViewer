@@ -7,4 +7,6 @@ public enum DialogType {
     DELETE,
 
     REPLACE,
+
+    INFO,
 }

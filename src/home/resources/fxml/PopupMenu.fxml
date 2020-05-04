@@ -6,11 +6,12 @@
 <JFXListView fx:id="popupList" styleClass="custom-jfx-list-view"
              xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
              onMouseClicked="#action">
-<!--    fx:controller="home.java.controllers.PopupMenuController"-->
+    <!--    fx:controller="home.java.controllers.PopupMenuController"-->
 
     <Label styleClass="popup-menu-text">复制</Label>
     <Label styleClass="popup-menu-text">剪切</Label>
     <Label styleClass="popup-menu-text">重命名</Label>
     <Label styleClass="popup-menu-text" style="-fx-text-fill:RED;">删除</Label>
+    <Label styleClass="popup-menu-text">属性</Label>
 
 </JFXListView>

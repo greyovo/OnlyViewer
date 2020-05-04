@@ -87,6 +87,15 @@ public class PopupMenuController implements Initializable {
                         "删除文件: " + im.getImageName() + "\n\n你可以在回收站处找回。").show();
                 imageBox.getPopUpMenu().hide();
                 break;
+            case 4:
+                StringBuilder info = new StringBuilder();
+                info.append("大小：").append(im.getFormatSize()).append("\n\n");
+                info.append("位置：").append(im.getImageFilePath()).append("\n\n");
+                info.append("修改日期：").append(im.getFormatTime()).append("\n\n");
+                new CustomDialog(hc, DialogType.INFO, im,
+                        im.getImageName(), info.toString()).show();
+                imageBox.getPopUpMenu().hide();
+                break;
             default:
         }
     }

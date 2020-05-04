@@ -55,6 +55,7 @@ public class CustomDialog {
         setLeftButtAction();
         rightButton = new JFXButton(buttonText2);
         dialog.setOverlayClose(true);
+        layout.setMaxWidth(500);
 
         if (type == DialogType.DELETE) {
             rightButton.getStyleClass().add("dialog-confirm-red");
@@ -69,6 +70,8 @@ public class CustomDialog {
                 renameAction();
             } else if (type == DialogType.REPLACE) {
                 replaceAction();
+            } else {
+                rightButton.setOnAction(leftButton.getOnAction());
             }
         }
         leftButton.getStyleClass().add("dialog-cancel");
