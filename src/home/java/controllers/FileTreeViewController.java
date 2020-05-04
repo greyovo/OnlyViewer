@@ -2,6 +2,7 @@ package home.java.controllers;
 
 import com.jfoenix.controls.JFXTreeView;
 import home.java.model.ImageListModel;
+import home.java.model.SortParam;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -117,7 +118,7 @@ public class FileTreeViewController implements Initializable {
                     hc.placeImages(ImageListModel.initImgList(path), path);
                     // 只要点击一次排序后以后每次进入新页面就置为"默认排序"
                     if (hc.isComboBoxClicked())
-                        hc.getSortComboBox().setValue("默认排序");
+                        hc.getSortComboBox().setValue(SortParam.SBNR);
                     addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();

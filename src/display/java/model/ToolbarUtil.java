@@ -13,7 +13,7 @@ import java.io.*;
  * @Describe: 工具栏 调用被封装好的功能
  **/
 
-public class Util {
+public class ToolbarUtil {
     //TODO 其他功能
 
     // 每天可识别50000次
@@ -41,8 +41,6 @@ public class Util {
     public void Test() {
         // 测试样例
         String path1 = "src/display/java/model/1.jpg";
-        String path2 = "src/display/java/model/2.jpg";
-        String path3 = "src/display/java/model/3.jpg";
 
         // 改变参数
         String choose = path1;
