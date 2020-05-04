@@ -204,7 +204,7 @@ public class SelectedModel {
         return accuracy;
     }
 
-    // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近 返回值是新的文件夹
+    // 压缩图片 desSize 目标字节数 最终压缩结果向800KB靠近
     public static boolean compressImage(String imagePath, int desSize) {
         sourcePath = new File(imagePath).toPath();
         byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());
@@ -229,7 +229,7 @@ public class SelectedModel {
         } catch (IOException e){
             e.printStackTrace();
         }
-        String newImagePath = suffixName(getBeforePath(), "_press");
+        String newImagePath = suffixName(getBeforePath(), "_only");
         File newFile = new File(newImagePath);
         GenUtilModel.getFileByByte(imageBytes, newFile);
         return true;
