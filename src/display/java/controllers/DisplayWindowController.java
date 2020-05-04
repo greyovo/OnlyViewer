@@ -1,8 +1,11 @@
 package display.java.controllers;
 
-import com.jfoenix.controls.JFXToolbar;
+import com.jfoenix.controls.JFXSnackbar;
 import display.DisplayWindow;
-import home.java.controllers.Util;
+import home.java.components.CustomDialog;
+import home.java.components.DialogType;
+import home.java.controllers.AbstractController;
+import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import javafx.event.EventHandler;
@@ -10,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -19,16 +21,18 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.management.MXBean;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 //@ViewController(value = "/fxml/displayWindow.fxml", title = "Display Window")
-public class DisplayWindowController implements Initializable {
+public class DisplayWindowController extends AbstractController implements Initializable {
 
     @FXML
     @Getter
-    public StackPane stackPane;
+    public StackPane rootPane;
 
     public HBox toolbar;
 
@@ -43,13 +47,17 @@ public class DisplayWindowController implements Initializable {
 
     public ArrayList<ImageModel> imageModelArrayList;
 
+    @Getter
+    private JFXSnackbar snackbar; //下方通知条
+
     public DisplayWindowController() {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Util.controllers.put(this.getClass().getSimpleName(), this);
-        toolbar.translateYProperty().bind(stackPane.heightProperty().divide(5).multiply(2));
+        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
+        toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
+        snackbar = new JFXSnackbar(rootPane);
     }
 
     public void initImage(ImageModel im) {
@@ -63,9 +71,9 @@ public class DisplayWindowController implements Initializable {
         double ratio = image.getWidth() / image.getHeight();
         double sysRatio = DisplayWindow.windowWidth / DisplayWindow.windowHeight;
         if (ratio > sysRatio) {
-            imageView.fitWidthProperty().bind(stackPane.widthProperty());
+            imageView.fitWidthProperty().bind(rootPane.widthProperty());
         } else {
-            imageView.fitHeightProperty().bind(stackPane.heightProperty());
+            imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
 
         //以下实现滚轮的放大缩小
@@ -73,17 +81,18 @@ public class DisplayWindowController implements Initializable {
             @Override
             public void handle(ScrollEvent event) {
                 //如果滚轮向下滑动，缩小
-                if (event.getDeltaY() < 0 ) {
-                    Scale scale = new Scale(0.9,0.9,event.getX(),event.getY());
+                if (event.getDeltaY() < 0) {
+                    Scale scale = new Scale(0.9, 0.9, event.getX(), event.getY());
                     imageView.getTransforms().add(scale);
                 }
                 //如果滚轮向上滑动，放大
-                if (event.getDeltaY() > 0 ) {
-                    Scale scale = new Scale(1.1,1.1,event.getX(),event.getY());
+                if (event.getDeltaY() > 0) {
+                    Scale scale = new Scale(1.1, 1.1, event.getX(), event.getY());
                     imageView.getTransforms().add(scale);
                 }
             }
         });
+
         //记录鼠标点击的初始位置
         final double[] k = new double[2];
         imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -91,66 +100,62 @@ public class DisplayWindowController implements Initializable {
             public void handle(MouseEvent event) {
                 k[0] = event.getX();
                 k[1] = event.getY();
-
             }
         });
 
         //以下实现鼠标拖拽移动
         imageView.setOnMouseDragged(new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent event) {
-                Translate tran = new Translate(event.getX()-k[0],event.getY()-k[1]);
+                Translate tran = new Translate(event.getX() - k[0], event.getY() - k[1]);
                 imageView.getTransforms().add(tran);
-
             }
-
         });
 
 
-
-
-
         imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
-        System.out.println("cur list:\n"+imageModelArrayList);
+        System.out.println("cur list:\n" + imageModelArrayList);
     }
 
     //TODO 放大缩小
     @FXML
-    private void zoomIn(){
-        imageView.setScaleX(imageView.getScaleX()*1.25);
-        imageView.setScaleY(imageView.getScaleY()*1.25);
+    private void zoomIn() {
+        imageView.setScaleX(imageView.getScaleX() * 1.25);
+        imageView.setScaleY(imageView.getScaleY() * 1.25);
         System.out.println("放大");
     }
 
     @FXML
-    private void zoomOut(){
-        imageView.setScaleX(imageView.getScaleX()*0.75);
-        imageView.setScaleY(imageView.getScaleY()*0.75);
+    private void zoomOut() {
+        imageView.setScaleX(imageView.getScaleX() * 0.75);
+        imageView.setScaleY(imageView.getScaleY() * 0.75);
         System.out.println("缩小");
     }
 
     //TODO 下一张图
     @FXML
-    private void showNextImg(){
+    private void showNextImg() {
         System.out.println("下一张");
     }
 
     //TODO 上一张图
     @FXML
-    private void showPreviousImg(){
+    private void showPreviousImg() {
         System.out.println("上一张");
     }
 
     //TODO OCR
     @FXML
-    private void ocr(){
+    private void ocr() {
         System.out.println("OCR");
     }
 
     //TODO 删除
     @FXML
-    private void delete(){
+    private void delete() {
         System.out.println("删除");
+        new CustomDialog(this, DialogType.DELETE, imageModel,
+                "删除图片",
+                "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }
 }

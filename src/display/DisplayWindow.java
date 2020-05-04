@@ -51,7 +51,7 @@ public class DisplayWindow extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
-        dwController = fxmlLoader.getController();
+        dwController = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
         dwController.initImage(im);
 
         //加载css样式文件

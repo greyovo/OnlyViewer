@@ -34,9 +34,9 @@ public class FileTreeViewController implements Initializable {
 
     public FileTreeViewController() {
         //将本类的实例添加到全局映射中
-        Util.controllers.put(this.getClass().getSimpleName(), this);
+        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         System.out.println("put FileTreeViewCon in Map...");
-        hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
+        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
         System.out.println("hc in FileTreeViewCon: " + hc);
     }
 
