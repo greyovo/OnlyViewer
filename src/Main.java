@@ -1,8 +1,5 @@
 import com.jfoenix.controls.JFXDecorator;
 
-import home.java.controllers.HomeController;
-import io.datafx.controller.flow.Flow;
-import io.datafx.controller.flow.container.DefaultFlowContainer;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Application;
@@ -12,7 +9,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -41,7 +37,7 @@ public class Main extends Application{
             e.printStackTrace();
         }
 
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/home/resources/fxml/Home.fxml"));
         Scene scene = new Scene(new JFXDecorator(primaryStage, root), width, height);
 
         //加载css样式文件

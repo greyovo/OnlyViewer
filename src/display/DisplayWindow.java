@@ -46,7 +46,7 @@ public class DisplayWindow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/displayWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/DisplayWindow.fxml"));
 
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
