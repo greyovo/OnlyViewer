@@ -16,30 +16,31 @@ import java.util.regex.Pattern;
  */
 public class FindImageModel {
     @Getter
-    private static int pics=0;
-    /**
-     * 通过图片名字查找图片（精准匹配）
-     */
-    private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
-        for (ImageModel im : imageModelList) {
-            if (im.getImageName().equals(picName)) {
-                pics+=1;
-                return im;
-            }
-        }
-        return null;
-    }
+    //获得找到的图片数量
+    private static int foundNumbers=0;
+//       /**
+//     * 通过图片名字查找图片（精准匹配）
+//     */
+//    private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
+//        for (ImageModel im : imageModelList) {
+//            if (im.getImageName().equals(picName)) {
+//                foundNumbers+=1;
+//                return im;
+//            }
+//        }
+//        return null;
+//    }
 
 
 
-    //实现精准查找并返回一个结果
+    //实现精准查找并返回一个结果，需要文件的全称包括后缀
     public static ImageModel  findImage_exact(String name,ArrayList<ImageModel> imageModelList){
         //对大小写不敏感，若敏感，去除CASE_INSENSITIVE
         Pattern pattern = Pattern.compile(name,Pattern.CASE_INSENSITIVE);
         for(ImageModel im : imageModelList){
             Matcher matcher = pattern.matcher(im.getImageName());
             if(matcher.matches()){
-                pics+=1;
+                foundNumbers+=1;
                 return im;
             }
         }
@@ -47,7 +48,7 @@ public class FindImageModel {
         return null;
     }
 
-    //实现模糊查找并返回一个图片列表供显示
+    //实现模糊查找并返回一个图片列表供显示，建议使用此方法
     public static ArrayList<ImageModel>  findImage_nonexact(String name,ArrayList<ImageModel> imageModelList){
         //对大小写不敏感，若敏感，去除CASE_INSENSITIVE
         Pattern pattern = Pattern.compile(name,Pattern.CASE_INSENSITIVE);
@@ -55,7 +56,7 @@ public class FindImageModel {
         for(ImageModel im : imageModelList){
             Matcher matcher = pattern.matcher(im.getImageName());
             if(matcher.find()){
-                pics++;
+                foundNumbers++;
                 result.add(im);
             }
         }
@@ -74,7 +75,7 @@ public class FindImageModel {
             long timel = System.currentTimeMillis();
             System.out.printf("查找耗时 %d ms\n", timel - timef);
             System.out.println("共有"+ilist.size()+"张照片");
-            System.out.println("共找到"+pics+"张照片");
+            System.out.println("共找到"+foundNumbers+"张照片");
 
 
     }
