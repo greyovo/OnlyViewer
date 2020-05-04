@@ -2,6 +2,8 @@ package home.java.controllers;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXListView;
+import home.java.components.CustomDialog;
+import home.java.components.DialogType;
 import home.java.components.ImageBox;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
@@ -72,11 +74,17 @@ public class PopupMenuController implements Initializable {
             case 2:
                 System.out.println("点击重命名 重命名图片源:" + im.getImageFilePath());
                 // TODO 重命名输入名字
+                new CustomDialog(hc, DialogType.RENAME, im,
+                        "重命名图片",
+                        "在做了在做了...Orz").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
                 System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
-                hc.callDeleteDialog(im);
+//                hc.callDeleteDialog(im);
+                new CustomDialog(hc, DialogType.DELETE, im,
+                        "删除图片",
+                        "删除文件: " + im.getImageName() + "\n\n你可以在回收站处找回。").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             default:

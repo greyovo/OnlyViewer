@@ -7,7 +7,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:id="stackPane"
+           fx:id="rootPane"
            fx:controller="display.java.controllers.DisplayWindowController">
 
     <ImageView fx:id="imageView">

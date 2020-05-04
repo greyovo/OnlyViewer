@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Grey
  */
 
-public class HomeController implements Initializable {
+public class HomeController extends AbstractController implements Initializable  {
     @FXML
     public JFXButton pasteButton;
 
@@ -97,11 +97,11 @@ public class HomeController implements Initializable {
         imageListPane.setVgap(20);
         imageListPane.setHgap(20);
 
-        initSortComboBox();
-        setWelcomePage();
-
         scrollPane.setContent(imageListPane);
         SplitPane.setResizableWithParent(folderPane, false);
+
+        initSortComboBox();
+        setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
     }
 
     /**
@@ -144,13 +144,14 @@ public class HomeController implements Initializable {
      * 在初始启动时显示欢迎页面
      */
     private void setWelcomePage() {
-        ImageView welcomeImage = new ImageView(new Image("home/resources/images/welcome.png"));
+        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
         welcomeImage.setFitWidth(400);
         welcomeImage.setPreserveRatio(true);
         HBox hBox = new HBox(welcomeImage);
         hBox.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
+        System.out.println(welcomeImage);
     }
 
 
@@ -160,7 +161,7 @@ public class HomeController implements Initializable {
 //    private void refreshImagesList(String url) {
 //        placeImages(ImageListModel.refreshList(url), url);
 //    }
-    private void refreshImagesList() {
+    public void refreshImagesList() {
         placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
         System.out.println("已刷新。");
     }
@@ -261,51 +262,6 @@ public class HomeController implements Initializable {
         dialog.show(rootPane);
     }
 
-    /**
-     * 确认替换对话框
-     */
-    //FIXME 还没想到怎么将按钮事件回传
-    //TODO 提高复用性 将其写成组件类
-    public boolean callReplaceDialog(ImageModel im) {
-        AtomicBoolean replace = new AtomicBoolean(false);
-
-        JFXButton confirm = new JFXButton("替换");
-        JFXButton cancel = new JFXButton("取消");
-        confirm.getStyleClass().add("dialog-confirm");
-        cancel.getStyleClass().add("dialog-cancel");
-
-        Label heading = new Label("存在同名文件");
-        heading.getStyleClass().add("dialog-heading");
-
-        Label body = new Label("存在同名文件，是否替换？此操作不可逆。");
-        body.getStyleClass().add("dialog-body");
-
-        JFXDialog dialog = new JFXDialog();
-        dialog.setOverlayClose(true);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(heading);
-        layout.setBody(body);
-
-        cancel.setOnAction(event -> {
-            dialog.close();
-            System.out.println("取消替换。");
-            replace.set(false);
-        });
-
-        confirm.setOnAction(event -> {
-            SelectedModel.setSourcePath(im.getImageFilePath());
-            SelectedModel.deleteImage();
-            dialog.close();
-            replace.set(true);
-            System.out.println("替换成功!");
-        });
-
-        layout.setActions(cancel, confirm);
-        dialog.setContent(layout);
-        dialog.show(rootPane);
-
-        return replace.get();
-    }
 
     /**
      * 通过图片名字查找图片（精准匹配）
