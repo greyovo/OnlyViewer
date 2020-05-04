@@ -48,6 +48,7 @@ public class PopupMenuController implements Initializable {
     }
 
     public PopupMenuController(ImageBox imageBox) {
+        this();
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
     }
