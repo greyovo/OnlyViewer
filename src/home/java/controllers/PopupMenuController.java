@@ -31,14 +31,18 @@ public class PopupMenuController implements Initializable {
     @Getter
     private JFXSnackbar snackbar;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public PopupMenuController() {
         //将本类的实例添加到全局映射中
         Util.controllers.put(this.getClass().getSimpleName(), this);
+        System.out.println("put PopupMenuCon in Map...");
 
         //获取HomeController实例
         hc = (HomeController) Util.controllers.get(HomeController.class.getSimpleName());
+        System.out.println("hc in PopMenuCon: " + hc);
+    }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         //信息条初始化
         snackbar = new JFXSnackbar(hc.getRootPane());
     }
@@ -48,7 +52,7 @@ public class PopupMenuController implements Initializable {
         this.im = imageBox.getIm();
     }
 
-    public void setImageBox(ImageBox imageBox){
+    public void setImageBox(ImageBox imageBox) {
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
     }

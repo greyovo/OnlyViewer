@@ -3,15 +3,12 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
-import home.java.components.ImageView2;
 import home.java.components.RipplerImageView;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import home.java.model.SortParam;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,13 +19,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-import javafx.util.Callback;
-import javafx.util.Duration;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -45,9 +39,6 @@ public class HomeController implements Initializable {
     public JFXButton pasteButton;
 
     @FXML
-    public AnchorPane mainPane;
-
-    @FXML
     private Label folderInfoLabel;
 
     @FXML
@@ -55,25 +46,13 @@ public class HomeController implements Initializable {
     private StackPane rootPane;
 
     @FXML
-    private Image image;
-
-    @FXML
-    private ImageView2 imageView;
-
-    @FXML
-    private VBox imageVBox;
-
-    @FXML
     private FlowPane imageListPane = new FlowPane();
 
     @FXML
-    private ToolBar infoBar;
+    private ToolBar infoBar; //文件夹上方信息栏 位于刷新按钮左侧
 
     @FXML
     private ScrollPane scrollPane;
-
-    @FXML
-    private JFXTreeView<File> fileTreeView;
 
     @FXML
     private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
@@ -88,19 +67,20 @@ public class HomeController implements Initializable {
     private SplitPane splitPane;
 
     @FXML
+    @Getter
     private JFXComboBox<String> sortComboBox;
 
-    @FXML
-    private JFXDialog dialog;
-
+    @Getter
     @Setter
-    @Getter
-    private boolean IsClickCombobox = false;
+    private boolean comboBoxClicked = false;
 
     @Getter
-    private JFXSnackbar snackbar;
+    private JFXSnackbar snackbar; //下方通知条
 
     public HomeController() {
+        //将本类的实例添加到全局映射中
+        Util.controllers.put(this.getClass().getSimpleName(), this);
+        System.out.println("put HomeCon in Map...");
     }
 
     /**
@@ -108,12 +88,8 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Home Window init running...");
+        System.out.println("Home Window started running...");
 
-        //将本类的实例添加到全局映射中
-        Util.controllers.put(this.getClass().getSimpleName(), this);
-
-        setFileTreeView(); //初始化目录树
         snackbar = new JFXSnackbar(rootPane);
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
 
@@ -121,34 +97,47 @@ public class HomeController implements Initializable {
         imageListPane.setVgap(20);
         imageListPane.setHgap(20);
 
+        initSortComboBox();
+        setWelcomePage();
+
         scrollPane.setContent(imageListPane);
-
         SplitPane.setResizableWithParent(folderPane, false);
+    }
 
-        refreshButton.setOnAction(event -> {
-            refreshImagesList();
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
-        });
+    /**
+     * 刷新按钮操作
+     */
+    @FXML
+    private void refresh() {
+        refreshImagesList();
+        snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
+    }
 
-        pasteButton.setOnAction(event -> {
-            if (SelectedModel.pasteImage(pathLabel.getText())) {
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
-            } else {
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
-            }
-            refreshImagesList();
-        });
+    /**
+     * 粘贴按钮操作
+     */
+    @FXML
+    private void paste() {
+        if (SelectedModel.pasteImage(pathLabel.getText())) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
+        }
+        refreshImagesList();
+    }
 
+    /**
+     * 初始化排序下拉盒子
+     */
+    private void initSortComboBox() {
         sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
         sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 refreshImagesList(newValue);
-                if (!IsClickCombobox)
-                    setIsClickCombobox(true);
+                if (!comboBoxClicked)
+                    setComboBoxClicked(true);
             }
-
         });
-        setWelcomePage();
     }
 
     /**
@@ -185,7 +174,7 @@ public class HomeController implements Initializable {
      * 生成并往面板中放置图像组。
      * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
-    private void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
+    public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
@@ -230,137 +219,10 @@ public class HomeController implements Initializable {
 
     }
 
-//    private int loadPic(ArrayList<ImageModel> imageModelList, FlowPane imageListPane, int index){
-//        //滚动时的刷新速度 一张一张
-//        int speed = 1;
-//        for (int i = index; i<=index+speed && i<imageModelList.size()  ; i++) {
-//            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
-//            imageListPane.getChildren().add(imageBox);
-//        }
-//        return index+speed;
-//    }
-
-
     /**
-     * 设置左侧文件目录树
-     *
-     * @author tudou daren
+     * 确认删除的对话框
      */
-    private void setFileTreeView() {
-        //定义目录树
-        File[] rootList = File.listRoots();
-        TreeItem<File> a = new TreeItem<>(rootList[0]);
-
-        for (File root : rootList) {
-            TreeItem<File> c = new TreeItem<>(root);
-            try {
-                addItems(c, 0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            a.getChildren().add(c);
-        }
-
-        fileTreeView.setRoot(a);
-        fileTreeView.setShowRoot(false);
-
-        //自定义单元格，设置文件夹图片
-        fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
-            @Override
-            public TreeCell<File> call(TreeView<File> param) {
-                TreeCell<File> treeCell = new TreeCell<File>() {
-                    @Override
-                    protected void updateItem(File item, boolean empty) {
-
-                        if (!empty) {
-                            super.updateItem(item, empty);
-                            HBox hBox = new HBox();
-                            Label label = new Label(isListRoots(item));
-
-                            this.setGraphic(hBox);
-
-                            if (this.getTreeItem().isExpanded()) {
-                                ImageView folderImage = new ImageView("icons/opened_folder.png");
-                                folderImage.setPreserveRatio(true);
-                                folderImage.setFitWidth(22);
-                                hBox.getChildren().add(folderImage);//加图片
-                                //this.setDisclosureNode(folderImage);
-                                this.setGraphic(hBox);
-                            } else if (!this.getTreeItem().isExpanded()) {
-                                ImageView folderImage = new ImageView("icons/folder.png");
-                                folderImage.setPreserveRatio(true);
-                                folderImage.setFitWidth(22);
-                                hBox.getChildren().add(folderImage);//加图片
-
-                                this.setGraphic(hBox);
-                            }
-                            hBox.getChildren().add(label);//加文字
-                        } else if (empty) {
-                            this.setGraphic(null);
-
-                        }
-                    }
-                };
-                return treeCell;
-            }
-        });
-
-
-        //获取点击操作并刷新当前结点
-        fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
-            @Override
-            public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
-                //此处点击可获得文件夹绝对路径
-                String path = newValue.getValue().getAbsolutePath();
-                System.out.println(path);
-                try {
-                    placeImages(ImageListModel.initImgList(path), path);
-                    // 只要点击一次排序后以后每次进入新页面就置为"默认排序"
-                    if (IsClickCombobox)
-                        sortComboBox.setValue("默认排序");
-                    addItems(newValue, 0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    //递归将节点加入目录树中
-    public void addItems(TreeItem<File> in, int flag) throws IOException {
-        File[] filelist = in.getValue().listFiles();
-        //flag判断当前遍历的层数
-        if (filelist != null) {
-            if (flag == 0) {
-                in.getChildren().remove(0, in.getChildren().size());
-            }
-
-            if (filelist.length > 0) {
-                for (int i = 1; i < filelist.length; i++) {
-                    if (filelist[i].isDirectory() & !filelist[i].isHidden()) {
-                        TreeItem<File> b = new TreeItem<File>(filelist[i]);
-                        if (flag < 1) {
-                            addItems(b, flag + 1);
-                        }
-                        in.getChildren().add(b);
-                    }
-                }
-            }
-        }
-    }
-
-    //判断是否为根目录
-    public String isListRoots(File item) {
-        File[] rootlist = File.listRoots();
-        for (File isListRoots : rootlist) {
-            if (item.toString().equals(isListRoots.toString())) {
-                return item.toString();
-            }
-        }
-        return item.getName();
-    }
-
-    //确认删除的对话框
+    //TODO 提高复用性 将其写成组件类
     public void callDeleteDialog(ImageModel im) {
 
         JFXButton confirm = new JFXButton("删除");
@@ -399,7 +261,11 @@ public class HomeController implements Initializable {
         dialog.show(rootPane);
     }
 
+    /**
+     * 确认替换对话框
+     */
     //FIXME 还没想到怎么将按钮事件回传
+    //TODO 提高复用性 将其写成组件类
     public boolean callReplaceDialog(ImageModel im) {
         AtomicBoolean replace = new AtomicBoolean(false);
 
@@ -441,16 +307,17 @@ public class HomeController implements Initializable {
         return replace.get();
     }
 
-    //通过图片名字查找图片（精准匹配）
+    /**
+     * 通过图片名字查找图片（精准匹配）
+     */
     private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
-        for(ImageModel im:imageModelList){
-            if(im.getImageName().equals(picName)){
+        for (ImageModel im : imageModelList) {
+            if (im.getImageName().equals(picName)) {
                 return im;
             }
         }
         return null;
     }
-
 
 
 }

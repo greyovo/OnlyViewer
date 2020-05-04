@@ -83,11 +83,11 @@
 
                 <!--左侧目录树-->
 
+
                 <AnchorPane fx:id="folderPane">
-                    <JFXTreeView AnchorPane.topAnchor="8.0" AnchorPane.bottomAnchor="8.0"
-                                 AnchorPane.rightAnchor="8.0" AnchorPane.leftAnchor="8.0"
-                                 fx:id="fileTreeView"/>
+                    <fx:include source="FileTreeView.fxml"/>
                 </AnchorPane>
+
 
                 <!-- 右侧 文件夹信息 + 缩略图群 -->
                 <AnchorPane fx:id="mainPane">
@@ -99,12 +99,12 @@
                                    style="-fx-padding:10px"/>
                         </StackPane>
                         <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
-                        <JFXButton fx:id="pasteButton" buttonType="FLAT" text="粘贴" styleClass="normal-button">
+                        <JFXButton fx:id="pasteButton" onAction="#paste" buttonType="FLAT" text="粘贴" styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="refreshButton" buttonType="FLAT" text="刷新" styleClass="normal-button">
+                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新" styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
