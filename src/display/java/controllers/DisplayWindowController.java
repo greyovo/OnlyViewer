@@ -118,15 +118,15 @@ public class DisplayWindowController implements Initializable {
     //TODO 放大缩小
     @FXML
     private void zoomIn(){
-        imageView.setScaleX(1.25);
-        imageView.setScaleY(1.25);
+        imageView.setScaleX(imageView.getScaleX()*1.25);
+        imageView.setScaleY(imageView.getScaleY()*1.25);
         System.out.println("放大");
     }
 
     @FXML
     private void zoomOut(){
-        imageView.setScaleX(0.75);
-        imageView.setScaleY(0.75);
+        imageView.setScaleX(imageView.getScaleX()*0.75);
+        imageView.setScaleY(imageView.getScaleY()*0.75);
         System.out.println("缩小");
     }
 
