@@ -5,12 +5,18 @@ import display.DisplayWindow;
 import home.java.controllers.Util;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import lombok.Getter;
 import lombok.Setter;
 import java.net.URL;
@@ -62,6 +68,49 @@ public class DisplayWindowController implements Initializable {
             imageView.fitHeightProperty().bind(stackPane.heightProperty());
         }
 
+        //以下实现滚轮的放大缩小
+        imageView.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                //如果滚轮向下滑动，缩小
+                if (event.getDeltaY() < 0 ) {
+                    Scale scale = new Scale(0.9,0.9,event.getX(),event.getY());
+                    imageView.getTransforms().add(scale);
+                }
+                //如果滚轮向上滑动，放大
+                if (event.getDeltaY() > 0 ) {
+                    Scale scale = new Scale(1.1,1.1,event.getX(),event.getY());
+                    imageView.getTransforms().add(scale);
+                }
+            }
+        });
+        //记录鼠标点击的初始位置
+        final double[] k = new double[2];
+        imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                k[0] = event.getX();
+                k[1] = event.getY();
+
+            }
+        });
+
+        //以下实现鼠标拖拽移动
+        imageView.setOnMouseDragged(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                Translate tran = new Translate(event.getX()-k[0],event.getY()-k[1]);
+                imageView.getTransforms().add(tran);
+
+            }
+
+        });
+
+
+
+
+
         imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         System.out.println("cur list:\n"+imageModelArrayList);
     }
@@ -69,11 +118,15 @@ public class DisplayWindowController implements Initializable {
     //TODO 放大缩小
     @FXML
     private void zoomIn(){
+        imageView.setScaleX(1.25);
+        imageView.setScaleY(1.25);
         System.out.println("放大");
     }
 
     @FXML
     private void zoomOut(){
+        imageView.setScaleX(0.75);
+        imageView.setScaleY(0.75);
         System.out.println("缩小");
     }
 

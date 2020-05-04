@@ -264,7 +264,7 @@ public class HomeController implements Initializable {
         fileTreeView.setRoot(a);
         fileTreeView.setShowRoot(false);
 
-        //自定义单元格，设置展开箭头为图片
+        //自定义单元格，设置文件夹图片
         fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
             @Override
             public TreeCell<File> call(TreeView<File> param) {
@@ -440,5 +440,17 @@ public class HomeController implements Initializable {
 
         return replace.get();
     }
+
+    //通过图片名字查找图片（精准匹配）
+    private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
+        for(ImageModel im:imageModelList){
+            if(im.getImageName().equals(picName)){
+                return im;
+            }
+        }
+        return null;
+    }
+
+
 
 }
