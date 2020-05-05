@@ -11,6 +11,7 @@ import home.java.model.SelectedModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class PopupMenuController implements Initializable {
 
     private ImageModel im;
     private ImageBox imageBox;
+    private Image image;
     private HomeController hc;
 
     @Getter
@@ -49,6 +51,7 @@ public class PopupMenuController implements Initializable {
         this();
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
+        image = imageBox.getImageView2().getImage();
     }
 
     public void setImageBox(ImageBox imageBox) {
@@ -82,14 +85,6 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
-                System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
-//                hc.callDeleteDialog(im);
-                new CustomDialog(hc, DialogType.DELETE, im,
-                        "删除图片",
-                        "删除文件: " + im.getImageName() + "\n\n你可以在回收站处找回。").show();
-                imageBox.getPopUpMenu().hide();
-                break;
-            case 4:
                 System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
                 SelectedModel.compressImage(im.getImageFilePath(), 800);
@@ -99,8 +94,27 @@ public class PopupMenuController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片"));
-
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
+                break;
+            case 4:
+                System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
+//                hc.callDeleteDialog(im);
+                new CustomDialog(hc, DialogType.DELETE, im,
+                        "确认删除",
+                        "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
+                imageBox.getPopUpMenu().hide();
+                break;
+            case 5:
+                StringBuilder info = new StringBuilder();
+                //FIXME 尺寸属性不对
+//                info.append("尺寸：").append(image.getWidth()).append("*").append(image.getHeight()).append("\n");
+                info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
+                info.append("大小：").append(im.getFormatSize()).append("\n");
+                info.append("日期：").append(im.getFormatTime()).append("\n");
+                info.append("\n位置：").append(im.getImageFilePath()).append("\n");
+                new CustomDialog(hc, DialogType.INFO, im,
+                        im.getImageName(), info.toString()).show();
+                imageBox.getPopUpMenu().hide();
                 break;
             default:
         }

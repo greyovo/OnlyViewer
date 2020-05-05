@@ -1,3 +1,8 @@
+.root {
+    /* -fx-font-family: "Microsoft Yahei UI"; */
+    /* -fx-font-family: "Roboto"; */
+    -fx-font-smoothing-type: gray;
+}
 
 .normal-text-b{
     -fx-font-size: 18.0px;
@@ -214,11 +219,12 @@
  ******************************************************************************/
 
  .jfx-dialog-overlay-pane {
-    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.1);
+    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.3);
 }
 
  .dialog-heading{
     -fx-font-size: 20.0px;
+    -fx-font-smoothing-type: gray;
     -fx-font-weight: BOLD;
  }
 

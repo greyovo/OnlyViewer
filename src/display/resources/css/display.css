@@ -1,3 +1,9 @@
+.root {
+    /* -fx-font-family: "Microsoft Yahei UI"; */
+    -fx-font-family: "Roboto";
+    -fx-font-smoothing-type: gray;
+}
+
 /***主窗口样式***/
 .jfx-decorator {
     -fx-decorator-color: derive(#009688,-10%);
@@ -51,12 +57,13 @@
  ******************************************************************************/
 
  .jfx-dialog-overlay-pane {
-    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.1);
+    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.3);
 }
 
  .dialog-heading{
     -fx-font-size: 20.0px;
-    -fx-font-weight: BOLD;
+    -fx-font-family: "Roboto";
+    /* -fx-font-weight: BOLD; */
  }
 
  .dialog-body{
