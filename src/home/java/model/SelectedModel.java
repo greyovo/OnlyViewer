@@ -192,14 +192,14 @@ public class SelectedModel {
 
     private static double getAccuracy(double imageSize) {
         double accuracy = 0;
-        if (imageSize < 1024*5) {
-            accuracy = 0.8;
+        if (imageSize < 1024*4) {
+            accuracy = 0.71;
         } else if (imageSize < 1024*8) {
-            accuracy = 0.65;
+            accuracy = 0.62;
         } else if (imageSize < 1024*10) {
-            accuracy = 0.6;
+            accuracy = 0.59;
         } else {
-            accuracy = 0.55;
+            accuracy = 0.57;
         }
         return accuracy;
     }
