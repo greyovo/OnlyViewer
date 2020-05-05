@@ -8,7 +8,7 @@ import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
-import home.java.model.SwitchPics;
+import display.java.model.SwitchPics;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +23,6 @@ import javafx.scene.transform.Translate;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.management.MXBean;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;

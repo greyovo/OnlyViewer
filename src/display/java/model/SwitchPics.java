@@ -1,4 +1,6 @@
-package home.java.model;
+package display.java.model;
+
+import home.java.model.ImageModel;
 
 import java.io.IOException;
 
