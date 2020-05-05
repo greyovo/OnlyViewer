@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -39,14 +40,18 @@ public class ImageBox extends VBox {
     private ImageModel im;
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
+    private ArrayList<ImageModel> ilist;
 
     /**
      * 构造器，初始化一个缩略图单元
      *
      * @param im 图片文件类
      */
-    public ImageBox(ImageModel im) {
+    public ImageBox(ImageModel im, ArrayList<ImageModel> ilist) {
         this.im = im;
+        //传送排序后的列表
+        this.ilist = ilist;
+
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 120,
                 120,
@@ -91,7 +96,7 @@ public class ImageBox extends VBox {
                 // TODO 鼠标左键单击图片显示选中框
             } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 // 鼠标左键双击看大图
-                DisplayWindow dw = new DisplayWindow();
+                DisplayWindow dw = new DisplayWindow(ilist);
                 try {
                     dw.setImage(im);
                     dw.start(new Stage());

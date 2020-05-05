@@ -167,6 +167,7 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     private void refreshImagesList(String sort) {
+
         placeImages(ImageListModel.sortList(pathLabel.getText(), sort), pathLabel.getText());
         System.out.println("已排序。");
     }
@@ -197,7 +198,7 @@ public class HomeController extends AbstractController implements Initializable 
 
         //初始加载缩略图
         for (int i = 0; i < firstLoad; i++) {
-            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
+            ImageBox imageBox = new ImageBox(imageModelList.get(i),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
@@ -212,7 +213,7 @@ public class HomeController extends AbstractController implements Initializable 
                 if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
 //                    WAR/WAW ERROR
 //                    index = loadPic(imageModelList, imageListPane, index);
-                    ImageBox imageBox = new ImageBox(imageModelList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    ImageBox imageBox = new ImageBox(imageModelList.get(index),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
                     imageListPane.getChildren().add(imageBox);
                 }
             }
