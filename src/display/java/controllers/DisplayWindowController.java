@@ -8,6 +8,7 @@ import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
+import home.java.model.SwitchPics;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.management.MXBean;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -47,10 +49,14 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     public ArrayList<ImageModel> imageModelArrayList;
 
+    public ArrayList<ImageModel> ilist;
     @Getter
     private JFXSnackbar snackbar; //下方通知条
 
+    private SwitchPics sw;
+
     public DisplayWindowController() {
+
     }
 
     @Override
@@ -60,10 +66,12 @@ public class DisplayWindowController extends AbstractController implements Initi
         snackbar = new JFXSnackbar(rootPane);
     }
 
-    public void initImage(ImageModel im) {
+    public void initImage(ImageModel im, ArrayList<ImageModel> ilist) {
         this.imageModel = im;
+        this.ilist = ilist;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);
+        this.sw=new SwitchPics(this.ilist);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
@@ -132,16 +140,25 @@ public class DisplayWindowController extends AbstractController implements Initi
         System.out.println("缩小");
     }
 
+    // FIXME: 2020.5.5
+     //放大缩小后，下一张图不会复原
     //TODO 下一张图
     @FXML
-    private void showNextImg() {
+    private void showNextImg() throws IOException {
         System.out.println("下一张");
+        //SwitchPics sw = new SwitchPics(this.ilist);
+        initImage(sw.nextImage(imageModel),ilist);
+        //initImage(nextImage(imageModel),ilist);
     }
 
     //TODO 上一张图
     @FXML
-    private void showPreviousImg() {
+    private void showPreviousImg() throws IOException {
+
         System.out.println("上一张");
+        //SwitchPics sw = new SwitchPics(this.ilist);
+        initImage(sw.lastImage(imageModel),ilist);
+        //initImage(lastImage(imageModel),ilist);
     }
 
     //TODO OCR
@@ -158,4 +175,37 @@ public class DisplayWindowController extends AbstractController implements Initi
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }
+
+//    //返回下一张照片
+//    private ImageModel nextImage(ImageModel im) throws IOException {
+//        int i = 0;
+//        for (i = 0; i < ilist.size(); i++) {
+//            if (ilist.get(i).getImageName().equals(im.getImageName())) {
+//                if (i == ilist.size() - 1) System.out.println("已到达最后一张");
+//                break;
+//            }
+//        }
+//        return ilist.get((i + 1) % (ilist.size()));
+//
+//    }
+//
+//    //返回上一张照片
+//    private ImageModel lastImage(ImageModel im) throws IOException {
+//        int i = 0;
+//        for (i = 0; i < ilist.size(); i++) {
+//            if (ilist.get(i).getImageName().equals(im.getImageName())) {
+//                if (i == 0) {
+//                    System.out.println("已到达第一张照片");
+//                    i=ilist.size();
+//                }
+//                break;
+//            }
+//        }
+//        return ilist.get((i - 1) % (ilist.size()));
+//
+//    }
+
+
+
 }
+

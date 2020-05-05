@@ -28,8 +28,14 @@ public class DisplayWindow extends Application {
     public static double windowWidth = 800;     //窗口宽度
     public static double windowHeight = 600;    //窗口高度
 
+    private ArrayList<ImageModel> ilist;
     private ImageModel im;
     DisplayWindowController dwController;
+
+    //获取排序后的列表
+    public DisplayWindow(ArrayList<ImageModel> ilist){
+        this.ilist = ilist;
+    }
 
     @Override
     public void init() throws Exception {
@@ -52,7 +58,7 @@ public class DisplayWindow extends Application {
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         dwController = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
-        dwController.initImage(im);
+        dwController.initImage(im,ilist);
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
