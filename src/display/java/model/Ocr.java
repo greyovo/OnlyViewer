@@ -8,8 +8,8 @@ import java.io.*;
  * @ProjName: OnlyViewer
  * @ClassName: Util
  * @Author: Kevin
- * @Time:2020/4/7 21:16
- * @Describe: 工具栏 调用被封装好的功能
+ * @Time: 2020/4/7 21:16
+ * @Describe: OCR
  **/
 
 public class Ocr {
