@@ -47,8 +47,8 @@ public class Ocr extends GenAIP{
     private static String OCR(String filePath, int mode) {
         String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic";
         try {
-            byte[] imgData = GenAIP.readFileByBytes(filePath);
-            String imgStr = GenAIP.encode(imgData);
+            byte[] imgData = readFileByBytes(filePath);
+            String imgStr = encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
 
             // Body部分放置请求参数
@@ -56,12 +56,12 @@ public class Ocr extends GenAIP{
             String param = "image=" + imgParam + "&detect_direction=true";
 
             // 此获取Token方法每三十日需要更新一次
-            String accessToken = GenAIP.getAuth(API_KEY, SECRET_KEY);
+            String accessToken = getAuth(API_KEY, SECRET_KEY);
 
             if (mode == 0)
-                return GenAIP.post(url, accessToken, param);
+                return post(url, accessToken, param);
             if (mode == 1)
-                return GenAIP.post(url, accessToken, param).replace(";", "；").
+                return post(url, accessToken, param).replace(";", "；").
                         replace(",", "，").replace("(", "（").
                         replace(")", "）").replace(":", "：");
         } catch (Exception e) {
