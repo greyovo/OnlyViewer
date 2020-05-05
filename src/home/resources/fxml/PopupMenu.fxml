@@ -12,5 +12,6 @@
     <Label styleClass="popup-menu-text">剪切</Label>
     <Label styleClass="popup-menu-text">重命名</Label>
     <Label styleClass="popup-menu-text" style="-fx-text-fill:RED;">删除</Label>
+    <Label styleClass="popup-menu-text">压缩</Label>
 
 </JFXListView>

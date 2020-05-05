@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import home.java.components.CustomDialog;
 import home.java.components.DialogType;
 import home.java.components.ImageBox;
+import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import lombok.Getter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -86,6 +88,19 @@ public class PopupMenuController implements Initializable {
                         "删除图片",
                         "删除文件: " + im.getImageName() + "\n\n你可以在回收站处找回。").show();
                 imageBox.getPopUpMenu().hide();
+                break;
+            case 4:
+                System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
+                imageBox.getPopUpMenu().hide();
+                SelectedModel.compressImage(im.getImageFilePath(), 800);
+                try {
+                    // 手动实现刷新
+                    hc.placeImages(ImageListModel.initImgList(im.getImageParentPath()), im.getImageParentPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片"));
+
                 break;
             default:
         }

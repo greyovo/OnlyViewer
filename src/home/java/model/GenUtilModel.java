@@ -1,5 +1,8 @@
 package home.java.model;
 
+import org.omg.IOP.IOR;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -34,5 +37,31 @@ public class GenUtilModel {
         Date data = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return sdf.format(data);
+    }
+
+    static byte[] getByteByFile(File file){
+        try(FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1024)){
+            byte[] bytes = new byte[1024];
+            int i;
+            while ((i = fis.read(bytes)) != -1) {
+                bos.write(bytes, 0, i);
+            }
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static boolean getFileByByte(byte[] bytes, File file) {
+        try (FileOutputStream fos = new FileOutputStream(file);
+             BufferedOutputStream bos = new BufferedOutputStream(fos)){
+            bos.write(bytes);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
