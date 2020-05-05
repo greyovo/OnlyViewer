@@ -1,11 +1,13 @@
 package display.java.model;
 
 import org.json.JSONObject;
+import net.sf.json.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
  * @Describe: From https://ai.baidu.com/ai-doc/OCR 有修改
  **/
 
-public class GenAIP {
+public abstract class GenAIP {
     private static final String APP_ID = "19635799";
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
     private static final char last4byte = (char) Integer.parseInt("00001111", 2);
@@ -220,12 +222,23 @@ public class GenAIP {
             result.append(getLine);
         }
         in.close();
-//        System.out.println("result:" + result);
         String totalStr = result.toString();
-        return regexWords(totalStr);
+        return jsonWords(totalStr);
     }
 
-    // 正则表达式提取words内容
+    // JSONObject处理API返回的数据
+    private static String jsonWords(String totalStr) {
+        net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(totalStr);
+        net.sf.json.JSONArray wordsArray = net.sf.json.JSONArray.fromObject(json.getString("words_result"));
+        StringBuilder sb = new StringBuilder(32);
+        for (int i=0; i<wordsArray.size(); i++) {
+            net.sf.json.JSONObject words = wordsArray.getJSONObject(i);
+            sb.append(words.getString("words")).append("\n");
+        }
+        return sb.toString();
+    }
+
+    // 正则表达式提取words内容 不需要用到了
     static String regexWords(String totalStr) {
         String words = totalStr.split("\"words_result\":")[1];
 
