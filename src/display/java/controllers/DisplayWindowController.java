@@ -48,7 +48,6 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     public ArrayList<ImageModel> imageModelArrayList;
 
-    public ArrayList<ImageModel> ilist;
     @Getter
     private JFXSnackbar snackbar; //下方通知条
 
@@ -65,12 +64,12 @@ public class DisplayWindowController extends AbstractController implements Initi
         snackbar = new JFXSnackbar(rootPane);
     }
 
-    public void initImage(ImageModel im, ArrayList<ImageModel> ilist) {
+    public void initImage(ImageModel im) {
+        imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         this.imageModel = im;
-        this.ilist = ilist;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);
-        this.sw=new SwitchPics(this.ilist);
+        this.sw=new SwitchPics(imageModelArrayList);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
@@ -118,9 +117,7 @@ public class DisplayWindowController extends AbstractController implements Initi
                 imageView.getTransforms().add(tran);
             }
         });
-
-
-        imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
+        //imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         System.out.println("cur list:\n" + imageModelArrayList);
     }
 
@@ -144,10 +141,16 @@ public class DisplayWindowController extends AbstractController implements Initi
     //TODO 下一张图
     @FXML
     private void showNextImg() throws IOException {
+
         System.out.println("下一张");
-        //SwitchPics sw = new SwitchPics(this.ilist);
-        initImage(sw.nextImage(imageModel),ilist);
-        //initImage(nextImage(imageModel),ilist);
+        //为了防止删除后显示空白，自动刷新
+        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+        if(imageModelArrayList.size()==0){
+            System.out.println("此文件夹中的照片已空！");
+        }
+        else{
+            initImage(sw.nextImage(imageModel));
+        }
     }
 
     //TODO 上一张图
@@ -155,9 +158,15 @@ public class DisplayWindowController extends AbstractController implements Initi
     private void showPreviousImg() throws IOException {
 
         System.out.println("上一张");
-        //SwitchPics sw = new SwitchPics(this.ilist);
-        initImage(sw.lastImage(imageModel),ilist);
-        //initImage(lastImage(imageModel),ilist);
+        //为了防止删除后显示空白，自动刷新
+        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+        if(imageModelArrayList.size()==0){
+            System.out.println("此文件夹中的照片已空！");
+        }
+        else{
+            initImage(sw.lastImage(imageModel));
+        }
+
     }
 
     //TODO OCR
@@ -174,36 +183,6 @@ public class DisplayWindowController extends AbstractController implements Initi
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }
-
-//    //返回下一张照片
-//    private ImageModel nextImage(ImageModel im) throws IOException {
-//        int i = 0;
-//        for (i = 0; i < ilist.size(); i++) {
-//            if (ilist.get(i).getImageName().equals(im.getImageName())) {
-//                if (i == ilist.size() - 1) System.out.println("已到达最后一张");
-//                break;
-//            }
-//        }
-//        return ilist.get((i + 1) % (ilist.size()));
-//
-//    }
-//
-//    //返回上一张照片
-//    private ImageModel lastImage(ImageModel im) throws IOException {
-//        int i = 0;
-//        for (i = 0; i < ilist.size(); i++) {
-//            if (ilist.get(i).getImageName().equals(im.getImageName())) {
-//                if (i == 0) {
-//                    System.out.println("已到达第一张照片");
-//                    i=ilist.size();
-//                }
-//                break;
-//            }
-//        }
-//        return ilist.get((i - 1) % (ilist.size()));
-//
-//    }
-
 
 
 }

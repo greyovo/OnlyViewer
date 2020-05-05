@@ -96,7 +96,7 @@ public class ImageBox extends VBox {
                 // TODO 鼠标左键单击图片显示选中框
             } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 // 鼠标左键双击看大图
-                DisplayWindow dw = new DisplayWindow(ilist);
+                DisplayWindow dw = new DisplayWindow();
                 try {
                     dw.setImage(im);
                     dw.start(new Stage());
