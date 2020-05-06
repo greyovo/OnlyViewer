@@ -231,7 +231,7 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
         }
         refreshImagesList();
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
             pasteButton.setDisable(true);
         }
     }
