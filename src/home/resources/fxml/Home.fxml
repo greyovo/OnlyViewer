@@ -46,21 +46,27 @@
 
                         <!-- 地址栏 -->
                         <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
-                            <!--                        <Pane>-->
                             <BorderPane.margin>
                                 <Insets left="50"/>
                             </BorderPane.margin>
                             <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="330"
                                           unFocusColor="white" focusColor="white"
                                           style="-fx-font-size:18px; -fx-text-fill:white;"/>
-                            <!--                        </Pane>-->
                         </JFXRippler>
+
+                        <JFXButton fx:id="gotoButton" onAction="#gotoPath" buttonType="FLAT" text="GO"
+                                   styleClass="normal-button" style=" -fx-text-fill:white;">
+                            <HBox.margin>
+                                <Insets right="10" top="5"/>
+                            </HBox.margin>
+                        </JFXButton>
 
                     </leftItems>
 
                     <rightItems>
                         <HBox alignment="CENTER_RIGHT">
                             <children>
+                                <!--搜索输入栏-->
                                 <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
                                     <JFXTextField prefWidth="160.0" fx:id="searchTextField"
                                                   unFocusColor="white" focusColor="white"

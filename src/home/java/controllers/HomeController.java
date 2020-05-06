@@ -15,6 +15,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 
@@ -23,6 +25,7 @@ import lombok.Setter;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -41,6 +44,8 @@ public class HomeController extends AbstractController implements Initializable 
     public JFXTextField searchTextField;
     @FXML
     public JFXButton closeSearchButton;
+    @FXML
+    public JFXButton gotoButton;
 
     @FXML
     private Label folderInfoLabel;
@@ -107,6 +112,14 @@ public class HomeController extends AbstractController implements Initializable 
         scrollPane.setContent(imageListPane);
         SplitPane.setResizableWithParent(folderPane, false);
         closeSearchButton.setVisible(false);
+        searchTextField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                searchImage();
+        });
+        pathLabel.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                gotoPath();
+        });
 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
@@ -114,6 +127,64 @@ public class HomeController extends AbstractController implements Initializable 
         if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
             pasteButton.setDisable(true);
         }
+    }
+
+    /**
+     * 生成并往面板中放置图像组。
+     * 一个缩略图单元{@link ImageBox}包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
+     */
+    public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
+        // 每次点击就重置
+        imageListPane.getChildren().clear();
+        scrollPane.setContent(imageListPane);
+        //设置初始加载数目,更改时需要更改滚动内的初始index值！！
+        // 修改了firstLoad 取值为列表与15之间的最小值
+        int firstLoad = Math.min(imageModelList.size(), 15);
+        //地址栏更新
+        pathLabel.setText(folderPath);
+        currentPath = folderPath;
+
+        //文件夹信息栏设置
+        if (imageModelList.isEmpty()) {
+            folderInfoLabel.setText("此文件夹下无可识别图片");
+        } else {
+            int total = ImageListModel.getListImgNum(imageModelList);
+            String size = ImageListModel.getListImgSize(imageModelList);
+            folderInfoLabel.setText(total + " 张图片，共 " + size);
+            System.out.println(imageModelList);
+        }
+
+        //初始加载缩略图
+        for (int i = 0; i < firstLoad; i++) {
+            ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+            imageListPane.getChildren().add(imageBox);
+        }
+
+        //加载缩略图
+        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            //初始加载后的位置
+            int index = firstLoad - 1;
+
+            @Override
+            public void handle(ScrollEvent event) {
+                index++;
+                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
+//                    WAR/WAW ERROR
+//                    index = loadPic(imageModelList, imageListPane, index);
+                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    imageListPane.getChildren().add(imageBox);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 更新当前图片列表
+     */
+    public void refreshImagesList() {
+        placeImages(Objects.requireNonNull(ImageListModel.refreshList(currentPath)), currentPath);
+        System.out.println("已刷新。");
     }
 
     /**
@@ -128,6 +199,17 @@ public class HomeController extends AbstractController implements Initializable 
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
         System.out.println(welcomeImage);
+    }
+
+    @FXML
+    private void gotoPath() {
+        String path = pathLabel.getText();
+        ArrayList<ImageModel> list = ImageListModel.refreshList(path);
+        if (list != null) {
+            placeImages(list, path);
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
+        }
     }
 
     /**
@@ -184,76 +266,19 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     @FXML
-    public void closeSearch() {
+    private void closeSearch() {
         closeSearchButton.setVisible(false);
+        searchTextField.setText("");
         refreshImagesList();
     }
 
 
     /**
-     * 更新当前图片列表
+     * 排序当前图片列表并更新到页面
      */
-//    private void refreshImagesList(String url) {
-//        placeImages(ImageListModel.refreshList(url), url);
-//    }
-    public void refreshImagesList() {
-        placeImages(ImageListModel.refreshList(currentPath), currentPath);
-        System.out.println("已刷新。");
-    }
-
     private void refreshImagesList(String sort) {
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
-    }
-
-    /**
-     * 生成并往面板中放置图像组。
-     * 一个缩略图单元{@link ImageBox}包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
-     */
-    public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
-        // 每次点击就重置
-        imageListPane.getChildren().clear();
-        scrollPane.setContent(imageListPane);
-        //设置初始加载数目,更改时需要更改滚动内的初始index值！！
-        // 修改了firstLoad 取值为列表与15之间的最小值
-        int firstLoad = Math.min(imageModelList.size(), 15);
-        //地址栏更新
-        pathLabel.setText(folderPath);
-        currentPath = folderPath;
-
-        //文件夹信息栏设置
-        if (imageModelList.isEmpty()) {
-            folderInfoLabel.setText("此文件夹下无可识别图片");
-        } else {
-            int total = ImageListModel.getListImgNum(imageModelList);
-            String size = ImageListModel.getListImgSize(imageModelList);
-            folderInfoLabel.setText(total + " 张图片，共 " + size);
-            System.out.println(imageModelList);
-        }
-
-        //初始加载缩略图
-        for (int i = 0; i < firstLoad; i++) {
-            ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
-            imageListPane.getChildren().add(imageBox);
-        }
-
-        //加载缩略图
-        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
-            //初始加载后的位置
-            int index = firstLoad - 1;
-
-            @Override
-            public void handle(ScrollEvent event) {
-                index++;
-                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
-//                    WAR/WAW ERROR
-//                    index = loadPic(imageModelList, imageListPane, index);
-                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
-                    imageListPane.getChildren().add(imageBox);
-                }
-            }
-        });
-
     }
 
 
