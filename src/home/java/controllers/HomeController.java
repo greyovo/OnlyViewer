@@ -183,7 +183,7 @@ public class HomeController extends AbstractController implements Initializable 
      * 更新当前图片列表
      */
     public void refreshImagesList() {
-        placeImages(Objects.requireNonNull(ImageListModel.refreshList(currentPath)), currentPath);
+        placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
 
@@ -279,18 +279,5 @@ public class HomeController extends AbstractController implements Initializable 
     private void refreshImagesList(String sort) {
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
-    }
-
-
-    /**
-     * 通过图片名字查找图片（精准匹配）
-     */
-    private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
-        for (ImageModel im : imageModelList) {
-            if (im.getImageName().equals(picName)) {
-                return im;
-            }
-        }
-        return null;
     }
 }

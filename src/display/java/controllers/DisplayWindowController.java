@@ -1,7 +1,9 @@
 package display.java.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSpinner;
 import display.DisplayWindow;
+import display.java.model.Ocr;
 import home.java.components.CustomDialog;
 import home.java.components.DialogType;
 import home.java.controllers.AbstractController;
@@ -9,7 +11,9 @@ import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
-import javafx.event.ActionEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +28,7 @@ import javafx.scene.transform.Translate;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -181,6 +186,35 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     private void ocr() {
         System.out.println("OCR");
+        CustomDialog loading = new CustomDialog(this, DialogType.INFO, imageModel, "正在处理");
+        loading.setLoadingSpinner();
+        loading.show();
+
+        JFXSpinner spinner = new JFXSpinner(-1);
+        DisplayWindowController dwc = (DisplayWindowController)ControllerUtil.controllers.get(this.getClass().getSimpleName());
+
+        Task ocrTask = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                String path = imageModel.getImageFilePath();
+                File file = new File(path);
+                if (!file.exists()) {
+                    System.out.println("图片不存在!");
+                }
+                String result = Ocr.doOcr(path, Ocr.ENG);
+                System.out.println(result);
+                loading.close();
+                updateMessage(result);
+                return true;
+            }
+        };
+        ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            CustomDialog dialog = new CustomDialog(dwc, DialogType.INFO, imageModel, "识别结果");
+            dialog.setBodyLabel(newValue);
+            dialog.show();
+        });
+        new Thread(ocrTask).start();
     }
 
     @FXML

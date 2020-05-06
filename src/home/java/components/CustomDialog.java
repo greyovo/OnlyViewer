@@ -113,6 +113,7 @@ public class CustomDialog {
     }
 
     public void setBodyLabel(String bodyText) {
+//        layout.getChildren().clear();   // TODO: 2020/5/6 可能有问题
         bodyLabel = new Label(bodyText);
         bodyLabel.getStyleClass().add("dialog-body");
         if (type == DialogType.INFO) {
@@ -120,6 +121,12 @@ public class CustomDialog {
         } else {
             layout.setBody(bodyLabel);
         }
+    }
+    
+    public void setLoadingSpinner(){
+//        layout.getChildren().clear();
+        JFXSpinner spinner = new JFXSpinner(-1);
+        layout.setBody(spinner);
     }
 
     private void setBodyTextArea(String text) {
@@ -195,6 +202,10 @@ public class CustomDialog {
             System.out.println("ERROR: 未指定对话框按钮");
         dialog.setContent(layout);
         dialog.show(controller.getRootPane());
+    }
+
+    public void close(){
+        dialog.close();
     }
 
 }
