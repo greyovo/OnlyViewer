@@ -25,7 +25,6 @@ public class PopupMenuController implements Initializable {
 
     private ImageModel im;
     private ImageBox imageBox;
-    private Image image;
     private HomeController hc;
 
     @Getter
@@ -49,12 +48,6 @@ public class PopupMenuController implements Initializable {
 
     public PopupMenuController(ImageBox imageBox) {
         this();
-        this.imageBox = imageBox;
-        this.im = imageBox.getIm();
-        image = imageBox.getImageView2().getImage();
-    }
-
-    public void setImageBox(ImageBox imageBox) {
         this.imageBox = imageBox;
         this.im = imageBox.getIm();
     }
@@ -105,9 +98,9 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 5:
+                Image image = new Image(im.getImageFile().toURI().toString());
                 StringBuilder info = new StringBuilder();
-                //FIXME 尺寸属性不对
-//                info.append("尺寸：").append(image.getWidth()).append("*").append(image.getHeight()).append("\n");
+                info.append("尺寸：").append(image.getWidth()).append(" × ").append(image.getHeight()).append("\n");
                 info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
                 info.append("大小：").append(im.getFormatSize()).append("\n");
                 info.append("日期：").append(im.getFormatTime()).append("\n");
