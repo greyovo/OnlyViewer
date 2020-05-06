@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 主窗口界面的控制器。
@@ -124,7 +123,7 @@ public class HomeController extends AbstractController implements Initializable 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
 
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
             pasteButton.setDisable(true);
         }
     }
@@ -183,7 +182,7 @@ public class HomeController extends AbstractController implements Initializable 
      * 更新当前图片列表
      */
     public void refreshImagesList() {
-        placeImages(Objects.requireNonNull(ImageListModel.refreshList(currentPath)), currentPath);
+        placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
 
@@ -232,7 +231,7 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
         }
         refreshImagesList();
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
             pasteButton.setDisable(true);
         }
     }
@@ -279,18 +278,5 @@ public class HomeController extends AbstractController implements Initializable 
     private void refreshImagesList(String sort) {
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
-    }
-
-
-    /**
-     * 通过图片名字查找图片（精准匹配）
-     */
-    private ImageModel findPic(ArrayList<ImageModel> imageModelList, String picName) {
-        for (ImageModel im : imageModelList) {
-            if (im.getImageName().equals(picName)) {
-                return im;
-            }
-        }
-        return null;
     }
 }

@@ -58,7 +58,7 @@ public class PopupMenuController implements Initializable {
             case 0:
                 System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
-                SelectedModel.setOption(0);
+                SelectedModel.setCopyOrMove(0);
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
                 imageBox.getPopUpMenu().hide();
@@ -66,7 +66,7 @@ public class PopupMenuController implements Initializable {
             case 1:
                 System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
                 SelectedModel.setSourcePath(im.getImageFilePath());
-                SelectedModel.setOption(1);
+                SelectedModel.setCopyOrMove(1);
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
                 imageBox.getPopUpMenu().hide();
@@ -83,7 +83,8 @@ public class PopupMenuController implements Initializable {
                 System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
                 boolean flag = false;
-                if (SelectedModel.compressImage(im.getImageFilePath(), 800)) {
+                SelectedModel.setSourcePath(im.getImageFilePath());
+                if (SelectedModel.compressImage(800)) {
                     flag = true;
                 }
                 try {
