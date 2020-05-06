@@ -80,14 +80,20 @@ public class PopupMenuController implements Initializable {
             case 3:
                 System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
-                SelectedModel.compressImage(im.getImageFilePath(), 800);
+                boolean flag = false;
+                if (SelectedModel.compressImage(im.getImageFilePath(), 800)) {
+                    flag = true;
+                }
                 try {
                     // 手动实现刷新
                     hc.placeImages(ImageListModel.initImgList(im.getImageParentPath()), im.getImageParentPath());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
+                if (flag)
+                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
+                else
+                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("压缩图片条件为大于800KB"));
                 break;
             case 4:
                 System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
