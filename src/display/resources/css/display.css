@@ -28,6 +28,41 @@
     -fx-background-color: WHITE;
 }
 
+/* FX默认的菜单样式 */
+.context-menu{
+	-fx-padding:2;
+	-fx-border-width:0;
+    -fx-background-color:rgb(242,242,242,0.96); /*0.87*/
+    -fx-pref-width: 120.0px;
+	/*-fx-background-radius:2px;*/
+	/* -fx-effect:dropshadow(three-pass-box, #F2F2F2, 1, 0, 0, 0);  */
+} 
+
+/* 菜单栏选中并移动到二级菜单时一级选中菜单的样式 */
+.menu-bar > .container > .menu-button:showing{ 
+    -fx-background-color: #CCCCCE;
+    -fx-border-color: #CCCCCE;
+}
+
+.menu-button{
+	-fx-padding:1 4 1 4;
+	-fx-border-width:1;
+	-fx-border-color:#F0F0F0;
+}
+.menu-button:hover{
+	-fx-background-color:#CCCCCE;
+	-fx-border-color:#CCCCCE;
+}
+.menu-button > .label,.menu-item > .label{
+	-fx-text-fill:BLACK;
+}
+.menu-item:focused{
+    -fx-background-color:#CCCCCE; 
+}
+.menu:focused > .right-container > .arrow{
+    -fx-background-color:#CCCCCE;
+}
+
 /*******************************************************************************
  *                                                                             *
  * 下方工具栏                                                                  *
@@ -74,6 +109,13 @@
     -fx-font-size: 18.0px;
  }
 
+ .dialog-text-area{
+    -fx-font-size: 18.0px;
+    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
+    -jfx-focus-color: #009688;
+    -jfx-unfocus-color: #4d4d4d;
+}
+
  .dialog-confirm-red{
     -fx-text-fill: RED;
     /* -fx-font-weight: BOLD; */
@@ -95,6 +137,8 @@
     /* -fx-font-weight: BOLD; */
     -fx-padding: 0.7em 0.8em;
  }
+
+
 
 
   /*******************************************************************************
