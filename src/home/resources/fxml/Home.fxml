@@ -46,29 +46,36 @@
 
                         <!-- 地址栏 -->
                         <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
-                            <!--                        <Pane>-->
                             <BorderPane.margin>
                                 <Insets left="50"/>
                             </BorderPane.margin>
                             <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="330"
                                           unFocusColor="white" focusColor="white"
                                           style="-fx-font-size:18px; -fx-text-fill:white;"/>
-                            <!--                        </Pane>-->
                         </JFXRippler>
+
+                        <JFXButton fx:id="gotoButton" onAction="#gotoPath" buttonType="FLAT" text="GO"
+                                   styleClass="normal-button" style=" -fx-text-fill:white;">
+                            <HBox.margin>
+                                <Insets right="10" top="5"/>
+                            </HBox.margin>
+                        </JFXButton>
 
                     </leftItems>
 
                     <rightItems>
                         <HBox alignment="CENTER_RIGHT">
                             <children>
+                                <!--搜索输入栏-->
                                 <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
-                                    <JFXTextField prefWidth="160.0"
+                                    <JFXTextField prefWidth="160.0" fx:id="searchTextField"
                                                   unFocusColor="white" focusColor="white"
                                                   styleClass="search-box">
                                     </JFXTextField>
                                 </JFXRippler>
                                 <!--搜索按钮-->
-                                <JFXButton buttonType="FLAT" contentDisplay="CENTER" ripplerFill="white"
+                                <JFXButton buttonType="FLAT" onAction="#searchImage" contentDisplay="CENTER"
+                                           ripplerFill="white"
                                            style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
                                 </JFXButton>
                             </children>
@@ -91,24 +98,42 @@
 
                 <!-- 右侧 文件夹信息 + 缩略图群 -->
                 <AnchorPane fx:id="mainPane">
-                    <!--TODO 放置下拉排序菜单-->
+                    <!--上方信息栏+按钮-->
                     <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"
                              prefHeight="33">
+
+                        <!--当前状态信息栏-->
                         <StackPane>
                             <Label fx:id="folderInfoLabel" styleClass="normal-text-b"
                                    style="-fx-padding:10px"/>
                         </StackPane>
                         <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
-                        <JFXButton fx:id="pasteButton" onAction="#paste" buttonType="FLAT" text="粘贴" styleClass="normal-button">
+
+                        <!--取消搜索按钮-->
+                        <JFXButton fx:id="closeSearchButton" onAction="#closeSearch" buttonType="FLAT" text="关闭搜索"
+                                   styleClass="normal-button" style="-fx-text-fill:#009688;">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新" styleClass="normal-button">
+
+                        <!--粘贴按钮-->
+                        <JFXButton fx:id="pasteButton" onAction="#paste" buttonType="FLAT" text="粘贴"
+                                   styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
+
+                        <!--搜索按钮-->
+                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新"
+                                   styleClass="normal-button">
+                            <HBox.margin>
+                                <Insets right="10"/>
+                            </HBox.margin>
+                        </JFXButton>
+
+                        <!--排序盒子-->
                         <JFXComboBox fx:id="sortComboBox" prefWidth="220" prefHeight="20" promptText="  按名称升序"
                                      styleClass="combo-box"/>
                     </ToolBar>
