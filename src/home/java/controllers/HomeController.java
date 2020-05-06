@@ -4,11 +4,9 @@ import com.jfoenix.controls.*;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
 import home.java.components.RipplerImageView;
-import home.java.model.ImageListModel;
-import home.java.model.ImageModel;
-import home.java.model.SelectedModel;
-import home.java.model.SortParam;
+import home.java.model.*;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,9 +32,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Grey
  */
 
-public class HomeController extends AbstractController implements Initializable  {
+public class HomeController extends AbstractController implements Initializable {
     @FXML
+    @Getter
     public JFXButton pasteButton;
+
+    @FXML
+    public JFXTextField searchTextField;
+    @FXML
+    public JFXButton closeSearchButton;
 
     @FXML
     private Label folderInfoLabel;
@@ -58,6 +62,7 @@ public class HomeController extends AbstractController implements Initializable 
     private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
 
     @FXML
+    @Getter
     private JFXButton refreshButton;
 
     @FXML
@@ -73,6 +78,8 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     @Setter
     private boolean comboBoxClicked = false;
+
+    private String currentPath;
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
@@ -99,9 +106,28 @@ public class HomeController extends AbstractController implements Initializable 
 
         scrollPane.setContent(imageListPane);
         SplitPane.setResizableWithParent(folderPane, false);
+        closeSearchButton.setVisible(false);
 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
+
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+            pasteButton.setDisable(true);
+        }
+    }
+
+    /**
+     * 在初始启动时显示欢迎页面
+     */
+    private void setWelcomePage() {
+        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
+        welcomeImage.setFitWidth(400);
+        welcomeImage.setPreserveRatio(true);
+        HBox hBox = new HBox(welcomeImage);
+        hBox.setAlignment(Pos.CENTER);
+        StackPane stackPane = new StackPane(hBox);
+        scrollPane.setContent(stackPane);
+        System.out.println(welcomeImage);
     }
 
     /**
@@ -124,6 +150,9 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
         }
         refreshImagesList();
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+            pasteButton.setDisable(true);
+        }
     }
 
     /**
@@ -140,18 +169,24 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    /**
-     * 在初始启动时显示欢迎页面
-     */
-    private void setWelcomePage() {
-        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
-        welcomeImage.setFitWidth(400);
-        welcomeImage.setPreserveRatio(true);
-        HBox hBox = new HBox(welcomeImage);
-        hBox.setAlignment(Pos.CENTER);
-        StackPane stackPane = new StackPane(hBox);
-        scrollPane.setContent(stackPane);
-        System.out.println(welcomeImage);
+    @FXML
+    private void searchImage() {
+        String key = searchTextField.getText();
+        ArrayList<ImageModel> result =
+                SearchImageModel.fuzzySearch(key, ImageListModel.refreshList(currentPath));
+        placeImages(result, currentPath);
+        if (result.size() == 0) {
+            folderInfoLabel.setText("未找到图片");
+        } else {
+            folderInfoLabel.setText("共找到 " + result.size() + " 个结果");
+        }
+        closeSearchButton.setVisible(true);
+    }
+
+    @FXML
+    public void closeSearch() {
+        closeSearchButton.setVisible(false);
+        refreshImagesList();
     }
 
 
@@ -162,13 +197,12 @@ public class HomeController extends AbstractController implements Initializable 
 //        placeImages(ImageListModel.refreshList(url), url);
 //    }
     public void refreshImagesList() {
-        placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
+        placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
 
     private void refreshImagesList(String sort) {
-
-        placeImages(ImageListModel.sortList(pathLabel.getText(), sort), pathLabel.getText());
+        placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
     }
 
@@ -185,6 +219,7 @@ public class HomeController extends AbstractController implements Initializable 
         int firstLoad = Math.min(imageModelList.size(), 15);
         //地址栏更新
         pathLabel.setText(folderPath);
+        currentPath = folderPath;
 
         //文件夹信息栏设置
         if (imageModelList.isEmpty()) {
@@ -198,7 +233,7 @@ public class HomeController extends AbstractController implements Initializable 
 
         //初始加载缩略图
         for (int i = 0; i < firstLoad; i++) {
-            ImageBox imageBox = new ImageBox(imageModelList.get(i),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+            ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
@@ -213,54 +248,12 @@ public class HomeController extends AbstractController implements Initializable 
                 if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
 //                    WAR/WAW ERROR
 //                    index = loadPic(imageModelList, imageListPane, index);
-                    ImageBox imageBox = new ImageBox(imageModelList.get(index),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
                     imageListPane.getChildren().add(imageBox);
                 }
             }
         });
 
-    }
-
-    /**
-     * 确认删除的对话框
-     */
-    //TODO 提高复用性 将其写成组件类
-    public void callDeleteDialog(ImageModel im) {
-
-        JFXButton confirm = new JFXButton("删除");
-        JFXButton cancel = new JFXButton("取消");
-        confirm.getStyleClass().add("dialog-confirm-red");
-        cancel.getStyleClass().add("dialog-cancel");
-
-        Label heading = new Label("确认删除");
-        heading.getStyleClass().add("dialog-heading");
-
-        Label body = new Label("删除文件: " + im.getImageName() + "\n\n此操作不可逆。");
-        body.getStyleClass().add("dialog-body");
-
-        JFXDialog dialog = new JFXDialog();
-        dialog.setOverlayClose(true);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(heading);
-        layout.setBody(body);
-
-        cancel.setOnAction(event -> {
-            dialog.close();
-            System.out.println("取消删除");
-        });
-
-        confirm.setOnAction(event -> {
-            SelectedModel.setSourcePath(im.getImageFilePath());
-            if (SelectedModel.deleteImage()) {
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("删除成功"));    //显示删除成功通知。
-                refreshImagesList();
-            }
-            dialog.close();
-        });
-
-        layout.setActions(cancel, confirm);
-        dialog.setContent(layout);
-        dialog.show(rootPane);
     }
 
 
@@ -275,6 +268,4 @@ public class HomeController extends AbstractController implements Initializable 
         }
         return null;
     }
-
-
 }

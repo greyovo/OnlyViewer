@@ -1,6 +1,7 @@
 package home.java.model;
 
 import com.sun.jna.platform.FileUtils;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.coobird.thumbnailator.Thumbnails;
@@ -31,10 +32,11 @@ public class SelectedModel {
      * 剪切：如果遇到文件重复 -> 直接覆盖
      * 重命名：如果遇到文件重复 -> 直接覆盖
      */
+    @Getter
     private static Path sourcePath;
     private static Path targetPath;
 
-    @Setter // 选择复制/剪切 0->复制 1->剪切
+    @Setter @Getter // 选择复制/剪切 0->复制 1->剪切
     private static int option = -1;
 
     // 检查路径后缀
