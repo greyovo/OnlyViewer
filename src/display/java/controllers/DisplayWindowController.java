@@ -69,7 +69,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         this.imageModel = im;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);
-        this.sw=new SwitchPics(imageModelArrayList);
+        this.sw = new SwitchPics(imageModelArrayList);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
@@ -121,49 +121,54 @@ public class DisplayWindowController extends AbstractController implements Initi
         System.out.println("cur list:\n" + imageModelArrayList);
     }
 
+    /**
+     * 恢复初始缩放比例和位置
+     */
+    private void initStatus() {
+        imageView.setScaleX(1.0);
+        imageView.setScaleY(1.0);
+        imageView.getTransforms().clear();
+    }
+
     //TODO 放大缩小
     @FXML
     private void zoomIn() {
         imageView.setScaleX(imageView.getScaleX() * 1.25);
         imageView.setScaleY(imageView.getScaleY() * 1.25);
-        System.out.println("放大");
+        System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
     }
 
     @FXML
     private void zoomOut() {
         imageView.setScaleX(imageView.getScaleX() * 0.75);
         imageView.setScaleY(imageView.getScaleY() * 0.75);
-        System.out.println("缩小");
+        System.out.println("缩小" + imageView.getScaleX() + " x " + imageView.getScaleY());
     }
 
-    // FIXME: 2020.5.5
-     //放大缩小后，下一张图不会复原
-    //TODO 下一张图
+    //下一张图
     @FXML
     private void showNextImg() throws IOException {
-
+        initStatus();
         System.out.println("下一张");
         //为了防止删除后显示空白，自动刷新
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
-        if(imageModelArrayList.size()==0){
+        if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
-        }
-        else{
+        } else {
             initImage(sw.nextImage(imageModel));
         }
     }
 
-    //TODO 上一张图
+    //上一张图
     @FXML
     private void showPreviousImg() throws IOException {
-
+        initStatus();
         System.out.println("上一张");
         //为了防止删除后显示空白，自动刷新
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
-        if(imageModelArrayList.size()==0){
+        if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
-        }
-        else{
+        } else {
             initImage(sw.lastImage(imageModel));
         }
 
@@ -175,7 +180,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         System.out.println("OCR");
     }
 
-    //TODO 删除
+    //删除
     @FXML
     private void delete() {
         System.out.println("删除");
@@ -183,7 +188,6 @@ public class DisplayWindowController extends AbstractController implements Initi
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }
-
 
 }
 
