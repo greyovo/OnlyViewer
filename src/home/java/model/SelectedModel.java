@@ -192,19 +192,19 @@ public class SelectedModel {
 
     private static double getAccuracy(double imageSize) {
         double accuracy = 0;
-        if (imageSize < 1024*4) {
+        if (imageSize < 1024*2) {
             accuracy = 0.71;
+        } else if (imageSize < 1024*4) {
+            accuracy = 0.66;
         } else if (imageSize < 1024*8) {
-            accuracy = 0.62;
-        } else if (imageSize < 1024*10) {
-            accuracy = 0.59;
+            accuracy = 0.61;
         } else {
-            accuracy = 0.57;
+            accuracy = 0.59;
         }
         return accuracy;
     }
 
-    // 压缩图片 desSize 目标字节数 最终压缩结果向800KB靠近
+    // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近
     public static boolean compressImage(String imagePath, int desSize) {
         sourcePath = new File(imagePath).toPath();
         byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());
@@ -219,10 +219,11 @@ public class SelectedModel {
                 accuracy = getAccuracy(imageBytes.length / 1024.0);
                 ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream(imageBytes.length);
-                Thumbnails.of(bis)
-                        .scale(accuracy)
-                        .outputQuality(accuracy)
+                Thumbnails.of(sourcePath.toFile())
+                        .scale(accuracy)  // 分辨率
+                        .outputQuality(accuracy)  // 图片质量
                         .toOutputStream(bos);
+//                        .toFile(newFile);  // 速度略慢
                 imageBytes = bos.toByteArray();
             }
             System.out.println("压缩完毕");
