@@ -15,14 +15,14 @@
     </ImageView>
 
     <HBox fx:id="toolbar" alignment="CENTER"
-          styleClass="bottom-toolbar" maxHeight="22" maxWidth="300">
+          styleClass="bottom-toolbar" maxHeight="33" maxWidth="300">
 
         <JFXButton buttonType="FLAT" onAction="#zoomIn"
                    styleClass="bottom-toolbar-button" ripplerFill="white"
                    style="-fx-background-radius: 11 0 0 11;">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/zoom_in.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/zoom_in.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -30,8 +30,17 @@
         <JFXButton buttonType="FLAT" onAction="#zoomOut"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/zoom_out.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/zoom_out.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#initStatus"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/one_to_one.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -39,8 +48,8 @@
         <JFXButton buttonType="FLAT" onAction="#showPreviousImg"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/previous.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/previous.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -48,8 +57,8 @@
         <JFXButton buttonType="FLAT" onAction="#showNextImg"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/next.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/next.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -57,8 +66,17 @@
         <JFXButton buttonType="FLAT" onAction="#ocr"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/ocr.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/ocr.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showInfo"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/info.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -67,8 +85,8 @@
                    styleClass="bottom-toolbar-button" ripplerFill="white"
                    style="-fx-background-radius: 0 11 11 0;">
             <graphic>
-                <ImageView fitWidth="50" preserveRatio="true">
-                    <Image url="@../icons/delete.png"/>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/delete.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
