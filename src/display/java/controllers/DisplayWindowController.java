@@ -191,7 +191,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         info.append("类型：").append(imageModel.getImageType().toUpperCase()).append("\n");
         info.append("大小：").append(imageModel.getFormatSize()).append("\n");
         info.append("日期：").append(imageModel.getFormatTime()).append("\n");
-        info.append("\n位置：").append(imageModel.getImageFilePath()).append("\n");
+        info.append("\n位置：").append(imageModel.getImageFilePath());
         new CustomDialog(this, DialogType.INFO, imageModel,
                 imageModel.getImageName(), info.toString()).show();
     }

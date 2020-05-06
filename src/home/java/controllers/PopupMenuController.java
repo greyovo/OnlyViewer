@@ -72,9 +72,9 @@ public class PopupMenuController implements Initializable {
             case 2:
                 System.out.println("点击重命名 重命名图片源:" + im.getImageFilePath());
                 // TODO 重命名输入名字
+                SelectedModel.setSourcePath(im);
                 new CustomDialog(hc, DialogType.RENAME, im,
-                        "重命名图片",
-                        "在做了在做了...Orz").show();
+                        "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
@@ -104,7 +104,7 @@ public class PopupMenuController implements Initializable {
                 info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
                 info.append("大小：").append(im.getFormatSize()).append("\n");
                 info.append("日期：").append(im.getFormatTime()).append("\n");
-                info.append("\n位置：").append(im.getImageFilePath()).append("\n");
+                info.append("\n位置：").append(im.getImageFilePath());
                 new CustomDialog(hc, DialogType.INFO, im,
                         im.getImageName(), info.toString()).show();
                 imageBox.getPopUpMenu().hide();
