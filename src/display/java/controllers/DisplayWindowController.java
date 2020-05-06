@@ -154,8 +154,14 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
         if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹中的照片已空！"));
         } else {
-            initImage(sw.nextImage(imageModel));
+            if(sw.nextImage(imageModel)!=null){
+                initImage(sw.nextImage(imageModel));
+            }
+            else{
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已到达最后一张"));
+            }
         }
     }
 
@@ -168,8 +174,14 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
         if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹中的照片已空！"));
         } else {
-            initImage(sw.lastImage(imageModel));
+            if(sw.lastImage(imageModel)!=null){
+                initImage(sw.lastImage(imageModel));
+            }
+            else{
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已到达第一张"));
+            }
         }
 
     }

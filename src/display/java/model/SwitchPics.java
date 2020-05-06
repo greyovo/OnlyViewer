@@ -1,6 +1,8 @@
 package display.java.model;
 
+import com.jfoenix.controls.JFXSnackbar;
 import home.java.model.ImageModel;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
@@ -17,7 +19,9 @@ public class SwitchPics {
 
     private ArrayList<ImageModel> ilist;
 
+
     public SwitchPics(ArrayList<ImageModel> ilist){
+
         this.ilist = ilist;
     }
 
@@ -26,7 +30,10 @@ public class SwitchPics {
         int i = 0;
         for (i = 0; i < ilist.size(); i++) {
             if (ilist.get(i).getImageName().equals(im.getImageName())) {
-                if (i == ilist.size() - 1) System.out.println("已到达最后一张");
+                if (i == ilist.size() - 1) {
+                    System.out.println("已到达最后一张");
+                    return null;
+                }
                 break;
             }
         }
@@ -41,7 +48,8 @@ public class SwitchPics {
             if (ilist.get(i).getImageName().equals(im.getImageName())) {
                 if (i == 0) {
                     System.out.println("已到达第一张照片");
-                    i=ilist.size();
+                    return null;
+                    //i=ilist.size();
                 }
                 break;
             }
