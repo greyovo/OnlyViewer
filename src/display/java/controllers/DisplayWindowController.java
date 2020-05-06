@@ -9,6 +9,7 @@ import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -124,13 +125,13 @@ public class DisplayWindowController extends AbstractController implements Initi
     /**
      * 恢复初始缩放比例和位置
      */
+    @FXML
     private void initStatus() {
         imageView.setScaleX(1.0);
         imageView.setScaleY(1.0);
         imageView.getTransforms().clear();
     }
 
-    //TODO 放大缩小
     @FXML
     private void zoomIn() {
         imageView.setScaleX(imageView.getScaleX() * 1.25);
@@ -154,6 +155,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
         if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
         } else {
             initImage(sw.nextImage(imageModel));
         }
@@ -168,6 +170,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
         if (imageModelArrayList.size() == 0) {
             System.out.println("此文件夹中的照片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
         } else {
             initImage(sw.lastImage(imageModel));
         }
@@ -178,6 +181,19 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     private void ocr() {
         System.out.println("OCR");
+    }
+
+    @FXML
+    public void showInfo() {
+        Image image = new Image(imageModel.getImageFile().toURI().toString());
+        StringBuilder info = new StringBuilder();
+        info.append("尺寸：").append(image.getWidth()).append(" × ").append(image.getHeight()).append("\n");
+        info.append("类型：").append(imageModel.getImageType().toUpperCase()).append("\n");
+        info.append("大小：").append(imageModel.getFormatSize()).append("\n");
+        info.append("日期：").append(imageModel.getFormatTime()).append("\n");
+        info.append("\n位置：").append(imageModel.getImageFilePath()).append("\n");
+        new CustomDialog(this, DialogType.INFO, imageModel,
+                imageModel.getImageName(), info.toString()).show();
     }
 
     //删除
