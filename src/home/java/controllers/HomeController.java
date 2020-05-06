@@ -268,6 +268,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void closeSearch() {
         closeSearchButton.setVisible(false);
+        searchTextField.setText("");
         refreshImagesList();
     }
 
