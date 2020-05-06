@@ -174,7 +174,7 @@ public class HomeController extends AbstractController implements Initializable 
 
     /**
      * 生成并往面板中放置图像组。
-     * 一个缩略图单元包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
+     * 一个缩略图单元{@link ImageBox}包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         // 每次点击就重置
