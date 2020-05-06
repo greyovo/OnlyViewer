@@ -15,6 +15,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 
@@ -41,6 +43,8 @@ public class HomeController extends AbstractController implements Initializable 
     public JFXTextField searchTextField;
     @FXML
     public JFXButton closeSearchButton;
+    @FXML
+    public JFXButton gotoButton;
 
     @FXML
     private Label folderInfoLabel;
@@ -107,6 +111,14 @@ public class HomeController extends AbstractController implements Initializable 
         scrollPane.setContent(imageListPane);
         SplitPane.setResizableWithParent(folderPane, false);
         closeSearchButton.setVisible(false);
+        searchTextField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                searchImage();
+        });
+        pathLabel.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                gotoPath();
+        });
 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
@@ -128,6 +140,17 @@ public class HomeController extends AbstractController implements Initializable 
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
         System.out.println(welcomeImage);
+    }
+
+    @FXML
+    private void gotoPath() {
+        String path = pathLabel.getText();
+        ArrayList<ImageModel> list = ImageListModel.refreshList(path);
+        if (list != null) {
+            placeImages(list, path);
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
+        }
     }
 
     /**
@@ -184,7 +207,7 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     @FXML
-    public void closeSearch() {
+    private void closeSearch() {
         closeSearchButton.setVisible(false);
         refreshImagesList();
     }
