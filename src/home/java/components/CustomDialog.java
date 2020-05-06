@@ -6,12 +6,11 @@ import display.java.controllers.DisplayWindowController;
 import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
 import home.java.controllers.HomeController;
+import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.scene.control.Label;
 import lombok.Setter;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * TODO 自定义、可复用的对话框
@@ -38,80 +37,123 @@ public class CustomDialog {
     private JFXButton leftButton;
     private JFXButton rightButton;
 
-    private Label heading;
-    private Label body;
+    private Label headingLabel;
+    private Label bodyLabel;
 
-    @Setter
-    private JFXTextField textField;
+    private JFXTextArea bodyTextArea;
+    private JFXTextField bodyTextField;
 
     private JFXDialog dialog = new JFXDialog();
     private JFXDialogLayout layout = new JFXDialogLayout();
 
+    /**
+     * @param controller  对话框出现所在的界面的控制器
+     *                    如需要在主界面弹出，则传入{@linkplain HomeController}的实例
+     * @param type        对话框种类，详见{@link DialogType}
+     * @param targetImage 待处理的目标图片对象
+     */
     public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage) {
         this.controller = controller;
         this.type = type;
         this.targetImage = targetImage;
+
         leftButton = new JFXButton(buttonText1);
-        setLeftButtAction();
         rightButton = new JFXButton(buttonText2);
+        leftButton.getStyleClass().add("dialog-cancel");
+        leftButton.setText("取消");
+        rightButton.getStyleClass().add("dialog-confirm");
+        rightButton.setText("确认");
+        setCloseAction(leftButton);
+        setCloseAction(rightButton);
+
         dialog.setOverlayClose(true);
         layout.setMaxWidth(500);
 
         if (type == DialogType.DELETE) {
-            rightButton.getStyleClass().add("dialog-confirm-red");
-            rightButton.setText("删除");
-//            setHeading("删除图片");
-//            setBody("删除文件: " + targetImage.getImageName() + "\n\n你可以在回收站找回。");
-            deleteAction();
+            makeDeleteDialog();
+        } else if (type == DialogType.RENAME) {
+            makeRenameDialog();
+        } else if (type == DialogType.REPLACE) {
+            makeReplaceDialog();
         } else {
-            rightButton.getStyleClass().add("dialog-confirm");
-            rightButton.setText("确认");
-            if (type == DialogType.RENAME) {
-                renameAction();
-            } else if (type == DialogType.REPLACE) {
-                replaceAction();
-            } else {
-                rightButton.setOnAction(leftButton.getOnAction());
-            }
+            makeInfoDialog();
         }
-        leftButton.getStyleClass().add("dialog-cancel");
-        leftButton.setText("取消");
     }
 
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage,
-                        String headingText, String bodyText) {
 
+    /**
+     * @param controller  对话框出现所在的界面的控制器
+     *                    如需要在主界面弹出，则传入{@linkplain HomeController}的实例
+     * @param type        对话框种类，详见{@link DialogType}
+     * @param targetImage 待处理的目标图片对象
+     * @param headingText 标题
+     */
+    public CustomDialog(AbstractController controller,
+                        DialogType type, ImageModel targetImage,
+                        String headingText) {
         this(controller, type, targetImage);
-
-        setHeading(headingText);
-        setBody(bodyText);
-
-        layout.setHeading(heading);
-        layout.setBody(body);
+        setHeadingLabel(headingText);
     }
 
-    public void setHeading(String headingText) {
-        heading = new Label(headingText);
-        heading.getStyleClass().add("dialog-heading");
+    /**
+     * @param bodyText 正文
+     */
+    public CustomDialog(AbstractController controller,
+                        DialogType type, ImageModel targetImage,
+                        String headingText, String bodyText) {
+        this(controller, type, targetImage, headingText);
+        setBodyLabel(bodyText);
     }
 
-    public void setBody(String bodyText) {
-        body = new Label(bodyText);
-        body.getStyleClass().add("dialog-body");
+
+    public void setHeadingLabel(String headingText) {
+        headingLabel = new Label(headingText);
+        headingLabel.getStyleClass().add("dialog-heading");
+        layout.setHeading(headingLabel);
     }
 
-    public void setLeftButtAction() {
-        leftButton.setOnAction(event -> {
+    public void setBodyLabel(String bodyText) {
+        bodyLabel = new Label(bodyText);
+        bodyLabel.getStyleClass().add("dialog-body");
+        if (type == DialogType.INFO) {
+            setBodyTextArea(bodyText);
+        } else {
+            layout.getChildren().add(bodyLabel);
+        }
+    }
+
+    private void setBodyTextArea(String text) {
+        bodyTextArea = new JFXTextArea(text);
+        bodyTextArea.getStyleClass().add("dialog-text-area");
+        bodyTextArea.setEditable(false);
+        layout.setBody(bodyTextArea);
+//        layout.getChildren().add(bodyTextArea);
+    }
+
+    /**
+     * 重命名用到
+     */
+    private void setBodyTextField() {
+        bodyTextField = new JFXTextField();
+        bodyTextField.setText(targetImage.getImageName());
+        bodyTextField.getStyleClass().add("rename-text-field");
+        bodyTextField.getStyleClass().add("dialog-body");
+//        bodyTextField.setAccessibleText("请输入新名称");
+//        layout.getChildren().add(bodyTextField);
+        layout.setBody(bodyTextField);
+    }
+
+    private void setCloseAction(JFXButton button) {
+        button.setOnAction(event -> {
             dialog.close();
             System.out.println("关闭对话框");
         });
     }
 
-    public void setTextField() {
-
-    }
-
-    public void deleteAction() {
+    private void makeDeleteDialog() {
+        rightButton.getStyleClass().clear();
+        rightButton.getStyleClass().add("dialog-confirm-red");
+        rightButton.setText("删除");
         rightButton.setOnAction(event -> {
             SelectedModel.setSourcePath(targetImage.getImageFilePath());
             if (SelectedModel.deleteImage()) {
@@ -124,14 +166,20 @@ public class CustomDialog {
         });
     }
 
-    public void replaceAction() {
+    private void makeRenameDialog() {
+        setBodyTextField();
         rightButton.setOnAction(event -> {
-            //TODO
+            SelectedModel.renameImage(bodyTextField.getText());
             dialog.close();
         });
     }
 
-    public void renameAction() {
+    private void makeInfoDialog() {
+        rightButton.getStyleClass().add("dialog-confirm");
+        rightButton.setText("确认");
+    }
+
+    private void makeReplaceDialog() {
         rightButton.setOnAction(event -> {
             //TODO
             dialog.close();
