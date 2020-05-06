@@ -94,24 +94,24 @@
  * JFX Dialog                                                                  *
  *                                                                             *
  ******************************************************************************/
-
  .jfx-dialog-overlay-pane {
     -fx-background-color: rgba(0.0, 0.0, 0.0, 0.3);
 }
 
  .dialog-heading{
     -fx-font-size: 20.0px;
-    -fx-font-family: "Roboto";
-    /* -fx-font-weight: BOLD; */
+    -fx-font-smoothing-type: gray;
+    -fx-font-weight: BOLD;
  }
 
  .dialog-body{
     -fx-font-size: 18.0px;
+    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
+    -fx-prompt-text-fill: #808080;
  }
 
- .dialog-text-area{
+  .dialog-text-area{
     -fx-font-size: 18.0px;
-    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
     -jfx-focus-color: #009688;
     -jfx-unfocus-color: #4d4d4d;
 }
@@ -136,6 +136,15 @@
     -fx-font-size: 16.0px;
     /* -fx-font-weight: BOLD; */
     -fx-padding: 0.7em 0.8em;
+ }
+
+ .rename-text-field{
+    -fx-background-color: transparent;
+    -fx-alignment: top-left;
+    -fx-min-width: 450.0;
+    -fx-padding: 15px;
+    -jfx-focus-color: #009688;
+    -jfx-unfocus-color: #4d4d4d;
  }
 
 

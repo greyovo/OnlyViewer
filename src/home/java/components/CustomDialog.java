@@ -118,16 +118,15 @@ public class CustomDialog {
         if (type == DialogType.INFO) {
             setBodyTextArea(bodyText);
         } else {
-            layout.getChildren().add(bodyLabel);
+            layout.setBody(bodyLabel);
         }
     }
 
     private void setBodyTextArea(String text) {
         bodyTextArea = new JFXTextArea(text);
-        bodyTextArea.getStyleClass().add("dialog-text-area");
+        bodyTextArea.getStyleClass().addAll("dialog-text-area","dialog-body");
         bodyTextArea.setEditable(false);
         layout.setBody(bodyTextArea);
-//        layout.getChildren().add(bodyTextArea);
     }
 
     /**
@@ -136,10 +135,7 @@ public class CustomDialog {
     private void setBodyTextField() {
         bodyTextField = new JFXTextField();
         bodyTextField.setText(targetImage.getImageName());
-        bodyTextField.getStyleClass().add("rename-text-field");
-        bodyTextField.getStyleClass().add("dialog-body");
-//        bodyTextField.setAccessibleText("请输入新名称");
-//        layout.getChildren().add(bodyTextField);
+        bodyTextField.getStyleClass().addAll("rename-text-field","dialog-body");
         layout.setBody(bodyTextField);
     }
 
@@ -151,9 +147,10 @@ public class CustomDialog {
     }
 
     private void makeDeleteDialog() {
-        rightButton.getStyleClass().clear();
-        rightButton.getStyleClass().add("dialog-confirm-red");
         rightButton.setText("删除");
+//        rightButton.getStyleClass().clear();
+//        rightButton.getStyleClass().add("dialog-confirm-red");
+        rightButton.setStyle("-fx-text-fill: RED;");
         rightButton.setOnAction(event -> {
             SelectedModel.setSourcePath(targetImage.getImageFilePath());
             if (SelectedModel.deleteImage()) {
@@ -169,7 +166,8 @@ public class CustomDialog {
     private void makeRenameDialog() {
         setBodyTextField();
         rightButton.setOnAction(event -> {
-            SelectedModel.renameImage(bodyTextField.getText());
+            if (SelectedModel.renameImage(bodyTextField.getText()))
+                controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
             dialog.close();
             hc.refreshImagesList();
         });

@@ -227,11 +227,12 @@
 
  .dialog-body{
     -fx-font-size: 18.0px;
+    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
+    -fx-prompt-text-fill: #808080;
  }
 
   .dialog-text-area{
     -fx-font-size: 18.0px;
-    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
     -jfx-focus-color: #009688;
     -jfx-unfocus-color: #4d4d4d;
 }
@@ -260,7 +261,6 @@
 
  .rename-text-field{
     -fx-background-color: transparent;
-    -fx-prompt-text-fill: #808080;
     -fx-alignment: top-left;
     -fx-min-width: 450.0;
     -fx-padding: 15px;
