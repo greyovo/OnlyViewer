@@ -4,11 +4,9 @@ import com.jfoenix.controls.*;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
 import home.java.components.RipplerImageView;
-import home.java.model.ImageListModel;
-import home.java.model.ImageModel;
-import home.java.model.SelectedModel;
-import home.java.model.SortParam;
+import home.java.model.*;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,8 +33,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class HomeController extends AbstractController implements Initializable {
-    @FXML @Getter
+    @FXML
+    @Getter
     public JFXButton pasteButton;
+
+    @FXML
+    public JFXTextField searchTextField;
+    @FXML
+    public JFXButton closeSearchButton;
 
     @FXML
     private Label folderInfoLabel;
@@ -57,7 +61,8 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
 
-    @FXML @Getter
+    @FXML
+    @Getter
     private JFXButton refreshButton;
 
     @FXML
@@ -73,6 +78,8 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     @Setter
     private boolean comboBoxClicked = false;
+
+    private String currentPath;
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
@@ -99,6 +106,7 @@ public class HomeController extends AbstractController implements Initializable 
 
         scrollPane.setContent(imageListPane);
         SplitPane.setResizableWithParent(folderPane, false);
+        closeSearchButton.setVisible(false);
 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
@@ -106,6 +114,20 @@ public class HomeController extends AbstractController implements Initializable 
         if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
             pasteButton.setDisable(true);
         }
+    }
+
+    /**
+     * 在初始启动时显示欢迎页面
+     */
+    private void setWelcomePage() {
+        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
+        welcomeImage.setFitWidth(400);
+        welcomeImage.setPreserveRatio(true);
+        HBox hBox = new HBox(welcomeImage);
+        hBox.setAlignment(Pos.CENTER);
+        StackPane stackPane = new StackPane(hBox);
+        scrollPane.setContent(stackPane);
+        System.out.println(welcomeImage);
     }
 
     /**
@@ -147,18 +169,24 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    /**
-     * 在初始启动时显示欢迎页面
-     */
-    private void setWelcomePage() {
-        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
-        welcomeImage.setFitWidth(400);
-        welcomeImage.setPreserveRatio(true);
-        HBox hBox = new HBox(welcomeImage);
-        hBox.setAlignment(Pos.CENTER);
-        StackPane stackPane = new StackPane(hBox);
-        scrollPane.setContent(stackPane);
-        System.out.println(welcomeImage);
+    @FXML
+    private void searchImage() {
+        String key = searchTextField.getText();
+        ArrayList<ImageModel> result =
+                SearchImageModel.fuzzySearch(key, ImageListModel.refreshList(currentPath));
+        placeImages(result, currentPath);
+        if (result.size() == 0) {
+            folderInfoLabel.setText("未找到图片");
+        } else {
+            folderInfoLabel.setText("共找到 " + result.size() + " 个结果");
+        }
+        closeSearchButton.setVisible(true);
+    }
+
+    @FXML
+    public void closeSearch() {
+        closeSearchButton.setVisible(false);
+        refreshImagesList();
     }
 
 
@@ -169,13 +197,12 @@ public class HomeController extends AbstractController implements Initializable 
 //        placeImages(ImageListModel.refreshList(url), url);
 //    }
     public void refreshImagesList() {
-        placeImages(ImageListModel.refreshList(pathLabel.getText()), pathLabel.getText());
+        placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
 
     private void refreshImagesList(String sort) {
-
-        placeImages(ImageListModel.sortList(pathLabel.getText(), sort), pathLabel.getText());
+        placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
     }
 
@@ -192,6 +219,7 @@ public class HomeController extends AbstractController implements Initializable 
         int firstLoad = Math.min(imageModelList.size(), 15);
         //地址栏更新
         pathLabel.setText(folderPath);
+        currentPath = folderPath;
 
         //文件夹信息栏设置
         if (imageModelList.isEmpty()) {
@@ -240,6 +268,4 @@ public class HomeController extends AbstractController implements Initializable 
         }
         return null;
     }
-
-
 }
