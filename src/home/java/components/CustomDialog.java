@@ -168,6 +168,7 @@ public class CustomDialog {
 
     private void makeRenameDialog() {
         setBodyTextField();
+        // FIXME: 2020/5/6 重命名功能不起作用
         rightButton.setOnAction(event -> {
             SelectedModel.renameImage(bodyTextField.getText());
             dialog.close();
