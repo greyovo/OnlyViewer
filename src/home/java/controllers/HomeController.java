@@ -34,8 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Grey
  */
 
-public class HomeController extends AbstractController implements Initializable  {
-    @FXML
+public class HomeController extends AbstractController implements Initializable {
+    @FXML @Getter
     public JFXButton pasteButton;
 
     @FXML
@@ -57,7 +57,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
 
-    @FXML
+    @FXML @Getter
     private JFXButton refreshButton;
 
     @FXML
@@ -102,6 +102,10 @@ public class HomeController extends AbstractController implements Initializable 
 
         initSortComboBox();
         setWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
+
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+            pasteButton.setDisable(true);
+        }
     }
 
     /**
@@ -124,6 +128,9 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
         }
         refreshImagesList();
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getOption() == -1) {
+            pasteButton.setDisable(true);
+        }
     }
 
     /**
@@ -198,7 +205,7 @@ public class HomeController extends AbstractController implements Initializable 
 
         //初始加载缩略图
         for (int i = 0; i < firstLoad; i++) {
-            ImageBox imageBox = new ImageBox(imageModelList.get(i),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+            ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
@@ -213,54 +220,12 @@ public class HomeController extends AbstractController implements Initializable 
                 if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
 //                    WAR/WAW ERROR
 //                    index = loadPic(imageModelList, imageListPane, index);
-                    ImageBox imageBox = new ImageBox(imageModelList.get(index),imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
                     imageListPane.getChildren().add(imageBox);
                 }
             }
         });
 
-    }
-
-    /**
-     * 确认删除的对话框
-     */
-    //TODO 提高复用性 将其写成组件类
-    public void callDeleteDialog(ImageModel im) {
-
-        JFXButton confirm = new JFXButton("删除");
-        JFXButton cancel = new JFXButton("取消");
-        confirm.getStyleClass().add("dialog-confirm-red");
-        cancel.getStyleClass().add("dialog-cancel");
-
-        Label heading = new Label("确认删除");
-        heading.getStyleClass().add("dialog-heading");
-
-        Label body = new Label("删除文件: " + im.getImageName() + "\n\n此操作不可逆。");
-        body.getStyleClass().add("dialog-body");
-
-        JFXDialog dialog = new JFXDialog();
-        dialog.setOverlayClose(true);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(heading);
-        layout.setBody(body);
-
-        cancel.setOnAction(event -> {
-            dialog.close();
-            System.out.println("取消删除");
-        });
-
-        confirm.setOnAction(event -> {
-            SelectedModel.setSourcePath(im.getImageFilePath());
-            if (SelectedModel.deleteImage()) {
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("删除成功"));    //显示删除成功通知。
-                refreshImagesList();
-            }
-            dialog.close();
-        });
-
-        layout.setActions(cancel, confirm);
-        dialog.setContent(layout);
-        dialog.show(rootPane);
     }
 
 
