@@ -198,6 +198,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         //以下设置窗口为全屏
         Stage stage = (Stage) imageView.getScene().getWindow();
         stage.setFullScreen(true);
+        snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映"));
 
         //以下实现定时器功能
         TimerTask task = new TimerTask() {
@@ -237,6 +238,7 @@ public class DisplayWindowController extends AbstractController implements Initi
                 timer.cancel();
                 toolbar.setVisible(true);
                 stage.setFullScreen(false);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
             }
         });
     }
