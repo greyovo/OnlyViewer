@@ -179,25 +179,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         stage.setTitle(imageModel.getImageName());
     }
 
-    //下一张图
-    @FXML
-    private void showNextImg() throws IOException {
-        initStatus();
-        System.out.println("下一张");
-        //为了防止删除后显示空白，自动刷新
-        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
-        if (imageModelArrayList.size() == 0) {
-            System.out.println("此文件夹中的照片已空！");
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
-        } else {
-            initImage(sw.nextImage(imageModel));
-//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
-        }
-        //更新图片名字
-        Stage stage = (Stage) imageView.getScene().getWindow();
-        stage.setTitle(imageModel.getImageName());
-    }
-
     @FXML
     //幻灯片放映
     private void playSlide(){
@@ -249,6 +230,25 @@ public class DisplayWindowController extends AbstractController implements Initi
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
             }
         });
+    }
+
+    //下一张图
+    @FXML
+    private void showNextImg() throws IOException {
+        initStatus();
+        System.out.println("下一张");
+        //为了防止删除后显示空白，自动刷新
+        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+        if (imageModelArrayList.size() == 0) {
+            System.out.println("此文件夹中的照片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
+        } else {
+            initImage(sw.nextImage(imageModel));
+//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
+        }
+        //更新图片名字
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        stage.setTitle(imageModel.getImageName());
     }
 
     @FXML
