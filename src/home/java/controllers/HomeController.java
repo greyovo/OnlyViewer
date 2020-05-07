@@ -320,9 +320,9 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void selectAll() {
         for (Node node : imageListPane.getChildren()) {
-            SelectionModel.add(node);
-            ImageBox box = (ImageBox) node;
-            box.getCheckBox().setSelected(true);
+            ImageBox imageBox = (ImageBox) node;
+            SelectionModel.add(imageBox);
+            imageBox.getCheckBox().setSelected(true);
         }
         selectAllButton.setText("取消全选");
         selectAllButton.setOnAction(event -> {

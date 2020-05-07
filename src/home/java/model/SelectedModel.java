@@ -14,6 +14,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -37,18 +39,20 @@ public class SelectedModel {
     @Getter
     private static Path sourcePath;
     @Getter
-    private static ArrayList<Path> sourcePathList = new ArrayList<>();
+    private static Set<Path> sourcePathSet = new HashSet<>();
     private static Path targetPath;
 
-    @Setter @Getter // 选择复制/剪切 0->复制 1->剪切
+    @Setter
+    @Getter // 选择复制/剪切 0->复制 1->剪切
     private static int copyOrMove = -1;
 
-    @Getter @Setter // 选择单选/多选 0->单选 1->多选
+    @Getter
+    @Setter // 选择单选/多选 0->单选 1->多选
     private static int singleOrMultiple = -1;
 
     /**
      * 1.初始化源 复制/剪切/重命名/删除/压缩选项调用
-      */
+     */
     public static boolean setSourcePath(@NonNull ImageModel im) {
         sourcePath = im.getImageFile().toPath();
         singleOrMultiple = 0;
@@ -73,11 +77,11 @@ public class SelectedModel {
     /**
      * 多选时直接传入一个列表即可 同时singleOrMultiple=1
      */
-    public static boolean setSourcePath(ArrayList<ImageModel> imList) {
-        sourcePathList.clear();    // 每次点击都需要清空List, 不创建对象以节约空间与时间
+    public static boolean setSourcePath(Set<ImageModel> imList) {
+        sourcePathSet.clear();    // 每次点击都需要清空List, 不创建对象以节约空间与时间
         for (ImageModel im : imList) {
             setSourcePath(im);
-            sourcePathList.add(sourcePath);
+            sourcePathSet.add(sourcePath);
         }
         singleOrMultiple = 1;
         return true;
@@ -85,6 +89,7 @@ public class SelectedModel {
 
     /**
      * 2.粘贴选项 1.若是源文件夹与目的文件夹相同则重命名 2.若是不同文件，则直接REPLACE
+     *
      * @param path 新的文件夹路径
      */
     // TODO  遇到重命名应询问是否覆盖
@@ -98,9 +103,11 @@ public class SelectedModel {
             }
         } else if (singleOrMultiple == 1) {
             try {
-                for (int i=0; i<sourcePathList.size(); i++) {
-                    sourcePath = sourcePathList.get(i);
-                    microPaste(path, sourcePathList.size()-i-1);
+                int i=0;
+                for (Path p : sourcePathSet) {
+                    sourcePath = p;
+                    i++;
+                    microPaste(path, sourcePathSet.size()-i-1);
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -146,6 +153,7 @@ public class SelectedModel {
 
     /**
      * 3.重命名选项 重复命名直接覆盖
+     *
      * @param newName 新的文件名
      */
     public static boolean renameImage(String newName) {
@@ -157,12 +165,14 @@ public class SelectedModel {
                 return false;
             }
         } else if (singleOrMultiple == 1) {
-            for (int i=0; i<sourcePathList.size(); i++) {
-                sourcePath = sourcePathList.get(i);
+            Path[] imArray = new Path[sourcePathSet.size()];
+            sourcePathSet.toArray(imArray);
+            for (int i = 0; i < imArray.length; i++) {
+                sourcePath = imArray[i];
                 try {
                     String beforeName = newName.substring(0, newName.lastIndexOf("."));
                     String afterName = newName.substring(newName.lastIndexOf("."));
-                    microRename(beforeName + String.format("%04d", i+1) + afterName);
+                    microRename(beforeName + String.format("_%04d", i + 1) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
                     return false;
@@ -173,7 +183,7 @@ public class SelectedModel {
         return true;
     }
 
-    private static void microRename(String newName) throws IOException{
+    private static void microRename(String newName) throws IOException {
         targetPath = new File(otherName(newName)).toPath();
         Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
     }
@@ -191,7 +201,7 @@ public class SelectedModel {
                 return false;
             }
         } else if (singleOrMultiple == 1) {
-            for (Path p : sourcePathList) {
+            for (Path p : sourcePathSet) {
                 sourcePath = p;
                 try {
                     microDelete();
@@ -206,16 +216,17 @@ public class SelectedModel {
     }
 
     // 删除的微操作
-    private static void microDelete() throws IOException{
+    private static void microDelete() throws IOException {
         FileUtils fileUtils = FileUtils.getInstance();
         if (fileUtils.hasTrash()) {
-            fileUtils.moveToTrash(new File[] { (sourcePath.toFile()) });
+            fileUtils.moveToTrash(new File[]{(sourcePath.toFile())});
         }
     }
 
 
     /**
      * 5.压缩图片选项
+     *
      * @param desSize 目标大小
      */
     // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近
@@ -229,7 +240,7 @@ public class SelectedModel {
                 return false;
             }
         } else if (singleOrMultiple == 1) {
-            for (Path p : sourcePathList) {
+            for (Path p : sourcePathSet) {
                 sourcePath = p;
                 try {
                     microCompress(desSize);
@@ -246,7 +257,7 @@ public class SelectedModel {
     // 压缩图片微操作
     private static boolean microCompress(int desSize) throws IOException {
         byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());
-        if (imageBytes == null || imageBytes.length < desSize * 1024){
+        if (imageBytes == null || imageBytes.length < desSize * 1024) {
             // 不需要压缩了
             return false;
         }
@@ -271,11 +282,11 @@ public class SelectedModel {
 
     private static double getAccuracy(double imageSize) {
         double accuracy = 0;
-        if (imageSize < 1024*2) {
+        if (imageSize < 1024 * 2) {
             accuracy = 0.71;
-        } else if (imageSize < 1024*4) {
+        } else if (imageSize < 1024 * 4) {
             accuracy = 0.66;
-        } else if (imageSize < 1024*8) {
+        } else if (imageSize < 1024 * 8) {
             accuracy = 0.61;
         } else {
             accuracy = 0.59;
@@ -334,11 +345,9 @@ public class SelectedModel {
          剪切 686个 2.94G 4 - 7s
          删除 686个 2.94G 3 - 4s **/
         try {
-            String path = "D:\\TestImg2\\test";
+            String path = "D:\\TestImg2\\compress";
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
-            setSourcePath(ilist);
-            compressImage(800);
             long timel = System.currentTimeMillis();
             System.out.printf("耗时 %d ms\n", timel - timef);
             System.out.println("操作成功");

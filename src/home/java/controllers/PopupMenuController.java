@@ -9,6 +9,7 @@ import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 
+import home.java.model.SelectionModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -56,25 +57,41 @@ public class PopupMenuController implements Initializable {
     private void action() {
         switch (popupList.getSelectionModel().getSelectedIndex()) {
             case 0:
-                System.out.println("点击复制 复制图片源:" + im.getImageFilePath());
-                SelectedModel.setSourcePath(im.getImageFilePath());
+                if (SelectionModel.getImageModelSet().isEmpty()) {
+                    SelectedModel.setSourcePath(im.getImageFilePath());
+                    System.out.println("复制图片源:" + im.getImageFilePath());
+                } else {
+                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
+                    System.out.println("复制图片源集合" + SelectionModel.getImageModelSet());
+                }
                 SelectedModel.setCopyOrMove(0);
+
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
-                System.out.println("点击剪切 剪切图片源:" + im.getImageFilePath());
-                SelectedModel.setSourcePath(im.getImageFilePath());
+                if (SelectionModel.getImageModelSet().isEmpty()) {
+                    SelectedModel.setSourcePath(im.getImageFilePath());
+                    System.out.println("剪切图片源:" + im.getImageFilePath());
+                } else {
+                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
+                    System.out.println("剪切图片源集合" + SelectionModel.getImageModelSet());
+                }
                 SelectedModel.setCopyOrMove(1);
+
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:
-                System.out.println("点击重命名 重命名图片源:" + im.getImageFilePath());
-                // TODO 重命名输入名字
-                SelectedModel.setSourcePath(im);
+                if (SelectionModel.getImageModelSet().isEmpty()) {
+                    SelectedModel.setSourcePath(im.getImageFilePath());
+                    System.out.println("重命名图片源:" + im.getImageFilePath());
+                } else {
+                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
+                    System.out.println("重命名图片源集合" + SelectionModel.getImageModelSet());
+                }
                 new CustomDialog(hc, DialogType.RENAME, im,
                         "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
@@ -82,28 +99,39 @@ public class PopupMenuController implements Initializable {
             case 3:
                 System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
-                boolean flag = false;
-                SelectedModel.setSourcePath(im.getImageFilePath());
-                if (SelectedModel.compressImage(800)) {
-                    flag = true;
+
+                if (SelectionModel.getImageModelSet().isEmpty()) {
+                    SelectedModel.setSourcePath(im.getImageFilePath());
+                    System.out.println("压缩图片源:" + im.getImageFilePath());
+                } else {
+                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
+                    System.out.println("压缩图片源集合" + SelectionModel.getImageModelSet());
                 }
+                boolean flag = SelectedModel.compressImage(800);
+
                 try {
                     // 手动实现刷新
                     hc.placeImages(ImageListModel.initImgList(im.getImageParentPath()), im.getImageParentPath());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (flag)
-                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
-                else
-                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("压缩图片条件为大于800KB"));
+                if (flag) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
+                else snackbar.enqueue(new JFXSnackbar.SnackbarEvent("压缩图片条件为大于800KB"));
                 break;
             case 4:
-                System.out.println("点击删除 删除图片源:" + im.getImageFilePath());
-//                hc.callDeleteDialog(im);
-                new CustomDialog(hc, DialogType.DELETE, im,
-                        "确认删除",
-                        "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
+                if (SelectionModel.getImageModelSet().isEmpty()) {
+                    SelectedModel.setSourcePath(im.getImageFilePath());
+                    System.out.println("删除图片源:" + im.getImageFilePath());
+                    new CustomDialog(hc, DialogType.DELETE, im,
+                            "确认删除",
+                            "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
+                } else {
+                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
+                    System.out.println("删除图片源集合" + SelectionModel.getImageModelSet());
+                    new CustomDialog(hc, DialogType.DELETE, im,
+                            "确认删除",
+                            "要删除这" + SelectionModel.getImageModelSet().size() + "个文件吗？\n\n你可以在回收站处找回。").show();
+                }
                 imageBox.getPopUpMenu().hide();
                 break;
             case 5:
