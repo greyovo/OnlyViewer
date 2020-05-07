@@ -34,7 +34,7 @@ public class SelectionModel {
 
     public static void add(ImageBox node) {
         JFXDepthManager.setDepth(node, 4);
-        node.setTranslateY(node.getTranslateY() - 5);
+        node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
         selection.add(node);
         imageModelSet.add(node.getIm());
         log();
@@ -43,7 +43,7 @@ public class SelectionModel {
     public static void remove(ImageBox node) {
         JFXDepthManager.setDepth(node, 0);
         node.getCheckBox().setSelected(false);
-        node.setTranslateY(node.getTranslateY() + 5);
+        node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() + 5);
         selection.remove(node);
         imageModelSet.remove(node.getIm());
         log();
