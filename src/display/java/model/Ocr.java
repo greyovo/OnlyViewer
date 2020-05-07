@@ -1,5 +1,6 @@
 package display.java.model;
 
+import home.java.model.SelectedModel;
 import lombok.Getter;
 import org.junit.Test;
 
@@ -29,12 +30,33 @@ public class Ocr extends GenAIP{
     // 每天可识别50000次
     // mode默认情况为ENG，模式指的是使用该模式下的标点符号，非识别中英文参数
     // mode可选参数 Ocr.ENG / Ocr.CHI
-    public static String doOcr(String path, int mode) {
-        String re = OCR(path, mode);
-        if (re == null) {
-            System.out.println("识别失败！");
+    public static String doOcr(String imagePath, int mode) {
+        boolean flag = false;
+        String beforeName = imagePath.substring(0, imagePath.lastIndexOf("."));
+        String afterName = imagePath.substring(imagePath.lastIndexOf("."));
+        String newImagePath = beforeName + "_only" + afterName;
+        File image = new File(newImagePath);
+        String result = null;
+        if (image.exists()) {
+            flag = true;
+            result = OCR(newImagePath, mode);
+            if (result == null) {
+                System.out.println("识别失败！");
+            }
+        } else {
+            SelectedModel.setSourcePath(imagePath);
+            SelectedModel.compressImage(800);
+            result = OCR(newImagePath, mode);
+            if (result == null) {
+                System.out.println("识别失败！");
+            }
         }
-        return re;
+        if (!flag) {
+            SelectedModel.setSourcePath(newImagePath);
+            if (SelectedModel.deleteImage())
+                System.out.println("删除压缩图片");
+        }
+        return result;
     }
 
 
