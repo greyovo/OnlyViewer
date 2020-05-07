@@ -159,7 +159,9 @@ public class SelectedModel {
             for (int i=0; i<sourcePathList.size(); i++) {
                 sourcePath = sourcePathList.get(i);
                 try {
-                    microRename(newName + String.format(" (%d)", i+1));
+                    String beforeName = newName.substring(0, newName.lastIndexOf("."));
+                    String afterName = newName.substring(newName.lastIndexOf("."));
+                    microRename(beforeName + String.format("%04d", i+1) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
                     return false;
@@ -335,7 +337,7 @@ public class SelectedModel {
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
             setSourcePath(ilist);
-            renameImage("1");
+            renameImage("test.JPG");
             long timel = System.currentTimeMillis();
             System.out.printf("耗时 %d ms\n", timel - timef);
             System.out.println("操作成功");
