@@ -77,6 +77,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     // TODO: 2020/5/7 设置窗口标题随图片名称变化
     public void initImage(ImageModel im) {
+
         imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         this.imageModel = im;
         this.image = new Image(im.getImageFile().toURI().toString());
@@ -166,12 +167,16 @@ public class DisplayWindowController extends AbstractController implements Initi
         System.out.println("上一张");
         //为了防止删除后显示空白，自动刷新
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+
         if (imageModelArrayList.size() == 0) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
         } else {
             initImage(sw.lastImage(imageModel));
 //            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
+        //更新图片名字
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        stage.setTitle(imageModel.getImageName());
     }
 
     //下一张图
@@ -188,6 +193,9 @@ public class DisplayWindowController extends AbstractController implements Initi
             initImage(sw.nextImage(imageModel));
 //            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
+        //更新图片名字
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        stage.setTitle(imageModel.getImageName());
     }
 
     @FXML
