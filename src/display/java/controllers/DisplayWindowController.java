@@ -12,8 +12,6 @@ import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -146,14 +144,12 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.getTransforms().clear();
     }
 
+    //-------------以下为工具栏按钮事件---------------
     @FXML
     private void zoomIn() {
-        //imageView.setScaleX(imageView.getScaleX() * 1.25);
-        //imageView.setScaleY(imageView.getScaleY() * 1.25);
-        //System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
-
-        //在此测试ppt功能，禁用放大功能
-        Ppt();
+        imageView.setScaleX(imageView.getScaleX() * 1.25);
+        imageView.setScaleY(imageView.getScaleY() * 1.25);
+        System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
     }
 
     @FXML
@@ -161,6 +157,21 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.setScaleX(imageView.getScaleX() * 0.75);
         imageView.setScaleY(imageView.getScaleY() * 0.75);
         System.out.println("缩小" + imageView.getScaleX() + " x " + imageView.getScaleY());
+    }
+
+    //上一张图
+    @FXML
+    private void showPreviousImg() throws IOException {
+        initStatus();
+        System.out.println("上一张");
+        //为了防止删除后显示空白，自动刷新
+        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+        if (imageModelArrayList.size() == 0) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
+        } else {
+            initImage(sw.lastImage(imageModel));
+//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
+        }
     }
 
     //下一张图
@@ -179,23 +190,57 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
-    //上一张图
     @FXML
-    private void showPreviousImg() throws IOException {
-        initStatus();
-        System.out.println("上一张");
-        //为了防止删除后显示空白，自动刷新
-        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
-        if (imageModelArrayList.size() == 0) {
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
-        } else {
-            initImage(sw.lastImage(imageModel));
-//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
-        }
+    //幻灯片放映
+    private void playSlide(){
+        //使工具栏不可见
+        toolbar.setVisible(false);
+        //以下设置窗口为全屏
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        stage.setFullScreen(true);
 
+        //以下实现定时器功能
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                //定时任务中安排切换下一页功能
+                Platform.runLater(()->{
+                    try {
+                        showNextImg();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        };
+        Timer timer = new Timer();
+        // 定义开始等待时间
+        long delay = 3000;
+        //每次执行的间隔
+        long intervalPeriod = 3000;
+        // 定时器执行
+        timer.scheduleAtFixedRate(task, delay, intervalPeriod);
+
+        //当鼠标点击时，暂停计时器，恢复工具栏
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                timer.cancel();
+                toolbar.setVisible(true);
+            }
+        });
+
+        //键盘输入任意键退出
+        imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                timer.cancel();
+                toolbar.setVisible(true);
+                stage.setFullScreen(false);
+            }
+        });
     }
 
-    //TODO OCR
     @FXML
     private void ocr() {
         System.out.println("OCR");
@@ -203,7 +248,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         loading.setLoadingSpinner();
         loading.show();
 
-        JFXSpinner spinner = new JFXSpinner(-1);
         DisplayWindowController dwc = (DisplayWindowController)ControllerUtil.controllers.get(this.getClass().getSimpleName());
 
         Task ocrTask = new Task() {
@@ -250,59 +294,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         new CustomDialog(this, DialogType.DELETE, imageModel,
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
-
-    }
-
-    //幻灯片放映
-    private void Ppt(){
-        //使工具栏不可见
-        toolbar.setVisible(false);
-        //以下设置窗口为全屏
-        Stage stage = (Stage) imageView.getScene().getWindow();
-        stage.setFullScreen(true);
-
-        //以下实现定时器功能
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                //定时任务中安排切换下一页功能
-                    Platform.runLater(()->{
-                          try {
-                            showNextImg();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-            }
-        };
-        Timer timer = new Timer();
-        // 定义开始等待时间
-        long delay = 3000;
-        //每次执行的间隔
-        long intevalPeriod = 3000;
-        // 定时器执行
-        timer.scheduleAtFixedRate(task, delay, intevalPeriod);
-
-        //当鼠标点击时，暂停计时器，恢复工具栏
-        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                timer.cancel();
-                toolbar.setVisible(true);
-            }
-        });
-
-        //键盘输入任意键退出
-        imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                timer.cancel();
-                toolbar.setVisible(true);
-                stage.setFullScreen(false);
-            }
-        });
-
-
     }
 
 

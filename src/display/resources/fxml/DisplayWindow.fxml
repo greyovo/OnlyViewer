@@ -63,6 +63,15 @@
             </graphic>
         </JFXButton>
 
+        <JFXButton buttonType="FLAT" onAction="#playSlide"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/play.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
         <JFXButton buttonType="FLAT" onAction="#ocr"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
