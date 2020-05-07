@@ -103,11 +103,11 @@ public class SelectedModel {
             }
         } else if (singleOrMultiple == 1) {
             try {
-                int i=0;
+                int i = 0;  // 计数器
                 for (Path p : sourcePathSet) {
                     sourcePath = p;
                     i++;
-                    microPaste(path, sourcePathSet.size()-i-1);
+                    microPaste(path, sourcePathSet.size()-i);
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -191,6 +191,7 @@ public class SelectedModel {
     /**
      * 4.删除图片选项
      */
+    // FIXME 2020/5/8 删除不了多张图片
     public static boolean deleteImage() {
         // 删除图片文件进入回收站，不直接删除
         if (singleOrMultiple == 0) {
@@ -345,7 +346,7 @@ public class SelectedModel {
          剪切 686个 2.94G 4 - 7s
          删除 686个 2.94G 3 - 4s **/
         try {
-            String path = "D:\\TestImg2\\compress";
+            String path = "D:\\TestImg2\\test";
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
             long timel = System.currentTimeMillis();
