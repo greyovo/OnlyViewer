@@ -182,6 +182,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     //幻灯片放映
     private void playSlide(){
+        //比例重新设定
+        initStatus();
         //使工具栏不可见
         toolbar.setVisible(false);
         //以下设置窗口为全屏
