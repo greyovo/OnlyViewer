@@ -48,6 +48,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     @Getter
     private ImageView imageView;
 
+    @Setter @Getter
     private Image image;
 
     private ImageModel imageModel;
@@ -68,8 +69,10 @@ public class DisplayWindowController extends AbstractController implements Initi
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
+        setImageMouseAction();
     }
 
+    // TODO: 2020/5/7 设置窗口标题随图片名称变化
     public void initImage(ImageModel im) {
         imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         this.imageModel = im;
@@ -87,7 +90,10 @@ public class DisplayWindowController extends AbstractController implements Initi
         } else {
             imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
+        System.out.println("cur list:\n" + imageModelArrayList);
+    }
 
+    private void setImageMouseAction(){
         //以下实现滚轮的放大缩小
         imageView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -123,8 +129,6 @@ public class DisplayWindowController extends AbstractController implements Initi
                 imageView.getTransforms().add(tran);
             }
         });
-        //imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
-        System.out.println("cur list:\n" + imageModelArrayList);
     }
 
     /**
@@ -163,6 +167,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
         } else {
             initImage(sw.nextImage(imageModel));
+//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
     }
 
@@ -174,10 +179,10 @@ public class DisplayWindowController extends AbstractController implements Initi
         //为了防止删除后显示空白，自动刷新
         imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
         if (imageModelArrayList.size() == 0) {
-            System.out.println("此文件夹中的照片已空！");
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
         } else {
             initImage(sw.lastImage(imageModel));
+//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
 
     }

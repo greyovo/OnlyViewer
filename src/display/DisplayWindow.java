@@ -63,7 +63,7 @@ public class DisplayWindow extends Application {
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(this.getClass().getResource("/display/resources/css/display.css").toExternalForm());
 
-        stage.setTitle("图片查看窗口");
+        stage.setTitle(im.getImageName());
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
