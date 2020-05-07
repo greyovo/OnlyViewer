@@ -15,11 +15,11 @@
     </ImageView>
 
     <HBox fx:id="toolbar" alignment="CENTER"
-          styleClass="bottom-toolbar" maxHeight="33" maxWidth="300">
+          styleClass="bottom-toolbar" maxHeight="33" maxWidth="300" style="-fx-padding:0 6 0 6;">
 
         <JFXButton buttonType="FLAT" onAction="#zoomIn"
                    styleClass="bottom-toolbar-button" ripplerFill="white"
-                   style="-fx-background-radius: 11 0 0 11;">
+                   style="-fx-background-radius: 9 0 0 9;">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/zoom_in.png"/>
@@ -54,20 +54,20 @@
             </graphic>
         </JFXButton>
 
+        <JFXButton buttonType="FLAT" onAction="#playSlide"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="45" preserveRatio="true">
+                    <Image url="@../icons2/play.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
         <JFXButton buttonType="FLAT" onAction="#showNextImg"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/next.png"/>
-                </ImageView>
-            </graphic>
-        </JFXButton>
-
-        <JFXButton buttonType="FLAT" onAction="#playSlide"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
-            <graphic>
-                <ImageView fitWidth="33" preserveRatio="true">
-                    <Image url="@../icons2/play.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
@@ -92,7 +92,7 @@
 
         <JFXButton buttonType="FLAT" onAction="#delete"
                    styleClass="bottom-toolbar-button" ripplerFill="white"
-                   style="-fx-background-radius: 0 11 11 0;">
+                   style="-fx-background-radius: 3 9 9 3;">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/delete.png"/>

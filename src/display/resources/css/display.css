@@ -82,11 +82,10 @@
     -fx-text-fill: rgba(255, 255, 255, 0.9);
     -jfx-rippler-fill:WHITE;
     -fx-font-size: 18.0px;
-    -fx-pref-width: 66px;
-    -fx-pref-height: 66px;
-    
+    -fx-pref-width: 48px;
+    -fx-pref-height: 48px;
     /* -fx-font-weight: BOLD; */
-    -fx-padding: 20;
+    -fx-padding: 18;
 }
 
 /*******************************************************************************
