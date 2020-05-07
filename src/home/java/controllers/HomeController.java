@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -203,11 +204,15 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void gotoPath() {
         String path = pathLabel.getText();
-        ArrayList<ImageModel> list = ImageListModel.refreshList(path);
-        if (list != null) {
-            placeImages(list, path);
-        } else {
+        File directory = new File(path);
+        if (!directory.exists()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
+        } else {
+            ArrayList<ImageModel> list = ImageListModel.refreshList(path);
+            // placeImages方法中已处理列表为空时的情况
+            assert list != null;
+            placeImages(list, path);
+
         }
     }
 

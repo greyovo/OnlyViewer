@@ -23,11 +23,6 @@ import java.util.Collections;
 @Data
 public class ImageListModel {
 
-//    private static String type;
-//
-//    private static int width;
-//    private static int height;
-
     // 判断文件是否为图片 支持jpg/jpeg/png/gif/bmp,暂不支持psd
     public static boolean isSupportedImg(String fileName) {
         return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") ||
@@ -83,7 +78,7 @@ public class ImageListModel {
 
     // 刷新文件夹 返回新列表
     public static ArrayList<ImageModel> refreshList(String path) {
-        ArrayList<ImageModel> list = new ArrayList<>();
+        ArrayList<ImageModel> list;
         try {
             list = initImgList(path);
         } catch (IOException e) {
