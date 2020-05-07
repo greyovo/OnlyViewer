@@ -11,6 +11,7 @@ import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -19,12 +20,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //@ViewController(value = "/fxml/displayWindow.fxml", title = "Display Window")
 public class DisplayWindowController extends AbstractController implements Initializable {
@@ -143,9 +148,12 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     private void zoomIn() {
-        imageView.setScaleX(imageView.getScaleX() * 1.25);
-        imageView.setScaleY(imageView.getScaleY() * 1.25);
-        System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
+        //imageView.setScaleX(imageView.getScaleX() * 1.25);
+        //imageView.setScaleY(imageView.getScaleY() * 1.25);
+        //System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
+
+        //在此测试ppt功能，禁用放大功能
+        Ppt();
     }
 
     @FXML
@@ -242,7 +250,61 @@ public class DisplayWindowController extends AbstractController implements Initi
         new CustomDialog(this, DialogType.DELETE, imageModel,
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
+
     }
+
+    //幻灯片放映
+    private void Ppt(){
+        //使工具栏不可见
+        toolbar.setVisible(false);
+        //以下设置窗口为全屏
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        stage.setFullScreen(true);
+
+        //以下实现定时器功能
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                //定时任务中安排切换下一页功能
+                    Platform.runLater(()->{
+                          try {
+                            showNextImg();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            }
+        };
+        Timer timer = new Timer();
+        // 定义开始等待时间
+        long delay = 3000;
+        //每次执行的间隔
+        long intevalPeriod = 3000;
+        // 定时器执行
+        timer.scheduleAtFixedRate(task, delay, intevalPeriod);
+
+        //当鼠标点击时，暂停计时器，恢复工具栏
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                timer.cancel();
+                toolbar.setVisible(true);
+            }
+        });
+
+        //键盘输入任意键退出
+        imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                timer.cancel();
+                toolbar.setVisible(true);
+                stage.setFullScreen(false);
+            }
+        });
+
+
+    }
+
 
 }
 
