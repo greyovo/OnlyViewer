@@ -1,17 +1,21 @@
 package home.java.components;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.effects.JFXDepthManager;
 import display.DisplayWindow;
 import home.java.controllers.PopupMenuController;
 import home.java.model.ImageModel;
-import javafx.event.EventHandler;
+import home.java.model.SelectionModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -41,6 +45,8 @@ public class ImageBox extends VBox {
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
     private ArrayList<ImageModel> ilist;
+    @Getter
+    private JFXCheckBox checkBox = new JFXCheckBox();
 
     /**
      * 构造器，初始化一个缩略图单元
@@ -51,7 +57,6 @@ public class ImageBox extends VBox {
         this.im = im;
         //传送排序后的列表
         this.ilist = ilist;
-
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 120,
                 120,
@@ -60,21 +65,45 @@ public class ImageBox extends VBox {
                 true));
         this.imageView2 = imageView;                                //图片
         RipplerImageView riv = new RipplerImageView(imageView);     //一个水波纹点击效果的包装
+
         ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
-        this.getChildren().addAll(riv, imageLabel);
+        imageLabel.setStyle("-fx-padding:7 0 7 -2;");
+
+        HBox hBox = new HBox(checkBox,imageLabel);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setStyle("-fx-padding:5 5 3 5;");
+
+        this.getChildren().addAll(riv,hBox);
 
         //设置文件信息tips
         String tooltip = String.format("名称: %s\n大小: %s", im.getImageName(), im.getFormatSize());
         Tooltip.install(this, new Tooltip(tooltip));
 
-        setMouseAction();
-        setPopUpMenu();
+        JFXDepthManager.setDepth(this, 0);
+        initMouseAction();
+        initPopUpMenu();
+        initCheckBox();
+    }
+
+    ImageBox imageBox = this;
+
+    private void initCheckBox() {
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    SelectionModel.add(imageBox);
+                } else {
+                    SelectionModel.remove(imageBox);
+                }
+            }
+        });
     }
 
     /**
      * 加载右键菜单
      */
-    private void setPopUpMenu() {
+    private void initPopUpMenu() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
         loader.setController(new PopupMenuController(this));
         try {
@@ -88,12 +117,13 @@ public class ImageBox extends VBox {
     /**
      * 鼠标对图片的操作反馈
      */
-    private void setMouseAction() {
+    private void initMouseAction() {
 
         //鼠标点击事件
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 // TODO 鼠标左键单击图片显示选中框
+//                JFXDepthManager.setDepth(this, 3);
             } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 // 鼠标左键双击看大图
                 DisplayWindow dw = new DisplayWindow();
@@ -112,16 +142,53 @@ public class ImageBox extends VBox {
             }
         });
 
+//        this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+//            if( event.isControlDown()) {
+//                SelectionModel.add(this);
+//                SelectionModel.log();
+//            }
+//        });
+
         //当鼠标指向时
-        EventHandler<? super MouseEvent> mouseEnterImage = (EventHandler<MouseEvent>) event -> {
-            JFXDepthManager.setDepth(this, 3);
-        };
-        this.setOnMouseMoved(mouseEnterImage);
+        this.setOnMouseMoved(event -> {
+//            JFXDepthManager.setDepth(this, 3);
+            this.setStyle("-fx-background-color:rgba(0, 0, 0, 0.07);");
+        });
+
+//        this.setOnMouseClicked(event -> {
+//            System.out.printf(
+//                    "x:%.0f " +
+//                    "sceneX:%.0f " +
+//                    "screenX:%.0f "+
+//                    "layoutX:%.0f " +
+//                    "layoutBounds.minX:%.0f",
+//                    event.getX(),
+//                    event.getSceneX(),
+//                    event.getScreenX(),
+//                    this.getLayoutX(),
+//                    this.getLayoutBounds().getMinX()
+//            );
+//        });
+
+//        this.setOnMouseReleased(event -> {
+//            if (event.isShiftDown()) {
+//                SelectionModel.add(this);
+//            } else if (event.isControlDown()) {
+//                if (SelectionModel.contains(this)) {
+//                    SelectionModel.remove(this);
+//                } else {
+//                    SelectionModel.add(this);
+//                }
+//            } else {
+//                SelectionModel.add(this);
+//            }
+//        });
 
         //当鼠标离开时
-        EventHandler<? super MouseEvent> mouseExitImage = (EventHandler<MouseEvent>) event -> {
-            JFXDepthManager.setDepth(this, 0);
-        };
-        this.setOnMouseExited(mouseExitImage);
+        this.setOnMouseExited(event -> {
+//            JFXDepthManager.setDepth(this, 0);
+            this.setStyle("-fx-background-color:transparent;");
+        });
+
     }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.control.ToolBar?>
 <StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="home.java.controllers.HomeController">
-    <AnchorPane>
+    <AnchorPane fx:id="anchorPane">
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="0.0">
 
@@ -102,16 +102,17 @@
                     <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"
                              prefHeight="33">
 
-                        <!--当前状态信息栏-->
-                        <StackPane>
-                            <Label fx:id="folderInfoLabel" styleClass="normal-text-b"
-                                   style="-fx-padding:10px"/>
-                        </StackPane>
-                        <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
+                        <!--全选按钮-->
+                        <JFXButton fx:id="selectAllButton" onAction="#selectAll" buttonType="FLAT" text="全选"
+                                   styleClass="normal-button">
+                            <HBox.margin>
+                                <Insets right="10"/>
+                            </HBox.margin>
+                        </JFXButton>
 
-                        <!--取消搜索按钮-->
-                        <JFXButton fx:id="closeSearchButton" onAction="#closeSearch" buttonType="FLAT" text="关闭搜索"
-                                   styleClass="normal-button" style="-fx-text-fill:#009688;">
+                        <!--刷新按钮-->
+                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新"
+                                   styleClass="normal-button">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
@@ -125,14 +126,21 @@
                             </HBox.margin>
                         </JFXButton>
 
-                        <!--搜索按钮-->
-                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新"
-                                   styleClass="normal-button">
+                        <!--取消搜索按钮，未搜索时不可见-->
+                        <JFXButton fx:id="closeSearchButton" onAction="#closeSearch" buttonType="FLAT" text="关闭搜索"
+                                   styleClass="normal-button" style="-fx-text-fill:#009688;">
                             <HBox.margin>
                                 <Insets right="10"/>
                             </HBox.margin>
                         </JFXButton>
 
+                        <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
+
+                        <!--当前状态信息栏-->
+                        <StackPane>
+                            <Label fx:id="folderInfoLabel" styleClass="normal-text-b"
+                                   style="-fx-padding:10px" minWidth="250" alignment="CENTER_RIGHT"/>
+                        </StackPane>
                         <!--排序盒子-->
                         <JFXComboBox fx:id="sortComboBox" prefWidth="220" prefHeight="20" promptText="  按名称升序"
                                      styleClass="combo-box"/>
