@@ -91,16 +91,16 @@ public class SelectedModel {
     public static boolean pasteImage(String path) {
         if (singleOrMultiple == 0) {
             try {
-                microPaste(path);
+                microPaste(path, 0);
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
         } else if (singleOrMultiple == 1) {
             try {
-                for (Path p : sourcePathList) {
-                    sourcePath = p;
-                    microPaste(path);
+                for (int i=0; i<sourcePathList.size(); i++) {
+                    sourcePath = sourcePathList.get(i);
+                    microPaste(path, sourcePathList.size()-i-1);
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -112,7 +112,7 @@ public class SelectedModel {
     }
 
     // 粘贴的微操作
-    private static void microPaste(String path) throws IOException{
+    private static void microPaste(String path, int nums) throws IOException{
         if (copyOrMove == 0){
             //复制粘贴
             if (getBeforePath().equals(path)) {
@@ -139,7 +139,8 @@ public class SelectedModel {
             //剪切粘贴
             targetPath = new File(otherPath(path)).toPath();
             Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
+            if (nums == 0)
+                copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
         }
     }
 
@@ -333,11 +334,11 @@ public class SelectedModel {
          剪切 686个 2.94G 4 - 7s
          删除 686个 2.94G 3 - 4s **/
         try {
-            String path = "D:\\TestImg2\\compress";
+            String path = "D:\\TestImg2\\test";
             ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
             long timef = System.currentTimeMillis();
             setSourcePath(ilist);
-            renameImage("test.JPG");
+            compressImage(800);
             long timel = System.currentTimeMillis();
             System.out.printf("耗时 %d ms\n", timel - timef);
             System.out.println("操作成功");
