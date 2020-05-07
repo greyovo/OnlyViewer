@@ -169,7 +169,7 @@ public class SelectedModel {
                 try {
                     String beforeName = newName.substring(0, newName.lastIndexOf("."));
                     String afterName = newName.substring(newName.lastIndexOf("."));
-                    microRename(beforeName + String.format("_%02d", i + 1) + afterName);
+                    microRename(beforeName + String.format("_%04d", i + 1) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
                     return false;
