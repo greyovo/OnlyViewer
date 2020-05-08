@@ -32,7 +32,7 @@ public class SelectionModel {
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
         selection.add(node);
         imageModelSet.add(node.getIm());
-        hc.selectedNumLabel.setText("已选中 " + selection.size() + " 张");
+        hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
         log();
     }
 
@@ -42,7 +42,7 @@ public class SelectionModel {
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() + 5);
         selection.remove(node);
         imageModelSet.remove(node.getIm());
-        hc.selectedNumLabel.setText("已选中 " + selection.size() + " 张");
+        hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
         log();
     }
 
