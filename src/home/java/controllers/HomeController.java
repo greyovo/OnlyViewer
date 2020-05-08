@@ -428,8 +428,7 @@ public class HomeController extends AbstractController implements Initializable 
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(icon, author, bodyTextArea);
 
-        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null,
-                "关于 OnlyViewer");
+        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null, "关于 OnlyViewer");
         dialog.setBodyContent(vBox);
         dialog.show();
     }
