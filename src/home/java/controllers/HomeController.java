@@ -407,20 +407,24 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void showAboutDetail() {
         VBox vBox = new VBox();
+
         ImageView icon = new ImageView(new Image("home/resources/icons/app_icon_300px.png"));
         icon.setFitHeight(100);
         icon.setPreserveRatio(true);
-        System.out.println(icon);
+
         Label author = new Label("Made with ♥ by\n" + "Kevin & Grey & tudou daren\n\n");
         author.getStyleClass().add("normal-text-b");
         author.setTextAlignment(TextAlignment.CENTER);
+
         String repo = "Source code:\n" +
                 "https://github.com/greyovo/onlyviewer\n" +
                 "https://gitee.com/kevin996/OnlyViewer\n";
+
         JFXTextArea bodyTextArea = new JFXTextArea(repo);
         bodyTextArea.getStyleClass().addAll("dialog-text-area", "dialog-body");
         bodyTextArea.setEditable(false);
         bodyTextArea.setPrefHeight(100);
+
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(icon, author, bodyTextArea);
 
