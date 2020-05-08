@@ -9,6 +9,7 @@ import home.java.controllers.HomeController;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,7 @@ public class CustomDialog {
     private JFXTextArea bodyTextArea;
     private JFXTextField bodyTextField;
 
+    @Getter
     private JFXDialog dialog = new JFXDialog();
     private JFXDialogLayout layout = new JFXDialogLayout();
 
@@ -124,6 +126,10 @@ public class CustomDialog {
         } else {
             layout.setBody(bodyLabel);
         }
+    }
+
+    public void setBodyContent(Node... body){
+        layout.setBody(body);
     }
 
     public void setLoadingSpinner() {
