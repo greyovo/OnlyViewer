@@ -11,6 +11,7 @@ import home.java.controllers.ControllerUtil;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
+import home.java.model.SelectedModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -303,6 +304,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     private void delete() {
         System.out.println("删除");
+        SelectedModel.setSourcePath(imageModel);
         new CustomDialog(this, DialogType.DELETE, imageModel,
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
