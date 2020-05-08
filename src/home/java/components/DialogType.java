@@ -10,5 +10,6 @@ public enum DialogType {
 
     INFO,
 
+    OTHER,
 
 }

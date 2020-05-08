@@ -10,6 +10,7 @@ import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.scene.control.Label;
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -37,9 +38,12 @@ public class CustomDialog {
     private JFXButton leftButton;
     private JFXButton rightButton;
 
+    @Getter
     private Label headingLabel;
+    @Getter
     private Label bodyLabel;
 
+    @Getter
     private JFXTextArea bodyTextArea;
     private JFXTextField bodyTextField;
 
@@ -113,7 +117,6 @@ public class CustomDialog {
     }
 
     public void setBodyLabel(String bodyText) {
-//        layout.getChildren().clear();   // TODO: 2020/5/6 可能有问题
         bodyLabel = new Label(bodyText);
         bodyLabel.getStyleClass().add("dialog-body");
         if (type == DialogType.INFO) {

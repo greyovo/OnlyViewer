@@ -4,11 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
-import home.java.components.ImageBox;
-import home.java.components.ImageLabel;
-import home.java.components.RipplerImageView;
+import home.java.components.*;
 import home.java.model.*;
 import javafx.beans.property.*;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -405,5 +404,18 @@ public class HomeController extends AbstractController implements Initializable 
         selectAllButton.setOnAction(event -> {
             selectAll();
         });
+    }
+
+    @FXML
+    private void showAboutDetail() {
+        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null,
+                "关于 OnlyViewer",
+                "\t\t      Made with ♥ by\n" +
+                        "\t    Kevin & Grey & tudou daren\n\n" +
+                        "Source code:\n" +
+                        "https://github.com/greyovo/onlyviewer\n" +
+                        "https://gitee.com/kevin996/OnlyViewer");
+        dialog.getBodyTextArea().setPrefHeight(160);
+        dialog.show();
     }
 }

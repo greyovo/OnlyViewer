@@ -17,7 +17,17 @@
             <VBox alignment="CENTER_LEFT" styleClass="toolbar">
                 <JFXToolbar fx:id="toolbar">
                     <leftItems>
-                        <!--TODO 后退按钮-->
+                        <!--关于按钮-->
+                        <JFXButton fx:id="aboutButton" onAction="#showAboutDetail" ripplerFill="white"
+                                   styleClass="toolbar-button" style="-fx-padding:10px;">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../icons/app.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!--后退按钮-->
                         <JFXButton fx:id="backButton" onAction="#moveBack" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
@@ -26,7 +36,7 @@
                             </graphic>
                         </JFXButton>
 
-                        <!--TODO 前进按钮-->
+                        <!--前进按钮-->
                         <JFXButton fx:id="forwardButton" onAction="#moveForward" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
@@ -35,7 +45,7 @@
                             </graphic>
                         </JFXButton>
 
-                        <!--TODO 上层文件夹按钮-->
+                        <!--上层文件夹按钮-->
                         <JFXButton fx:id="parentDirButton" onAction="#toParentDir" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
