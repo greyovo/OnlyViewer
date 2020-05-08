@@ -223,6 +223,7 @@ public abstract class GenAIP {
         }
         in.close();
         String totalStr = result.toString();
+        System.out.println(totalStr);
         return jsonWords(totalStr);
     }
 
@@ -235,7 +236,9 @@ public abstract class GenAIP {
             net.sf.json.JSONObject words = wordsArray.getJSONObject(i);
             sb.append(words.getString("words")).append("\n");
         }
-        return sb.toString();
+        if (sb.length() != 0)
+            return sb.toString();
+        return null;
     }
 
     // 正则表达式提取words内容 不需要用到了

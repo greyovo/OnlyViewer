@@ -96,16 +96,18 @@ public class SelectedModel {
     public static boolean pasteImage(String path) {
         if (singleOrMultiple == 0) {
             try {
-                microPaste(path);
+                microPaste(path, 0);
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
         } else if (singleOrMultiple == 1) {
             try {
+                int i = 0;  // 计数器
                 for (Path p : sourcePathSet) {
                     sourcePath = p;
-                    microPaste(path);
+                    i++;
+                    microPaste(path, sourcePathSet.size()-i);
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -117,8 +119,8 @@ public class SelectedModel {
     }
 
     // 粘贴的微操作
-    private static void microPaste(String path) throws IOException {
-        if (copyOrMove == 0) {
+    private static void microPaste(String path, int nums) throws IOException{
+        if (copyOrMove == 0){
             //复制粘贴
             if (getBeforePath().equals(path)) {
                 // 情况1
@@ -144,7 +146,8 @@ public class SelectedModel {
             //剪切粘贴
             targetPath = new File(otherPath(path)).toPath();
             Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
+            if (nums == 0)
+                copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
         }
     }
 
@@ -188,6 +191,7 @@ public class SelectedModel {
     /**
      * 4.删除图片选项
      */
+    // FIXME 2020/5/8 删除不了多张图片
     public static boolean deleteImage() {
         // 删除图片文件进入回收站，不直接删除
         if (singleOrMultiple == 0) {
@@ -336,6 +340,21 @@ public class SelectedModel {
         return sb.toString();
     }
 
+    @Test
+    public void Test() {
+        /** 复制 686个 2.94G 1m30s
+         剪切 686个 2.94G 4 - 7s
+         删除 686个 2.94G 3 - 4s **/
+        try {
+            String path = "D:\\TestImg2\\test";
+            ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
+            long timef = System.currentTimeMillis();
+            long timel = System.currentTimeMillis();
+            System.out.printf("耗时 %d ms\n", timel - timef);
+            System.out.println("操作成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 //        File file = new File("H:\\Ding\\test2");
 //        String[] list = file.list();
 //        System.out.println(list); // [Ljava.lang.String;@6bf2d08e
@@ -346,7 +365,7 @@ public class SelectedModel {
 //            System.out.println(s.substring(s.indexOf("."))); //.jpg
 //
 //        }
-
+    }
     //    // 剪切图片 目前如果遇到文件重复则直接覆盖
 //    public static boolean moveImage(String path) {
 //        targetPath = new File(otherPath(path)).toPath();

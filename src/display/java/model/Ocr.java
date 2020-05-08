@@ -35,20 +35,25 @@ public class Ocr extends GenAIP{
         String beforeName = imagePath.substring(0, imagePath.lastIndexOf("."));
         String afterName = imagePath.substring(imagePath.lastIndexOf("."));
         String newImagePath = beforeName + "_only" + afterName;
+        System.out.println(newImagePath);
         File image = new File(newImagePath);
         String result = null;
         if (image.exists()) {
             flag = true;
             result = OCR(newImagePath, mode);
             if (result == null) {
-                System.out.println("识别失败！");
+                result = "图中无可识别文字";
             }
         } else {
             SelectedModel.setSourcePath(imagePath);
-            SelectedModel.compressImage(800);
-            result = OCR(newImagePath, mode);
+            if (SelectedModel.compressImage(800))
+                result = OCR(newImagePath, mode);
+            else {
+                result = OCR(imagePath, mode);
+                flag = true;
+            }
             if (result == null) {
-                System.out.println("识别失败！");
+                result = "图中无可识别文字";
             }
         }
         if (!flag) {
