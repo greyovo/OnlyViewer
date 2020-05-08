@@ -2,6 +2,10 @@ package home.java.model;
 
 import com.jfoenix.effects.JFXDepthManager;
 import home.java.components.ImageBox;
+import home.java.controllers.ControllerUtil;
+import home.java.controllers.HomeController;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -19,24 +23,16 @@ import java.util.Set;
 public class SelectionModel {
 
     private static Set<ImageBox> selection = new HashSet<>();
-
     @Getter
     public static Set<ImageModel> imageModelSet = new HashSet<>();
-
-//    public static Set<ImageModel> toSet() {
-//        imageModelSet.clear();
-//        for (ImageBox node :
-//                selection) {
-//            imageModelSet.add(node.getIm());
-//        }
-//        return imageModelSet;
-//    }
+    private static HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
     public static void add(ImageBox node) {
         JFXDepthManager.setDepth(node, 4);
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
         selection.add(node);
         imageModelSet.add(node.getIm());
+        hc.selectedNumLabel.setText("已选中 " + selection.size() + " 张");
         log();
     }
 
@@ -46,6 +42,7 @@ public class SelectionModel {
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() + 5);
         selection.remove(node);
         imageModelSet.remove(node.getIm());
+        hc.selectedNumLabel.setText("已选中 " + selection.size() + " 张");
         log();
     }
 

@@ -8,6 +8,7 @@ import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
 import home.java.components.RipplerImageView;
 import home.java.model.*;
+import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,12 +24,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -39,7 +42,6 @@ import java.util.Stack;
  */
 
 public class HomeController extends AbstractController implements Initializable {
-
     @FXML
     //缩略图上方工具(信息)栏
     private ToolBar infoBar;
@@ -62,8 +64,12 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     private JFXButton refreshButton;
 
+    //状态信息
     @FXML
     private Label folderInfoLabel;
+    @FXML
+    public Label selectedNumLabel;
+
     @FXML
     @Getter
     private JFXComboBox<String> sortComboBox;
@@ -93,11 +99,13 @@ public class HomeController extends AbstractController implements Initializable 
     private Stack<String> pathStack1 = new Stack<>();
     @Getter
     private Stack<String> pathStack2 = new Stack<>();
+    @Getter
+    private IntegerProperty selectedNum = new SimpleIntegerProperty(0);
 
     public HomeController() {
         //将本类的实例添加到全局映射中
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-        System.out.println("put HomeCon in Map...");
+//        System.out.println("put HomeCon in Map...");
     }
 
     /**
@@ -145,7 +153,8 @@ public class HomeController extends AbstractController implements Initializable 
         } else {
             int total = ImageListModel.getListImgNum(imageModelList);
             String size = ImageListModel.getListImgSize(imageModelList);
-            folderInfoLabel.setText(total + " 张图片，共 " + size);
+            folderInfoLabel.setText(String.format("%d 张图片，共 %s ", total, size));
+            selectedNumLabel.setText("| 已选中 0 张");
             System.out.println(imageModelList);
         }
 
@@ -188,6 +197,16 @@ public class HomeController extends AbstractController implements Initializable 
     private void refreshImagesList(String sort) {
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
+    }
+
+    public void initEnterFolder(String path) {
+        currentPath = path;
+        //入栈以便于后续前进后退
+        if (pathStack1.isEmpty() || !pathStack1.peek().equals(path)) {
+            pathStack1.push(path);
+            pathStack2.clear();
+        }
+        placeImages(ImageListModel.refreshList(currentPath), currentPath);
     }
 
     // 初始化操作---------
@@ -259,7 +278,6 @@ public class HomeController extends AbstractController implements Initializable 
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("后退到底啦"));
         }
-
     }
 
     @FXML
@@ -279,7 +297,20 @@ public class HomeController extends AbstractController implements Initializable 
 
     @FXML
     private void toParentDir() {
-
+        String parent;
+        if (currentPath.lastIndexOf("\\") == 2) {
+            if (currentPath.length() == 3) {
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("到达根目录啦"));
+                return;
+            } else {
+                parent = currentPath.substring(0, currentPath.lastIndexOf("\\") + 1);
+            }
+        } else {
+            parent = currentPath.substring(0, currentPath.lastIndexOf("\\"));
+        }
+//        initEnterFolder(parent);
+        placeImages(ImageListModel.refreshList(parent), parent);
+        pathStack1.push(parent);
     }
 
     /**
