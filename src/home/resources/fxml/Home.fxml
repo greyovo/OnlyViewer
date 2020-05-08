@@ -18,7 +18,7 @@
                 <JFXToolbar fx:id="toolbar">
                     <leftItems>
                         <!--TODO 后退按钮-->
-                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                        <JFXButton fx:id="backButton" onAction="#moveBack" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
                                     <Image url="@../icons/back_96px.png"/>
@@ -27,7 +27,7 @@
                         </JFXButton>
 
                         <!--TODO 前进按钮-->
-                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                        <JFXButton fx:id="forwardButton" onAction="#moveForward" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
                                     <Image url="@../icons/forward_96px.png"/>
@@ -36,7 +36,7 @@
                         </JFXButton>
 
                         <!--TODO 上层文件夹按钮-->
-                        <JFXButton ripplerFill="white" styleClass="toolbar-button">
+                        <JFXButton fx:id="parentDirButton" onAction="#toParentDir" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
                                     <Image url="@../icons/level_up_96px.png"/>
@@ -45,11 +45,11 @@
                         </JFXButton>
 
                         <!-- 地址栏 -->
-                        <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+                        <JFXRippler maskType="RECT" ripplerFill="white">
                             <BorderPane.margin>
                                 <Insets left="50"/>
                             </BorderPane.margin>
-                            <JFXTextField fx:id="pathLabel" styleClass="search-box" prefWidth="330"
+                            <JFXTextField fx:id="pathTextField" styleClass="search-box" prefWidth="330"
                                           unFocusColor="white" focusColor="white"
                                           style="-fx-font-size:18px; -fx-text-fill:white;"/>
                         </JFXRippler>
@@ -67,7 +67,7 @@
                         <HBox alignment="CENTER_RIGHT">
                             <children>
                                 <!--搜索输入栏-->
-                                <JFXRippler maskType="RECT" ripplerFill="#FFFFFF">
+                                <JFXRippler maskType="RECT" ripplerFill="white">
                                     <JFXTextField prefWidth="160.0" fx:id="searchTextField"
                                                   unFocusColor="white" focusColor="white"
                                                   styleClass="search-box">

@@ -1,27 +1,28 @@
 package home.java.controllers;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXTextField;
 import home.java.components.ImageBox;
 import home.java.components.ImageLabel;
 import home.java.components.RipplerImageView;
 import home.java.model.*;
-
-import home.java.model.SelectionModel;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 /**
  * 主窗口界面的控制器。
@@ -37,10 +39,15 @@ import java.util.ResourceBundle;
  */
 
 public class HomeController extends AbstractController implements Initializable {
+
+    @FXML
+    //缩略图上方工具(信息)栏
+    private ToolBar infoBar;
+
+    //文件夹工具(信息)栏功能按钮
     @FXML
     @Getter
     public JFXButton pasteButton;
-
     @FXML
     public JFXTextField searchTextField;
     @FXML
@@ -51,50 +58,41 @@ public class HomeController extends AbstractController implements Initializable 
     public AnchorPane anchorPane;
     @FXML
     public JFXButton selectAllButton;
-
-    @FXML
-    private Label folderInfoLabel;
-
-    @FXML
-    @Getter
-    private StackPane rootPane;
-
-    @FXML
-    private FlowPane imageListPane = new FlowPane();
-//    private Pane imageListPane = new Pane();
-    private Pane pane = new Pane();
-
-    @FXML
-    private ToolBar infoBar; //文件夹上方信息栏 位于刷新按钮左侧
-
-    @FXML
-    private ScrollPane scrollPane;
-
-    @FXML
-    private JFXTextField pathLabel; //TODO 通过地址栏导航去指定目录 2020-4-7 11:49:32
-
     @FXML
     @Getter
     private JFXButton refreshButton;
 
     @FXML
-    private AnchorPane folderPane;
-
-    @FXML
-    private SplitPane splitPane;
-
+    private Label folderInfoLabel;
     @FXML
     @Getter
     private JFXComboBox<String> sortComboBox;
-
     @Getter
     @Setter
     private boolean comboBoxClicked = false;
 
-    private String currentPath;
+    @FXML
+    @Getter
+    private StackPane rootPane;
+    @FXML
+    private FlowPane imageListPane = new FlowPane();
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private AnchorPane folderPane;
+
+    @FXML
+    private JFXTextField pathTextField;
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
+
+    // 存储信息的变量
+    private String currentPath;
+    @Getter
+    private Stack<String> pathStack1 = new Stack<>();
+    @Getter
+    private Stack<String> pathStack2 = new Stack<>();
 
     public HomeController() {
         //将本类的实例添加到全局映射中
@@ -107,38 +105,23 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        imageListPane.setPadding(new Insets(10));
+        imageListPane.setVgap(10);
+        imageListPane.setHgap(10);
+        SplitPane.setResizableWithParent(folderPane, false);
 
         snackbar = new JFXSnackbar(rootPane);
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
         closeSearchButton.setVisible(false);
 
-        imageListPane.setPadding(new Insets(10));
-        imageListPane.setVgap(10);
-        imageListPane.setHgap(10);
-        pane.setPrefWidth(900);
-
-        SplitPane.setResizableWithParent(folderPane, false);
-
         initPasteButton();
         initSortComboBox();
         initWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
         initSearchTextField();
-        initPathLabel();
-//        pane.getChildren().add(imageListPane);
-//        new MultipleSelection(imageListPane);
-
-//        imageListPane.setOnMouseClicked(event -> {
-//            System.out.printf("x:%.0f " +
-//                            "sceneX:%.0f " +
-//                            "screenX:%.0f ",
-//                    event.getX(),
-//                    event.getSceneX(),
-//                    event.getScreenX()
-//            );
-//        });
+        initPathTextField();
     }
 
-    //缩略图面板层级（从顶到底）:
+    // 缩略图面板层级（从底到顶）:
     // AnchorPane > ScrollPane > FlowPane(imageListPane)
 
     /**
@@ -150,10 +133,10 @@ public class HomeController extends AbstractController implements Initializable 
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         //设置初始加载数目,更改时需要更改滚动内的初始index值！！
-        // 修改了firstLoad 取值为列表与15之间的最小值
-        int firstLoad = Math.min(imageModelList.size(), 15);
-        //地址栏更新
-        pathLabel.setText(folderPath);
+        int firstLoad = Math.min(imageModelList.size(), 15);    // 修改了firstLoad 取值为列表与15之间的最小值
+
+        //更新当前地址，并检测入栈
+        pathTextField.setText(folderPath);
         currentPath = folderPath;
 
         //文件夹信息栏设置
@@ -200,6 +183,16 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     /**
+     * 排序当前图片列表并更新到页面
+     */
+    private void refreshImagesList(String sort) {
+        placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
+        System.out.println("已排序。");
+    }
+
+    // 初始化操作---------
+
+    /**
      * 在初始启动时显示欢迎页面
      */
     private void initWelcomePage() {
@@ -213,9 +206,88 @@ public class HomeController extends AbstractController implements Initializable 
         System.out.println(welcomeImage);
     }
 
+    /**
+     * 初始化排序下拉盒子
+     */
+    private void initSortComboBox() {
+        sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
+        sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                refreshImagesList(newValue);
+                if (!comboBoxClicked)
+                    setComboBoxClicked(true);
+            }
+        });
+    }
+
+    private void initSearchTextField() {
+        searchTextField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                searchImage();
+        });
+    }
+
+    private void initPathTextField() {
+        pathTextField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                gotoPath();
+        });
+    }
+
+    private void initPasteButton() {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
+            pasteButton.setDisable(true);
+        }
+    }
+
+    //各按钮事件操作---------
+
+    /**
+     * 前进、后退和返回父目录
+     */
+    @FXML
+    private void moveBack() {
+        if (!pathStack1.isEmpty()) {
+            String path = null;
+            if (pathStack1.peek().equals(currentPath)) {
+                pathStack1.pop();
+            }
+            path = pathStack1.pop();
+            pathStack2.push(currentPath);
+            placeImages(ImageListModel.refreshList(path), path);
+            System.out.println("后退到：" + path);
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("后退到底啦"));
+        }
+
+    }
+
+    @FXML
+    private void moveForward() {
+        if (!pathStack2.isEmpty()) {
+//            String path = pathStack2.pop();
+//            String path = pathStack2.peek();
+            String path = null;
+            path = pathStack2.pop();
+            pathStack1.push(currentPath);
+            placeImages(ImageListModel.refreshList(path), path);
+            System.out.println("前进到：" + path);
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("前进到尽头啦"));
+        }
+    }
+
+    @FXML
+    private void toParentDir() {
+
+    }
+
+    /**
+     * 地址栏导航操作
+     */
     @FXML
     private void gotoPath() {
-        String path = pathLabel.getText();
+        String path = pathTextField.getText();
         File directory = new File(path);
         if (!directory.exists()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
@@ -224,7 +296,6 @@ public class HomeController extends AbstractController implements Initializable 
             // placeImages方法中已处理列表为空时的情况
             assert list != null;
             placeImages(list, path);
-
         }
     }
 
@@ -243,7 +314,7 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void paste() {
-        if (SelectedModel.pasteImage(pathLabel.getText())) {
+        if (SelectedModel.pasteImage(currentPath)) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
@@ -268,6 +339,9 @@ public class HomeController extends AbstractController implements Initializable 
         closeSearchButton.setVisible(true);
     }
 
+    /**
+     * 关闭搜索
+     */
     @FXML
     private void closeSearch() {
         closeSearchButton.setVisible(false);
@@ -276,47 +350,8 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     /**
-     * 排序当前图片列表并更新到页面
+     * 全选按钮
      */
-    private void refreshImagesList(String sort) {
-        placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
-        System.out.println("已排序。");
-    }
-
-    /**
-     * 初始化排序下拉盒子
-     */
-    private void initSortComboBox() {
-        sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
-        sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                refreshImagesList(newValue);
-                if (!comboBoxClicked)
-                    setComboBoxClicked(true);
-            }
-        });
-    }
-
-    private void initSearchTextField() {
-        searchTextField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER)
-                searchImage();
-        });
-    }
-
-    private void initPathLabel() {
-        pathLabel.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER)
-                gotoPath();
-        });
-    }
-
-    private void initPasteButton() {
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
-            pasteButton.setDisable(true);
-        }
-    }
-
     @FXML
     private void selectAll() {
         for (Node node : imageListPane.getChildren()) {
@@ -330,8 +365,10 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    //取消反选
-    private void unSelectAll(){
+    /**
+     * 取消全选
+     */
+    private void unSelectAll() {
         SelectionModel.clear();
         selectAllButton.setText("全选");
         selectAllButton.setOnAction(event -> {
