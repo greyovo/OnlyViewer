@@ -190,30 +190,33 @@ public class SelectedModel {
 
     /**
      * 4.删除图片选项
+     * @return 返回删除成功的图片个数
      */
-    // FIXME 2020/5/8 删除不了多张图片
-    public static boolean deleteImage() {
+    public static int deleteImage() {
+        int success=0;
         // 删除图片文件进入回收站，不直接删除
         if (singleOrMultiple == 0) {
             try {
                 microDelete();
+                success++;
             } catch (IOException e) {
                 System.err.println("删除失败");
-                return false;
+                return 0;
             }
         } else if (singleOrMultiple == 1) {
             for (Path p : sourcePathSet) {
                 sourcePath = p;
                 try {
                     microDelete();
+                    success++;
                 } catch (IOException e) {
                     System.err.println("删除失败");
-                    return false;
+                    return 0;
                 }
             }
         }
         singleOrMultiple = -1;
-        return true;
+        return success;
     }
 
     // 删除的微操作

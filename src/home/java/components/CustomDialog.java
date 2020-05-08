@@ -122,8 +122,8 @@ public class CustomDialog {
             layout.setBody(bodyLabel);
         }
     }
-    
-    public void setLoadingSpinner(){
+
+    public void setLoadingSpinner() {
 //        layout.getChildren().clear();
         JFXSpinner spinner = new JFXSpinner(-1);
         layout.setBody(spinner);
@@ -131,7 +131,7 @@ public class CustomDialog {
 
     private void setBodyTextArea(String text) {
         bodyTextArea = new JFXTextArea(text);
-        bodyTextArea.getStyleClass().addAll("dialog-text-area","dialog-body");
+        bodyTextArea.getStyleClass().addAll("dialog-text-area", "dialog-body");
         bodyTextArea.setEditable(false);
         layout.setBody(bodyTextArea);
     }
@@ -142,7 +142,7 @@ public class CustomDialog {
     private void setBodyTextField() {
         bodyTextField = new JFXTextField();
         bodyTextField.setText(targetImage.getImageName());
-        bodyTextField.getStyleClass().addAll("rename-text-field","dialog-body");
+        bodyTextField.getStyleClass().addAll("rename-text-field", "dialog-body");
         layout.setBody(bodyTextField);
     }
 
@@ -159,9 +159,10 @@ public class CustomDialog {
 //        rightButton.getStyleClass().add("dialog-confirm-red");
         rightButton.setStyle("-fx-text-fill: RED;");
         rightButton.setOnAction(event -> {
-            SelectedModel.setSourcePath(targetImage.getImageFilePath());
-            if (SelectedModel.deleteImage()) {
-                controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("删除成功"));    //显示删除成功通知。
+            int n;
+            n = SelectedModel.deleteImage();
+            if (n > 0) {
+                controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("成功删除 " + n + " 张图片"));    //显示删除成功通知。
             } else {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("删除失败"));    //显示删除成功通知。
             }
@@ -204,7 +205,7 @@ public class CustomDialog {
         dialog.show(controller.getRootPane());
     }
 
-    public void close(){
+    public void close() {
         dialog.close();
     }
 

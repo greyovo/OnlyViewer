@@ -15,7 +15,7 @@ import java.net.URLEncoder;
  * @Describe: OCR
  **/
 
-public class Ocr extends GenAIP{
+public class Ocr extends GenAIP {
     /**
      * 三十日更新一次
      * Latest: 2020/4/27
@@ -58,7 +58,7 @@ public class Ocr extends GenAIP{
         }
         if (!flag) {
             SelectedModel.setSourcePath(newImagePath);
-            if (SelectedModel.deleteImage())
+            if (SelectedModel.deleteImage() != 0)
                 System.out.println("删除压缩图片");
         }
         return result;
