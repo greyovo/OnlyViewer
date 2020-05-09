@@ -249,6 +249,7 @@ public class DisplayWindowController extends AbstractController implements Initi
                 timer2.cancel();
                 timer.cancel();
                 toolbar.setVisible(true);
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映"));
             }
         });
 
@@ -263,11 +264,6 @@ public class DisplayWindowController extends AbstractController implements Initi
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
             }
         });
-
-
-
-
-
     }
 
     //下一张图
