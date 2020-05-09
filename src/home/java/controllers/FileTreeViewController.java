@@ -90,7 +90,6 @@ public class FileTreeViewController implements Initializable {
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片
-
                                 this.setGraphic(hBox);
                             }
                             hBox.getChildren().add(label);//加文字
@@ -144,7 +143,7 @@ public class FileTreeViewController implements Initializable {
             }
 
             if (filelist.length > 0) {
-                for (int i = 1; i < filelist.length; i++) {
+                for (int i = 0; i < filelist.length; i++) {
                     if (filelist[i].isDirectory() & !filelist[i].isHidden()) {
                         TreeItem<File> b = new TreeItem<File>(filelist[i]);
                         if (flag < 1) {
