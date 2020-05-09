@@ -96,6 +96,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
         System.out.println("cur list:\n" + imageModelArrayList);
+
     }
 
     private void setImageMouseAction(){
@@ -134,6 +135,7 @@ public class DisplayWindowController extends AbstractController implements Initi
                 imageView.getTransforms().add(tran);
             }
         });
+
     }
 
     /**
@@ -192,7 +194,33 @@ public class DisplayWindowController extends AbstractController implements Initi
         stage.setFullScreen(true);
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映"));
 
-        //以下实现定时器功能
+        //以下实现隐藏工具栏定时器
+        TimerTask task2 = new TimerTask() {
+            @Override
+            public void run() {
+                //定时任务中安排隐藏工具栏
+                Platform.runLater(()->{
+                    toolbar.setVisible(false);
+                });
+            }
+        };
+        Timer timer2 = new Timer();
+        // 定义开始等待时间
+        long delay2 = 5000;
+        //每次执行的间隔
+        long intervalPeriod2 = 5000;
+        // 定时器执行
+        timer2.scheduleAtFixedRate(task2, delay2, intervalPeriod2);
+
+        imageView.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                toolbar.setVisible(true);
+            }
+        });
+
+
+        //以下实现定时器功能翻页
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -218,6 +246,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                timer2.cancel();
                 timer.cancel();
                 toolbar.setVisible(true);
             }
@@ -227,12 +256,18 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
+                timer2.cancel();
                 timer.cancel();
                 toolbar.setVisible(true);
                 stage.setFullScreen(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
             }
         });
+
+
+
+
+
     }
 
     //下一张图
