@@ -347,12 +347,21 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void paste() {
-        if (SelectedModel.pasteImage(currentPath)) {
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
+        if (SelectionModel.getImageModelSet().isEmpty()) {
+            // 粘贴一张图片
+            SelectedModel.setWaitingPasteNum(1);
+            SelectedModel.pasteImage(currentPath);
         } else {
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴失败"));
+            // 粘贴多张图片
+            SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelSet().size());
+            SelectedModel.pasteImage(currentPath);
         }
-        refreshImagesList();
+        System.out.println("getHavePastedNum: " + SelectedModel.getHavePastedNum());
+        System.out.println("getWaitingPasteNum: " + SelectedModel.getWaitingPasteNum());
+        if (SelectedModel.getHavePastedNum() == SelectedModel.getWaitingPasteNum()) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
+            refreshImagesList();
+        }
         if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
             pasteButton.setDisable(true);
         }
