@@ -74,6 +74,11 @@
     -fx-padding:5;
 }
 
+.toolbar-button-img{
+    -fx-pref-width: 36px;
+    -fx-pref-height: 36px;
+}
+
 .path-label {
     -fx-font-size: 18.0px;
     -fx-padding: 10 10 10 10;

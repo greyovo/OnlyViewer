@@ -3,8 +3,6 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
-import javafx.beans.property.*;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,14 +19,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
-import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -73,6 +69,10 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     @Setter
     private boolean comboBoxClicked = false;
+    @FXML
+    private JFXTextField pathTextField;
+    @Getter
+    private JFXSnackbar snackbar; //下方通知条
 
     @FXML
     @Getter
@@ -84,20 +84,12 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private AnchorPane folderPane;
 
-    @FXML
-    private JFXTextField pathTextField;
-
-    @Getter
-    private JFXSnackbar snackbar; //下方通知条
-
     // 存储信息的变量
     private String currentPath;
     @Getter
     private Stack<String> pathStack1 = new Stack<>();
     @Getter
     private Stack<String> pathStack2 = new Stack<>();
-    @Getter
-    private IntegerProperty selectedNum = new SimpleIntegerProperty(0);
 
     public HomeController() {
         //将本类的实例添加到全局映射中
@@ -121,7 +113,7 @@ public class HomeController extends AbstractController implements Initializable 
 
         initPasteButton();
         initSortComboBox();
-        initWelcomePage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
+        initIntroPage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
         initSearchTextField();
         initPathTextField();
     }
@@ -147,6 +139,7 @@ public class HomeController extends AbstractController implements Initializable 
         //文件夹信息栏设置
         if (imageModelList.isEmpty()) {
             folderInfoLabel.setText("此文件夹下无可识别图片");
+            return;
         } else {
             int total = ImageListModel.getListImgNum(imageModelList);
             String size = ImageListModel.getListImgSize(imageModelList);
@@ -211,15 +204,27 @@ public class HomeController extends AbstractController implements Initializable 
     /**
      * 在初始启动时显示欢迎页面
      */
-    private void initWelcomePage() {
-        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/welcome.png"));
-        welcomeImage.setFitWidth(400);
+    @FXML
+    private void initIntroPage() {
+        ImageView welcomeImage = new ImageView(new Image("/home/resources/images/intro.png"));
+        welcomeImage.setFitWidth(850);
         welcomeImage.setPreserveRatio(true);
         HBox hBox = new HBox(welcomeImage);
         hBox.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
         System.out.println(welcomeImage);
+    }
+
+    public void showNotFoundPage(){
+        ImageView img = new ImageView(new Image("/home/resources/images/no_result.png"));
+        img.setFitHeight(500);
+        img.setPreserveRatio(true);
+        HBox hBox = new HBox(img);
+        hBox.setAlignment(Pos.CENTER);
+        StackPane stackPane = new StackPane(hBox);
+        scrollPane.setContent(stackPane);
+        System.out.println(img);
     }
 
     /**
@@ -361,6 +366,7 @@ public class HomeController extends AbstractController implements Initializable 
         placeImages(result, currentPath);
         if (result.size() == 0) {
             folderInfoLabel.setText("未找到图片");
+            showNotFoundPage();
         } else {
             folderInfoLabel.setText("共找到 " + result.size() + " 个结果");
         }
