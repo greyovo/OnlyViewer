@@ -1,8 +1,6 @@
 package home.java.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.junit.Test;
 
 import java.io.IOException;

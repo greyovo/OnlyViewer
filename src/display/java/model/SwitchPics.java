@@ -1,15 +1,11 @@
 package display.java.model;
 
 import com.jfoenix.controls.JFXSnackbar;
-import display.DisplayWindow;
 import display.java.controllers.DisplayWindowController;
 import home.java.controllers.ControllerUtil;
-import home.java.controllers.HomeController;
 import home.java.model.ImageModel;
 
 import java.io.IOException;
-
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 
 /**
