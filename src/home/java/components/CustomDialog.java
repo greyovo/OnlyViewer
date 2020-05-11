@@ -6,7 +6,6 @@ import display.java.controllers.DisplayWindowController;
 import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
 import home.java.controllers.HomeController;
-import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.scene.Node;

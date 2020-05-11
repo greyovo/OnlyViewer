@@ -1,7 +1,6 @@
 package display.java.model;
 
 import home.java.model.SelectedModel;
-import lombok.Getter;
 import org.junit.Test;
 
 import java.io.*;
