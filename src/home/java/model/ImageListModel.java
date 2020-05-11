@@ -31,6 +31,8 @@ public class ImageListModel {
     // 初始化图片列表
     public static ArrayList<ImageModel> initImgList(String path) throws IOException {
         ArrayList<ImageModel> imgList = new ArrayList<>(); // 默认根据name进行排序
+        if (path.equals("") || path == null)
+            return null;
         Files.walkFileTree(Paths.get(path), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {

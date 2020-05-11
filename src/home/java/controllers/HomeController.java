@@ -85,7 +85,7 @@ public class HomeController extends AbstractController implements Initializable 
     private AnchorPane folderPane;
 
     // 存储信息的变量
-    private String currentPath;
+    private String currentPath = "";
     @Getter
     private Stack<String> pathStack1 = new Stack<>();
     @Getter
@@ -126,11 +126,16 @@ public class HomeController extends AbstractController implements Initializable 
      * 一个缩略图单元{@link ImageBox}包含：一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
+        //检查列表是否空，因为有可能处于初始页面
+        if (imageModelList == null)
+            return;
+
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
+
         //设置初始加载数目,更改时需要更改滚动内的初始index值！！
-        int firstLoad = Math.min(imageModelList.size(), 15);    // 修改了firstLoad 取值为列表与15之间的最小值
+        int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值
 
         //更新当前地址，并检测入栈
         pathTextField.setText(folderPath);
@@ -216,7 +221,7 @@ public class HomeController extends AbstractController implements Initializable 
         System.out.println(welcomeImage);
     }
 
-    public void showNotFoundPage(){
+    public void showNotFoundPage() {
         ImageView img = new ImageView(new Image("/home/resources/images/no_result.png"));
         img.setFitHeight(500);
         img.setPreserveRatio(true);
@@ -370,6 +375,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void searchImage() {
         String key = searchTextField.getText();
+        if (key.equals("")) return; // 搜索内容为空时即返回
         ArrayList<ImageModel> result =
                 SearchImageModel.fuzzySearch(key, ImageListModel.refreshList(currentPath));
         placeImages(result, currentPath);
@@ -397,15 +403,23 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void selectAll() {
+        boolean flag = false; //用于标记是否有可选的内容
+
         for (Node node : imageListPane.getChildren()) {
             ImageBox imageBox = (ImageBox) node;
             SelectionModel.add(imageBox);
             imageBox.getCheckBox().setSelected(true);
+            if (!flag)
+                flag = true;
         }
-        selectAllButton.setText("取消全选");
-        selectAllButton.setOnAction(event -> {
-            unSelectAll();
-        });
+
+        //如果没有可选的内容，按钮不必变化
+        if (flag) {
+            selectAllButton.setText("取消全选");
+            selectAllButton.setOnAction(event -> {
+                unSelectAll();
+            });
+        }
     }
 
     /**
