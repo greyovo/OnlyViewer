@@ -1,7 +1,6 @@
-package display;
+package splice;
 
 import com.jfoenix.controls.JFXDecorator;
-import display.java.controllers.DisplayWindowController;
 import home.java.model.ImageModel;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -12,24 +11,17 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import splice.java.controllers.SplicePreviewController;
 
-/**
- * 图片单独展示窗口
- *
- * @author Grey
- */
-public class DisplayWindow extends Application {
+import java.util.ArrayList;
+import java.util.Set;
 
-    public static double windowWidth = 800;     //窗口宽度
-    public static double windowHeight = 600;    //窗口高度
+public class SplicePreviewWindow extends Application {
 
-
-    private ImageModel im;
-    DisplayWindowController dwController;
-
-    public DisplayWindow() {
-
-    }
+    public static double windowWidth;
+    public static double windowHeight;
+    private SplicePreviewController sp;
+    private Set<ImageModel> imageModelSet;
 
     @Override
     public void init() throws Exception {
@@ -46,26 +38,27 @@ public class DisplayWindow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/DisplayWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/splice/resources/fxml/SplicePreview.fxml"));
 
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
-        dwController = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
-        dwController.initImage(im);
+        sp = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
+        sp.setImageModelSet(imageModelSet);
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(this.getClass().getResource("/display/resources/css/display.css").toExternalForm());
+        stylesheets.addAll(this.getClass().getResource("/splice/resources/css/splice.css").toExternalForm());
 
-        stage.setTitle(im.getImageName());
+        stage.setTitle("图片拼接");
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
     }
 
-    public void setImage(ImageModel im) throws Exception {
-        init();
-        this.im = im;
+
+    public void initImageSet(Set<ImageModel> imageModelSet){
+        this.imageModelSet = imageModelSet;
     }
+
 }
