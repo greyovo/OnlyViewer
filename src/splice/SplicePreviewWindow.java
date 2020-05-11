@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import splice.java.controllers.SplicePreviewController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -37,10 +38,16 @@ public class SplicePreviewWindow extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/splice/resources/fxml/SplicePreview.fxml"));
 
-        Parent root = fxmlLoader.load();
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert root != null;
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例

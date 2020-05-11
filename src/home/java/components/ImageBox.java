@@ -69,11 +69,11 @@ public class ImageBox extends VBox {
         ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
         imageLabel.setStyle("-fx-padding:7 0 7 -2;");
 
-        HBox hBox = new HBox(checkBox,imageLabel);
+        HBox hBox = new HBox(checkBox, imageLabel);
         hBox.setAlignment(Pos.CENTER);
         hBox.setStyle("-fx-padding:5 5 3 5;");
 
-        this.getChildren().addAll(riv,hBox);
+        this.getChildren().addAll(riv, hBox);
 
         //设置文件信息tips
         String tooltip = String.format("名称: %s\n大小: %s", im.getImageName(), im.getFormatSize());
@@ -127,12 +127,8 @@ public class ImageBox extends VBox {
             } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 // 鼠标左键双击看大图
                 DisplayWindow dw = new DisplayWindow();
-                try {
-                    dw.setImage(im);
-                    dw.start(new Stage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                dw.setImage(im);
+                dw.start(new Stage());
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 // 鼠标右键菜单
                 popUpMenu.show(this,

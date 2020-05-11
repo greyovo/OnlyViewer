@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 /**
  * 图片单独展示窗口
  *
@@ -45,10 +47,16 @@ public class DisplayWindow extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/display/resources/fxml/DisplayWindow.fxml"));
 
-        Parent root = fxmlLoader.load();
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert root != null;
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         dwController = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
@@ -64,8 +72,12 @@ public class DisplayWindow extends Application {
         stage.show();
     }
 
-    public void setImage(ImageModel im) throws Exception {
-        init();
+    public void setImage(ImageModel im) {
+        try {
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.im = im;
     }
 }

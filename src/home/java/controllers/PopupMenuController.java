@@ -13,6 +13,7 @@ import home.java.model.SelectionModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import lombok.Getter;
 import splice.SplicePreviewWindow;
 
@@ -131,6 +132,12 @@ public class PopupMenuController implements Initializable {
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("在做啦在做啦^^"));
                     SplicePreviewWindow previewWindow = new SplicePreviewWindow();
                     previewWindow.initImageSet(imSet);
+                    //打开窗口
+                    try {
+                        previewWindow.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 imageBox.getPopUpMenu().hide();
                 break;
