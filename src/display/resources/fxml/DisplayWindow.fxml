@@ -76,7 +76,7 @@
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
-                    <Image url="@../icons2/ocr2.png"/>
+                    <Image url="@../icons2/ocr.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>
