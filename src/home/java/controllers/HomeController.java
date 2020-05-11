@@ -3,7 +3,7 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,7 +16,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import lombok.Getter;
@@ -24,9 +23,7 @@ import lombok.Setter;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 主窗口界面的控制器。
@@ -105,7 +102,9 @@ public class HomeController extends AbstractController implements Initializable 
         imageListPane.setPadding(new Insets(10));
         imageListPane.setVgap(10);
         imageListPane.setHgap(10);
+        imageListPane.setCache(true);
         SplitPane.setResizableWithParent(folderPane, false);
+
 
         snackbar = new JFXSnackbar(rootPane);
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
@@ -134,7 +133,7 @@ public class HomeController extends AbstractController implements Initializable 
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
 
-        //设置初始加载数目,更改时需要更改滚动内的初始index值！！
+        //设置初始加载数目,更改时需要更改滚动内的初始index值
         int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值
 
         //更新当前地址，并检测入栈
@@ -153,28 +152,57 @@ public class HomeController extends AbstractController implements Initializable 
             System.out.println(imageModelList);
         }
 
+        int i;
         //初始加载缩略图
-        for (int i = 0; i < firstLoad; i++) {
+        for (i = 0; i < firstLoad; i++) {
             ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
-        //加载缩略图
-        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
-            //初始加载后的位置
-            int index = firstLoad - 1;
-
+        //以下实现延迟加载，减少卡顿
+        int[] finalI = {i};
+        TimerTask task = new TimerTask() {
             @Override
-            public void handle(ScrollEvent event) {
-                index++;
-                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
-//                    WAR/WAW ERROR
-//                    index = loadPic(imageModelList, imageListPane, index);
-                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
-                    imageListPane.getChildren().add(imageBox);
-                }
+            public void run() {
+                Platform.runLater(() -> {
+                    int times = 100;
+                    while (times > 0) {
+                        if (finalI[0] >= imageModelList.size()) {
+                            this.cancel();
+                            return;
+                        } else {
+                            ImageBox imageBox = new ImageBox(imageModelList.get(finalI[0]), imageModelList);
+                            imageListPane.getChildren().add(imageBox);
+                            finalI[0]++;
+                            times--;
+                        }
+                    }
+                });
             }
-        });
+        };
+        long delay = 500; //延迟加载
+        long intervalPeriod = 300; //每次加载后等待
+        new Timer().scheduleAtFixedRate(task, delay, intervalPeriod);
+
+//        //加载后续的缩略图
+//        //2020/5/11 可以尝试设置在等待一段时间后，断续加载后面的而不用等滑动事件触发
+//        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
+//            //初始加载后的位置
+//            int index = firstLoad - 1;
+//
+//            @Override
+//            public void handle(ScrollEvent event) {
+//
+//                index++;
+//                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
+////                    WAR/WAW ERROR
+////                    index = loadPic(imageModelList, imageListPane, index);
+//                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+//                    imageListPane.getChildren().add(imageBox);
+//                }
+//
+//            }
+//        });
     }
 
     /**
