@@ -2,7 +2,6 @@ package display;
 
 import com.jfoenix.controls.JFXDecorator;
 import display.java.controllers.DisplayWindowController;
-import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -11,13 +10,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
 /**
  * 图片单独展示窗口
  *
