@@ -1,7 +1,6 @@
 package display.java.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSpinner;
 import display.DisplayWindow;
 import display.java.model.Ocr;
 import home.java.components.CustomDialog;
@@ -38,7 +37,6 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//@ViewController(value = "/fxml/displayWindow.fxml", title = "Display Window")
 public class DisplayWindowController extends AbstractController implements Initializable {
 
     @FXML
@@ -52,7 +50,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     @Getter
     private ImageView imageView;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private Image image;
 
     private ImageModel imageModel;
@@ -99,7 +98,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     }
 
-    private void setImageMouseAction(){
+    private void setImageMouseAction() {
         //以下实现滚轮的放大缩小
         imageView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -184,7 +183,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     //幻灯片放映
-    private void playSlide(){
+    private void playSlide() {
         //比例重新设定
         initStatus();
         //使工具栏不可见
@@ -199,7 +198,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             @Override
             public void run() {
                 //定时任务中安排隐藏工具栏
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     toolbar.setVisible(false);
                 });
             }
@@ -225,7 +224,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             @Override
             public void run() {
                 //定时任务中安排切换下一页功能
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     try {
                         showNextImg();
                     } catch (IOException e) {
@@ -249,7 +248,6 @@ public class DisplayWindowController extends AbstractController implements Initi
                 timer2.cancel();
                 timer.cancel();
                 toolbar.setVisible(true);
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映"));
             }
         });
 
@@ -264,6 +262,8 @@ public class DisplayWindowController extends AbstractController implements Initi
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
             }
         });
+
+
     }
 
     //下一张图
@@ -292,7 +292,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         loading.setLoadingSpinner();
         loading.show();
 
-        DisplayWindowController dwc = (DisplayWindowController)ControllerUtil.controllers.get(this.getClass().getSimpleName());
+        DisplayWindowController dwc = (DisplayWindowController) ControllerUtil.controllers.get(this.getClass().getSimpleName());
 
         Task ocrTask = new Task() {
             @Override

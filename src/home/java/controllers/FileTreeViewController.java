@@ -1,7 +1,6 @@
 package home.java.controllers;
 
 import com.jfoenix.controls.JFXTreeView;
-import home.java.model.ImageListModel;
 import home.java.model.SortParam;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

@@ -6,7 +6,6 @@ import display.java.controllers.DisplayWindowController;
 import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
 import home.java.controllers.HomeController;
-import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.scene.Node;
@@ -196,9 +195,24 @@ public class CustomDialog {
     }
 
     private void makeReplaceDialog() {
-        rightButton.setOnAction(event -> {
-            //TODO
+        leftButton.setText("跳过");
+        rightButton.setText("替换");
+        rightButton.setStyle("-fx-text-fill: BLUE;");
+        leftButton.setOnAction(event -> {
+            System.out.println("选择跳过");
             dialog.close();
+            controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("选择跳过"));
+            hc.refreshImagesList();
+//            SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
+        });
+        rightButton.setOnAction(event -> {
+            System.out.println("选择替换");
+            if (SelectedModel.replaceImage()) {
+                controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("替换成功"));
+            }
+            hc.refreshImagesList();
+            dialog.close();
+            SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
         });
     }
 

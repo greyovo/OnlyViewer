@@ -1,6 +1,11 @@
 package home.java.model;
 
+import com.jfoenix.controls.JFXSnackbar;
 import com.sun.jna.platform.FileUtils;
+import home.java.components.CustomDialog;
+import home.java.components.DialogType;
+import home.java.controllers.ControllerUtil;
+import home.java.controllers.HomeController;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -50,6 +55,12 @@ public class SelectedModel {
     @Setter // 选择单选/多选 0->单选 1->多选
     private static int singleOrMultiple = -1;
 
+    @Getter @Setter
+    private static int waitingPasteNum = 0;
+    @Getter @Setter
+    private static int havePastedNum = 0;
+    private static int coverImage = 0;
+
     /**
      * 1.初始化源 复制/剪切/重命名/删除/压缩选项调用
      */
@@ -92,39 +103,66 @@ public class SelectedModel {
      *
      * @param path 新的文件夹路径
      */
-    // TODO  遇到重命名应询问是否覆盖
     public static boolean pasteImage(String path) {
+        havePastedNum = 0;
+        System.out.println("调用paste时copyOrMove: " + copyOrMove);
         if (singleOrMultiple == 0) {
             try {
-                microPaste(path, 0);
+                microPaste(path);
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
         } else if (singleOrMultiple == 1) {
             try {
-                int i = 0;  // 计数器
+                coverImage = 0;
                 for (Path p : sourcePathSet) {
                     sourcePath = p;
-                    i++;
-                    microPaste(path, sourcePathSet.size()-i);
+                    microPaste(path);
+                }
+                System.out.println("coverImage: " + coverImage);
+                if (coverImage !=0){
+                    HomeController hcc = (HomeController) ControllerUtil.controllers.get("HomeController");
+                    hcc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
         }
-        singleOrMultiple = -1;
+        return true;
+    }
+
+    public static boolean replaceImage() {
+        System.out.println("调用覆盖时copyOrMove: " + copyOrMove);
+        switch (copyOrMove) {
+            case 0:
+                try {
+                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                break;
+//            case 1:
+//                try {
+//                    Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return false;
+//                }
+//                break;
+        }
         return true;
     }
 
     // 粘贴的微操作
-    private static void microPaste(String path, int nums) throws IOException{
+    private static void microPaste(String path) throws IOException{
         if (copyOrMove == 0){
             //复制粘贴
             if (getBeforePath().equals(path)) {
                 // 情况1
-                boolean flag = false;
+                boolean flag = false;  // 哨兵flag
                 String[] flist = new File(path).list();
                 String sourceFileName = sourcePath.getFileName().toString();
                 for (String s : flist) {
@@ -137,18 +175,54 @@ public class SelectedModel {
                     targetPath = new File(otherPath(path)).toPath();
                 }
                 Files.copy(sourcePath, targetPath);
+                havePastedNum++;
             } else {
                 // 情况2
                 targetPath = new File(otherPath(path)).toPath();
-                Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                if (!imageRepeat(path)) {
+                    // 没有重复的图片
+                    Files.copy(sourcePath, targetPath);
+                    havePastedNum++;
+                } else {
+                    show();
+                }
             }
         } else if (copyOrMove == 1) {
             //剪切粘贴
             targetPath = new File(otherPath(path)).toPath();
+            if (imageRepeat(path))
+                coverImage++;
             Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            if (nums == 0)
+            havePastedNum++;
+            if (havePastedNum == waitingPasteNum)
                 copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
         }
+    }
+
+    /** 粘贴前需要判断是否有重复图片 */
+    private static boolean imageRepeat(String path) {
+        String targetImageName = targetPath.getFileName().toString();
+        try {
+            if (SearchImageModel.accurateSearch(targetImageName, ImageListModel.initImgList(path)) != null) {
+                // 找到有重复的图片
+                System.out.println("有重复图片");
+                ImageModel im = new ImageModel(targetImageName);
+                if (SearchImageModel.accurateSearch(targetImageName, ImageListModel.initImgList(path)) != null) {
+                    // 有重复图片
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private synchronized static void show() {
+        ImageModel im = new ImageModel(targetPath.toFile());
+        new CustomDialog((HomeController) ControllerUtil.controllers.get("HomeController"), DialogType.REPLACE, im,
+                "替换或跳过文件",
+                "\n目标已包含一个名为\"" + im.getImageName() + "\"的文件\n").show();
     }
 
     /**

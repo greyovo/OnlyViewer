@@ -4,12 +4,8 @@ import com.jfoenix.effects.JFXDepthManager;
 import home.java.components.ImageBox;
 import home.java.controllers.ControllerUtil;
 import home.java.controllers.HomeController;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.Node;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,66 +1,67 @@
 .root {
-    /* -fx-font-family: "Microsoft Yahei UI"; */
-    -fx-font-family: "Roboto";
-    -fx-font-smoothing-type: gray;
+  /* -fx-font-family: "Microsoft Yahei UI"; */
+  -fx-font-family: "Roboto";
+  -fx-font-smoothing-type: gray;
 }
 
 /***主窗口样式***/
 .jfx-decorator {
-    -fx-decorator-color: derive(#009688,-10%);
+  -fx-decorator-color: derive(#009688, -10%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
-    -fx-background-color: -fx-decorator-color;
+  -fx-background-color: -fx-decorator-color;
 }
 
 .jfx-decorator .resize-border {
-    -fx-border-color: -fx-decorator-color;
-    -fx-border-width: 0 4 4 4;
+  -fx-border-color: -fx-decorator-color;
+  -fx-border-width: 0 4 4 4;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
-    -fx-fill: WHITE;
-    -fx-font-size: 17;
+  -fx-fill: WHITE;
+  -fx-font-size: 17;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
-    -jfx-size: 15;
-    -fx-background-color: WHITE;
+  -jfx-size: 15;
+  -fx-background-color: WHITE;
 }
 
 /* FX默认的菜单样式 */
-.context-menu{
-	-fx-padding:2;
-	-fx-border-width:0;
-    -fx-background-color:rgb(242,242,242,0.96); /*0.87*/
-    -fx-pref-width: 120.0px;
-	/*-fx-background-radius:2px;*/
-	/* -fx-effect:dropshadow(three-pass-box, #F2F2F2, 1, 0, 0, 0);  */
-} 
+.context-menu {
+  -fx-padding: 2;
+  -fx-border-width: 0;
+  -fx-background-color: rgb(242, 242, 242, 0.96); /*0.87*/
+  -fx-pref-width: 120px;
+  /*-fx-background-radius:2px;*/
+  /* -fx-effect:dropshadow(three-pass-box, #F2F2F2, 1, 0, 0, 0);  */
+}
 
 /* 菜单栏选中并移动到二级菜单时一级选中菜单的样式 */
-.menu-bar > .container > .menu-button:showing{ 
-    -fx-background-color: #CCCCCE;
-    -fx-border-color: #CCCCCE;
+.menu-bar > .container > .menu-button:showing {
+  -fx-background-color: #ccccce;
+  -fx-border-color: #ccccce;
 }
 
-.menu-button{
-	-fx-padding:1 4 1 4;
-	-fx-border-width:1;
-	-fx-border-color:#F0F0F0;
+.menu-button {
+  -fx-padding: 1 4 1 4;
+  -fx-border-width: 1;
+  -fx-border-color: #f0f0f0;
 }
-.menu-button:hover{
-	-fx-background-color:#CCCCCE;
-	-fx-border-color:#CCCCCE;
+.menu-button:hover {
+  -fx-background-color: #ccccce;
+  -fx-border-color: #ccccce;
 }
-.menu-button > .label,.menu-item > .label{
-	-fx-text-fill:BLACK;
+.menu-button > .label,
+.menu-item > .label {
+  -fx-text-fill: BLACK;
 }
-.menu-item:focused{
-    -fx-background-color:#CCCCCE; 
+.menu-item:focused {
+  -fx-background-color: #ccccce;
 }
-.menu:focused > .right-container > .arrow{
-    -fx-background-color:#CCCCCE;
+.menu:focused > .right-container > .arrow {
+  -fx-background-color: #ccccce;
 }
 
 /*******************************************************************************
@@ -68,24 +69,24 @@
  * 下方工具栏                                                                  *
  *                                                                             *
  ******************************************************************************/
-.bottom-toolbar{
-    -fx-background-color:rgba(50,50,50,0.65);
-    -fx-background-radius: 11px;
-    -jfx-rippler-fill:WHITE;
-    /* -fx-padding:10; */
-    -fx-font-size: 18.0px;
-    /* -fx-padding: 10 10 10 10; */
-    /* -fx-margin: 30px; */
+.bottom-toolbar {
+  -fx-background-color: rgba(50, 50, 50, 0.65);
+  -fx-background-radius: 11px;
+  -jfx-rippler-fill: WHITE;
+  /* -fx-padding:10; */
+  -fx-font-size: 18px;
+  /* -fx-padding: 10 10 10 10; */
+  /* -fx-margin: 30px; */
 }
 
-.bottom-toolbar-button{
-    -fx-text-fill: rgba(255, 255, 255, 0.9);
-    -jfx-rippler-fill:WHITE;
-    -fx-font-size: 18.0px;
-    -fx-pref-width: 48px;
-    -fx-pref-height: 48px;
-    /* -fx-font-weight: BOLD; */
-    -fx-padding: 18;
+.bottom-toolbar-button {
+  -fx-text-fill: rgba(255, 255, 255, 0.9);
+  -jfx-rippler-fill: WHITE;
+  -fx-font-size: 18px;
+  -fx-pref-width: 48px;
+  -fx-pref-height: 48px;
+  /* -fx-font-weight: BOLD; */
+  -fx-padding: 18;
 }
 
 /*******************************************************************************
@@ -93,72 +94,68 @@
  * JFX Dialog                                                                  *
  *                                                                             *
  ******************************************************************************/
- .jfx-dialog-overlay-pane {
-    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.3);
+.jfx-dialog-overlay-pane {
+  -fx-background-color: rgba(0, 0, 0, 0.3);
 }
 
- .dialog-heading{
-    -fx-font-size: 20.0px;
-    -fx-font-smoothing-type: gray;
-    -fx-font-weight: BOLD;
- }
-
- .dialog-body{
-    -fx-font-size: 18.0px;
-    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.7);
-    -fx-prompt-text-fill: #808080;
- }
-
-  .dialog-text-area{
-    -fx-font-size: 18.0px;
-    -jfx-focus-color: #009688;
-    -jfx-unfocus-color: #4d4d4d;
+.dialog-heading {
+  -fx-font-size: 20px;
+  -fx-font-smoothing-type: gray;
+  -fx-font-weight: BOLD;
 }
 
- .dialog-confirm-red{
-    -fx-text-fill: RED;
-    /* -fx-font-weight: BOLD; */
-    -fx-font-size: 16.0px;
-    -fx-padding: 0.7em 0.8em;
- }
+.dialog-body {
+  -fx-font-size: 18px;
+  -fx-text-fill: rgba(0, 0, 0, 0.7);
+  -fx-prompt-text-fill: #808080;
+}
 
- .dialog-confirm{
-    -fx-text-fill: #009688;
-    /* -fx-font-weight: BOLD; */
-    -fx-font-size: 16.0px;
-    -fx-padding: 0.7em 0.8em;
- }
+.dialog-text-area {
+  -fx-font-size: 18px;
+  -jfx-focus-color: #009688;
+  -jfx-unfocus-color: #4d4d4d;
+}
 
+.dialog-confirm-red {
+  -fx-text-fill: RED;
+  /* -fx-font-weight: BOLD; */
+  -fx-font-size: 16px;
+  -fx-padding: 0.7em 0.8em;
+}
 
- .dialog-cancel{
-    -fx-text-fill: GRAY;
-    -fx-font-size: 16.0px;
-    /* -fx-font-weight: BOLD; */
-    -fx-padding: 0.7em 0.8em;
- }
+.dialog-confirm {
+  -fx-text-fill: #009688;
+  /* -fx-font-weight: BOLD; */
+  -fx-font-size: 16px;
+  -fx-padding: 0.7em 0.8em;
+}
 
- .rename-text-field{
-    -fx-background-color: transparent;
-    -fx-alignment: top-left;
-    -fx-min-width: 450.0;
-    -fx-padding: 15px;
-    -jfx-focus-color: #009688;
-    -jfx-unfocus-color: #4d4d4d;
- }
+.dialog-cancel {
+  -fx-text-fill: GRAY;
+  -fx-font-size: 16px;
+  /* -fx-font-weight: BOLD; */
+  -fx-padding: 0.7em 0.8em;
+}
 
+.rename-text-field {
+  -fx-background-color: transparent;
+  -fx-alignment: top-left;
+  -fx-min-width: 450;
+  -fx-padding: 15px;
+  -jfx-focus-color: #009688;
+  -jfx-unfocus-color: #4d4d4d;
+}
 
-
-
-  /*******************************************************************************
+/*******************************************************************************
  *                                                                             *
  * JFX SnackBar                                                                 *
  *                                                                             *
  ******************************************************************************/
 
- .jfx-snackbar-content {
-    -fx-background-color: #323232;
+.jfx-snackbar-content {
+  -fx-background-color: #323232;
 }
 
 .jfx-snackbar-toast {
-    -fx-text-fill: WHITE;
+  -fx-text-fill: WHITE;
 }

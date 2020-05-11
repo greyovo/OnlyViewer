@@ -27,6 +27,16 @@
                             </graphic>
                         </JFXButton>
 
+                        <!--帮助按钮-->
+                        <JFXButton fx:id="introButton" onAction="#initIntroPage" ripplerFill="white"
+                                   styleClass="toolbar-button" style="-fx-padding:11px;">
+                            <graphic>
+                                <ImageView fitWidth="25" preserveRatio="true">
+                                    <Image url="@../icons/help.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
                         <!--后退按钮-->
                         <JFXButton fx:id="backButton" onAction="#moveBack" ripplerFill="white" styleClass="toolbar-button">
                             <graphic>
