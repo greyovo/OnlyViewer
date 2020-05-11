@@ -135,7 +135,7 @@ public class HomeController extends AbstractController implements Initializable 
         scrollPane.setContent(imageListPane);
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值！！
-        int firstLoad = Math.min(imageModelList.size(), 100);    // 修改了firstLoad 取值为列表与100之间的最小值
+        int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值
 
         //更新当前地址，并检测入栈
         pathTextField.setText(folderPath);
@@ -403,15 +403,23 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void selectAll() {
+        boolean flag = false; //用于标记是否有可选的内容
+
         for (Node node : imageListPane.getChildren()) {
             ImageBox imageBox = (ImageBox) node;
             SelectionModel.add(imageBox);
             imageBox.getCheckBox().setSelected(true);
+            if (!flag)
+                flag = true;
         }
-        selectAllButton.setText("取消全选");
-        selectAllButton.setOnAction(event -> {
-            unSelectAll();
-        });
+
+        //如果没有可选的内容，按钮不必变化
+        if (flag) {
+            selectAllButton.setText("取消全选");
+            selectAllButton.setOnAction(event -> {
+                unSelectAll();
+            });
+        }
     }
 
     /**
