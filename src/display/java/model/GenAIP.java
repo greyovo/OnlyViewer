@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * @Describe: From https://ai.baidu.com/ai-doc/OCR 有修改
  **/
 
-public abstract class GenAIP {
+public class GenAIP {
     private static final String APP_ID = "19635799";
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
     private static final char last4byte = (char) Integer.parseInt("00001111", 2);
