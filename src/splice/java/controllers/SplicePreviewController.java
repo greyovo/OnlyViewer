@@ -98,17 +98,14 @@ public class SplicePreviewController implements Initializable {
     //截图 = 保存
     @FXML
     // FIXME: 2020/5/12 点完截图之后会卡住
-    // FIXME: 2020/5/12 应当保存到图片所在的目录
     private void snap() {
         WritableImage wa = imageView.getParent().snapshot(null, null);
         //设置图片名字为当前系统时间
         Date date = new Date();
-        File tf;
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy_MM_dd_HH_mm");
             try {
                 BufferedImage buff = SwingFXUtils.fromFXImage(wa, null);
                 ImageIO.write(buff, "png",
-                        //tf = new File(dateFormat.format(date) + "拼接"+".png"));
                         //保存到当前文件夹
                        new File(imageModel.getImageParentPath()+"\\" +"拼接"+ dateFormat.format(date) + ".png"));
                 //为了处理卡顿关闭该窗口
