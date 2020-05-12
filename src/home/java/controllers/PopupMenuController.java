@@ -56,6 +56,13 @@ public class PopupMenuController implements Initializable {
         this.im = imageBox.getIm();
     }
 
+//    @SuppressWarnings("unused")
+//    public void setTargetImage(ImageBox imageBox){
+//        this.imageBox = imageBox;
+//        this.im = imageBox.getIm();
+//    }
+
+    @SuppressWarnings("unused")
     @FXML
     private void action() {
         switch (popupList.getSelectionModel().getSelectedIndex()) {
