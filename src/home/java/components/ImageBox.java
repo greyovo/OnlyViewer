@@ -106,6 +106,8 @@ public class ImageBox extends VBox {
     private void initPopUpMenu() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
         loader.setController(new PopupMenuController(this));
+//        PopupMenuController controller = loader.getController();
+//        controller.setTargetImage(this);
         try {
             popUpMenu = new JFXPopup(loader.load());
         } catch (IOException e) {
@@ -115,16 +117,13 @@ public class ImageBox extends VBox {
     }
 
     /**
-     * 鼠标对图片的操作反馈
+     * 图片对鼠标操作的反馈
      */
     private void initMouseAction() {
 
         //鼠标点击事件
         setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                // TODO 鼠标左键单击图片显示选中框
-//                JFXDepthManager.setDepth(this, 3);
-            } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 // 鼠标左键双击看大图
                 DisplayWindow dw = new DisplayWindow();
                 dw.setImage(im);
@@ -138,47 +137,11 @@ public class ImageBox extends VBox {
             }
         });
 
-//        this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-//            if( event.isControlDown()) {
-//                SelectionModel.add(this);
-//                SelectionModel.log();
-//            }
-//        });
-
         //当鼠标指向时
         this.setOnMouseMoved(event -> {
 //            JFXDepthManager.setDepth(this, 3);
             this.setStyle("-fx-background-color:rgba(0, 0, 0, 0.07);");
         });
-
-//        this.setOnMouseClicked(event -> {
-//            System.out.printf(
-//                    "x:%.0f " +
-//                    "sceneX:%.0f " +
-//                    "screenX:%.0f "+
-//                    "layoutX:%.0f " +
-//                    "layoutBounds.minX:%.0f",
-//                    event.getX(),
-//                    event.getSceneX(),
-//                    event.getScreenX(),
-//                    this.getLayoutX(),
-//                    this.getLayoutBounds().getMinX()
-//            );
-//        });
-
-//        this.setOnMouseReleased(event -> {
-//            if (event.isShiftDown()) {
-//                SelectionModel.add(this);
-//            } else if (event.isControlDown()) {
-//                if (SelectionModel.contains(this)) {
-//                    SelectionModel.remove(this);
-//                } else {
-//                    SelectionModel.add(this);
-//                }
-//            } else {
-//                SelectionModel.add(this);
-//            }
-//        });
 
         //当鼠标离开时
         this.setOnMouseExited(event -> {
