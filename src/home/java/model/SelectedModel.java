@@ -309,28 +309,32 @@ public class SelectedModel {
      * @param desSize 目标大小
      */
     // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近
-    public static boolean compressImage(int desSize) {
+    public static int compressImage(int desSize) {
         if (singleOrMultiple == 0) {
             try {
                 if (!microCompress(desSize))
-                    return false;
+                    return 0;
             } catch (IOException e) {
                 System.err.println("压缩失败");
-                return false;
+                return 0;
             }
+            return 1;
         } else if (singleOrMultiple == 1) {
+            int success = 0;
             for (Path p : sourcePathSet) {
                 sourcePath = p;
                 try {
-                    microCompress(desSize);
+                    if (microCompress(desSize))
+                        success++;
                 } catch (IOException e) {
                     System.err.println("压缩失败");
-                    return false;
+                    return 0;
                 }
             }
+            return success;
         }
         singleOrMultiple = -1;
-        return true;
+        return 0;
     }
 
     // 压缩图片微操作

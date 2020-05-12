@@ -117,7 +117,7 @@ public class PopupMenuController implements Initializable {
                     SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
                     System.out.println("压缩图片源集合" + SelectionModel.getImageModelSet());
                 }
-                boolean flag = SelectedModel.compressImage(800);
+                int success = SelectedModel.compressImage(800);
 
                 try {
                     // 手动实现刷新
@@ -125,8 +125,8 @@ public class PopupMenuController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (flag) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩图片并创建副本"));
-                else snackbar.enqueue(new JFXSnackbar.SnackbarEvent("压缩图片条件为大于800KB"));
+                if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success +"张图片并创建副本"));
+                else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;
             case 4:
                 System.out.println("拼接功能");
