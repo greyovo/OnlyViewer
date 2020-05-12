@@ -50,7 +50,7 @@ public class SplicePreviewWindow extends Application {
         assert root != null;
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
-        sp = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例
+        sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例
         sp.setImageModelSet(imageModelSet);
 
         //加载css样式文件

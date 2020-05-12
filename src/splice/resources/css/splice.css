@@ -1,0 +1,34 @@
+/***主窗口样式***/
+.jfx-decorator {
+    -fx-decorator-color: derive(#009688, -10%);
+  }
+  
+  .jfx-decorator .jfx-decorator-buttons-container {
+    -fx-background-color: -fx-decorator-color;
+  }
+  
+  .jfx-decorator .resize-border {
+    -fx-border-color: -fx-decorator-color;
+    -fx-border-width: 0 4 4 4;
+  }
+  
+  .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
+    -fx-fill: WHITE;
+    -fx-font-size: 17;
+  }
+  
+  .jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
+    -jfx-size: 15;
+    -fx-background-color: WHITE;
+  }
+
+/* 保存按钮样式 */
+.save-button {
+  -fx-pref-width: 45px;
+  -fx-pref-height: 45px;
+  -fx-padding: 13;
+  -jfx-button-type: RAISED;
+  -fx-background-color: #009688;
+  -fx-background-radius: 60;
+  -jfx-rippler-fill: WHITE;
+}
