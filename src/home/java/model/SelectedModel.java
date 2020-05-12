@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -35,7 +36,7 @@ import java.util.Set;
 public class SelectedModel {
     /**
      * 复制：如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
-     * -> 2.若是不同文件，则直接REPLACE
+     *                       -> 2.若是在不同文件夹，可选择覆盖或跳过
      * 剪切：如果遇到文件重复 -> 直接覆盖
      * 重命名：如果遇到文件重复 -> 直接覆盖
      * 支持多选操作的有：
@@ -60,6 +61,8 @@ public class SelectedModel {
     @Getter @Setter
     private static int havePastedNum = 0;
     private static int coverImage = 0;
+
+    private static HomeController hc = (HomeController)ControllerUtil.controllers.get("HomeController");
 
     /**
      * 1.初始化源 复制/剪切/重命名/删除/压缩选项调用
@@ -99,7 +102,7 @@ public class SelectedModel {
     }
 
     /**
-     * 2.粘贴选项 1.若是源文件夹与目的文件夹相同则重命名 2.若是不同文件，则直接REPLACE
+     * 2.粘贴选项 1.若是源文件夹与目的文件夹相同则重命名 2.若是在不同文件夹，可选择覆盖或跳过
      *
      * @param path 新的文件夹路径
      */
@@ -122,8 +125,7 @@ public class SelectedModel {
                 }
                 System.out.println("coverImage: " + coverImage);
                 if (coverImage !=0){
-                    HomeController hcc = (HomeController) ControllerUtil.controllers.get("HomeController");
-                    hcc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
+                    hc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -203,11 +205,10 @@ public class SelectedModel {
     private static boolean imageRepeat(String path) {
         String targetImageName = targetPath.getFileName().toString();
         try {
-            if (SearchImageModel.accurateSearch(targetImageName, ImageListModel.initImgList(path)) != null) {
+            if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
                 // 找到有重复的图片
                 System.out.println("有重复图片");
-                ImageModel im = new ImageModel(targetImageName);
-                if (SearchImageModel.accurateSearch(targetImageName, ImageListModel.initImgList(path)) != null) {
+                if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
                     // 有重复图片
                     return true;
                 }
@@ -220,7 +221,7 @@ public class SelectedModel {
 
     private synchronized static void show() {
         ImageModel im = new ImageModel(targetPath.toFile());
-        new CustomDialog((HomeController) ControllerUtil.controllers.get("HomeController"), DialogType.REPLACE, im,
+        new CustomDialog(hc, DialogType.REPLACE, im,
                 "替换或跳过文件",
                 "\n目标已包含一个名为\"" + im.getImageName() + "\"的文件\n").show();
     }
@@ -308,28 +309,32 @@ public class SelectedModel {
      * @param desSize 目标大小
      */
     // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近
-    public static boolean compressImage(int desSize) {
+    public static int compressImage(int desSize) {
         if (singleOrMultiple == 0) {
             try {
                 if (!microCompress(desSize))
-                    return false;
+                    return 0;
             } catch (IOException e) {
                 System.err.println("压缩失败");
-                return false;
+                return 0;
             }
+            return 1;
         } else if (singleOrMultiple == 1) {
+            int success = 0;
             for (Path p : sourcePathSet) {
                 sourcePath = p;
                 try {
-                    microCompress(desSize);
+                    if (microCompress(desSize))
+                        success++;
                 } catch (IOException e) {
                     System.err.println("压缩失败");
-                    return false;
+                    return 0;
                 }
             }
+            return success;
         }
         singleOrMultiple = -1;
-        return true;
+        return 0;
     }
 
     // 压缩图片微操作

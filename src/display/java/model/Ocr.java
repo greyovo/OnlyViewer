@@ -45,7 +45,7 @@ public class Ocr extends GenAIP {
             }
         } else {
             SelectedModel.setSourcePath(imagePath);
-            if (SelectedModel.compressImage(800))
+            if (SelectedModel.compressImage(800) != 0)
                 result = OCR(newImagePath, mode);
             else {
                 result = OCR(imagePath, mode);
