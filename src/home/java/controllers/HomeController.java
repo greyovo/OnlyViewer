@@ -132,6 +132,8 @@ public class HomeController extends AbstractController implements Initializable 
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
+        SelectionModel.clear();
+        SelectedModel.getSourcePathSet().clear();
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值
         int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值
@@ -210,6 +212,7 @@ public class HomeController extends AbstractController implements Initializable 
      */
     public void refreshImagesList() {
         SelectionModel.clear();
+        SelectedModel.getSourcePathSet().clear();
         placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
@@ -218,6 +221,8 @@ public class HomeController extends AbstractController implements Initializable 
      * 排序当前图片列表并更新到页面
      */
     private void refreshImagesList(String sort) {
+        SelectionModel.clear();
+        SelectedModel.getSourcePathSet().clear();
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
     }
