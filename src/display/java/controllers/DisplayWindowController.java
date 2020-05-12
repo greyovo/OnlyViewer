@@ -72,7 +72,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
-        setImageMouseAction();
     }
 
     // TODO: 2020/5/7 设置窗口标题随图片名称变化
@@ -95,6 +94,8 @@ public class DisplayWindowController extends AbstractController implements Initi
             imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
         System.out.println("cur list:\n" + imageModelArrayList);
+
+        setImageMouseAction();
 
     }
 
@@ -191,7 +192,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         //以下设置窗口为全屏
         Stage stage = (Stage) imageView.getScene().getWindow();
         stage.setFullScreen(true);
-        snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映"));
+        snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映，点击任意键结束"));
 
         //以下实现隐藏工具栏定时器
         TimerTask task2 = new TimerTask() {
@@ -211,13 +212,13 @@ public class DisplayWindowController extends AbstractController implements Initi
         // 定时器执行
         timer2.scheduleAtFixedRate(task2, delay2, intervalPeriod2);
 
+        //移动鼠标时工具栏出现
         imageView.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 toolbar.setVisible(true);
             }
         });
-
 
         //以下实现定时器功能翻页
         TimerTask task = new TimerTask() {
@@ -245,9 +246,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                timer2.cancel();
-                timer.cancel();
-                toolbar.setVisible(true);
+                stopSlide(timer, timer2, stage);
             }
         });
 
@@ -255,15 +254,22 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                timer2.cancel();
-                timer.cancel();
-                toolbar.setVisible(true);
-                stage.setFullScreen(false);
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
+                stopSlide(timer, timer2, stage);
             }
         });
+    }
 
+    //停止幻灯片播放
+    private void stopSlide(Timer timer, Timer timer2, Stage stage) {
+        timer2.cancel();
+        timer.cancel();
+        toolbar.setVisible(true);
+        stage.setFullScreen(false);
+        snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
 
+        //清空事件
+        imageView.getScene().setOnKeyPressed(event -> {});
+        imageView.setOnMouseClicked(event -> {});
     }
 
     //下一张图
