@@ -125,8 +125,8 @@ public class PopupMenuController implements Initializable {
                 System.out.println("拼接功能");
                 // TODO: 2020/5/12 图片拼接功能对接
                 Set<ImageModel> imSet = SelectionModel.getImageModelSet();
-                if (imSet.isEmpty()
-                        || imSet.size() == 1) {
+                if (imSet.isEmpty() || imSet.size() == 1) {
+                    //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张以上图片进行拼接"));
                 } else {
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("在做啦在做啦^^"));

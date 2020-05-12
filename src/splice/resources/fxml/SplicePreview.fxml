@@ -7,36 +7,35 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="splice.java.controllers.SplicePreviewController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.image.Image?>
+<?import com.jfoenix.controls.JFXButton?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="splice.java.controllers.SplicePreviewController"
+           prefHeight="400.0" prefWidth="600.0"
+           fx:id="rootPane">
 
-    <ScrollPane>
+    <ScrollPane fx:id="scrollPane"
+                fitToHeight="true" fitToWidth="true"
+                AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
 
-        <VBox>
-            <ImageView>
-
-            </ImageView>
-
-            <ImageView>
-
-            </ImageView>
-
-            <ImageView>
-
-            </ImageView>
-
-            <ImageView>
-
-            </ImageView>
-
-            <ImageView>
-
-            </ImageView>
+        <VBox fx:id="vBox">
+            <!--此处imageView不设置内容，仅为截图提供标记-->
+            <ImageView fx:id="imageView"/>
         </VBox>
 
     </ScrollPane>
 
+    <!--保存按钮-->
+    <JFXButton fx:id="saveButton" buttonType="RAISED" styleClass="save-button" ripplerFill="white"
+               onAction="#snap">
+        <graphic>
+            <ImageView fitWidth="38" preserveRatio="true">
+                <Image url="@../icons/save.png"/>
+            </ImageView>
+        </graphic>
+    </JFXButton>
 
-</AnchorPane>
+
+</StackPane>
