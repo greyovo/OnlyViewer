@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import lombok.Getter;
@@ -163,49 +165,56 @@ public class HomeController extends AbstractController implements Initializable 
         }
 
         //以下实现延迟加载，减少卡顿
-        int[] finalI = {i};
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    int times = 100;
-                    while (times > 0) {
-                        if (finalI[0] >= imageModelList.size()) {
-                            this.cancel();
-                            return;
-                        } else {
-                            ImageBox imageBox = new ImageBox(imageModelList.get(finalI[0]), imageModelList);
-                            imageListPane.getChildren().add(imageBox);
-                            finalI[0]++;
-                            times--;
-                        }
-                    }
-                });
-            }
-        };
-        long delay = 500; //延迟加载
-        long intervalPeriod = 300; //每次加载后等待
-        new Timer().scheduleAtFixedRate(task, delay, intervalPeriod);
-
-//        //加载后续的缩略图
-//        //2020/5/11 可以尝试设置在等待一段时间后，断续加载后面的而不用等滑动事件触发
-//        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
-//            //初始加载后的位置
-//            int index = firstLoad - 1;
-//
+//        int[] finalI = {i};
+//        TimerTask task = new TimerTask() {
 //            @Override
-//            public void handle(ScrollEvent event) {
-//
-//                index++;
-//                if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
-////                    WAR/WAW ERROR
-////                    index = loadPic(imageModelList, imageListPane, index);
-//                    ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
-//                    imageListPane.getChildren().add(imageBox);
-//                }
-//
+//            public void run() {
+//                Platform.runLater(() -> {
+//                    int times = 100;
+//                    while (times > 0) {
+//                        if (finalI[0] >= imageModelList.size()) {
+//                            this.cancel();
+//                            return;
+//                        } else {
+//                            ImageBox imageBox = new ImageBox(imageModelList.get(finalI[0]), imageModelList);
+//                            imageListPane.getChildren().add(imageBox);
+//                            finalI[0]++;
+//                            times--;
+//                        }
+//                    }
+//                });
 //            }
-//        });
+//        };
+//        long delay = 500; //延迟加载
+//        long intervalPeriod = 300; //每次加载后等待
+//        new Timer().scheduleAtFixedRate(task, delay, intervalPeriod);
+
+        //加载后续的缩略图
+        //2020/5/11 可以尝试设置在等待一段时间后，断续加载后面的而不用等滑动事件触发
+        imageListPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            //初始加载后的位置
+            int index = firstLoad - 1;
+
+            @Override
+            public void handle(ScrollEvent event) {
+
+                int times = 30; // 每次滚动加载30张
+
+                while (times > 0) {
+                    index++;
+                    if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
+//                    WAR/WAW ERROR
+//                    index = loadPic(imageModelList, imageListPane, index);
+                        ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+                        imageListPane.getChildren().add(imageBox);
+                    } else {
+                        break;
+                    }
+                    times--;
+                }
+
+            }
+        });
     }
 
     /**
@@ -389,12 +398,11 @@ public class HomeController extends AbstractController implements Initializable 
         if (SelectionModel.getImageModelList().isEmpty()) {
             // 粘贴一张图片
             SelectedModel.setWaitingPasteNum(1);
-            SelectedModel.pasteImage(currentPath);
         } else {
             // 粘贴多张图片
             SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelList().size());
-            SelectedModel.pasteImage(currentPath);
         }
+        SelectedModel.pasteImage(currentPath);
         System.out.println("getHavePastedNum: " + SelectedModel.getHavePastedNum());
         System.out.println("getWaitingPasteNum: " + SelectedModel.getWaitingPasteNum());
         if (SelectedModel.getHavePastedNum() == SelectedModel.getWaitingPasteNum()) {
