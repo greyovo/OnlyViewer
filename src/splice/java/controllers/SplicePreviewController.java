@@ -68,6 +68,7 @@ public class SplicePreviewController implements Initializable {
 //        scrollPane.setContent(new ImageView(new Image("file:/D:/result-2018-08-18-22-01-03.png")));
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(0);
 
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());

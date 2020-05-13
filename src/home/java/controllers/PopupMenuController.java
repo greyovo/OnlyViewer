@@ -133,7 +133,6 @@ public class PopupMenuController implements Initializable {
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张以上图片进行拼接"));
                 } else {
-                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("在做啦在做啦^^"));
                     SplicePreviewWindow previewWindow = new SplicePreviewWindow();
                     previewWindow.initImageList(sourceList);
                     //打开窗口

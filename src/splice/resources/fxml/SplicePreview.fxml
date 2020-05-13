@@ -22,7 +22,7 @@
 
         <VBox fx:id="vBox">
             <!--此处imageView不设置内容，仅为截图提供标记-->
-            <ImageView fx:id="imageView"/>
+            <ImageView fx:id="imageView" style="-fx-margin:0;-fx-padding:0;"/>
         </VBox>
 
     </ScrollPane>

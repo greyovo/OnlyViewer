@@ -56,7 +56,7 @@ public class SplicePreviewWindow extends Application {
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(this.getClass().getResource("/splice/resources/css/splice.css").toExternalForm());
 
-        stage.setTitle("图片拼接");
+        stage.setTitle("图片拼接预览");
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
