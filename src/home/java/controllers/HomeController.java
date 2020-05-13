@@ -438,18 +438,15 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void selectAll() {
         boolean flag = false; //用于标记是否有可选的内容
+        SelectionModel.clear();
 
         for (Node node : imageListPane.getChildren()) {
             ImageBox imageBox;
-            if (node instanceof ImageBox) {
-                imageBox = (ImageBox) node;
-            } else {
-                continue;
-            }
-            SelectionModel.add(imageBox);
+            imageBox = (ImageBox) node;
             imageBox.getCheckBox().setSelected(true);
             if (!flag)
                 flag = true;
+
         }
 
         //如果没有可选的内容，按钮不必变化

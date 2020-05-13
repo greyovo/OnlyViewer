@@ -85,6 +85,9 @@ public class ImageBox extends VBox {
         initCheckBox();
     }
 
+    /**
+     * 设置选中与否的属性绑定
+     */
     ImageBox imageBox = this;
 
     private void initCheckBox() {
