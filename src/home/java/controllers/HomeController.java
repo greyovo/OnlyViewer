@@ -134,6 +134,7 @@ public class HomeController extends AbstractController implements Initializable 
         scrollPane.setContent(imageListPane);
         SelectionModel.clear();
         SelectedModel.getSourcePathSet().clear();
+        unSelectAll();
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值
         int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值

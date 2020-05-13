@@ -1,7 +1,9 @@
 package splice.java.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
 import home.java.controllers.ControllerUtil;
+import home.java.controllers.HomeController;
 import home.java.model.ImageModel;
 import home.java.model.SelectedModel;
 import javafx.application.Platform;
@@ -57,6 +59,7 @@ public class SplicePreviewController implements Initializable {
 //    private Image image5;
 
     private Set<ImageModel> imageModelSet;
+    private HomeController hc;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,6 +67,7 @@ public class SplicePreviewController implements Initializable {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         vBox.setAlignment(Pos.CENTER);
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
+        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
         //保存按钮设置自适应位置
         saveButton.translateYProperty().bind(rootPane.heightProperty().divide(15).multiply(5));
@@ -111,11 +115,12 @@ public class SplicePreviewController implements Initializable {
                 //为了处理卡顿关闭该窗口
                 Stage stage =(Stage) imageView.getScene().getWindow();
                 stage.close();
+                hc.refreshImagesList();
+                JFXSnackbar snackbar = new JFXSnackbar(hc.getRootPane());
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接完成，已创建副本"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
     }
 
 }
