@@ -440,7 +440,12 @@ public class HomeController extends AbstractController implements Initializable 
         boolean flag = false; //用于标记是否有可选的内容
 
         for (Node node : imageListPane.getChildren()) {
-            ImageBox imageBox = (ImageBox) node;
+            ImageBox imageBox;
+            if (node instanceof ImageBox) {
+                imageBox = (ImageBox) node;
+            } else {
+                continue;
+            }
             SelectionModel.add(imageBox);
             imageBox.getCheckBox().setSelected(true);
             if (!flag)

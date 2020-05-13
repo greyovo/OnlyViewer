@@ -7,6 +7,7 @@ import home.java.controllers.HomeController;
 import lombok.Getter;
 
 import java.util.ArrayList;
+
 /**
  * 存放已选图片的工具类。
  * 包含一个集合Set，和一些对已选图片的显示状态的更改
@@ -21,11 +22,13 @@ public class SelectionModel {
     private static HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
     public static void add(ImageBox node) {
-        JFXDepthManager.setDepth(node, 4);
-        node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
-        selection.add(node);
-        imageModelList.add(node.getIm());
-        hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
+        if (!contains(node)){
+            JFXDepthManager.setDepth(node, 4);
+            node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
+            selection.add(node);
+            imageModelList.add(node.getIm());
+            hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
+        }
         log();
     }
 
@@ -44,6 +47,15 @@ public class SelectionModel {
             remove(selection.iterator().next());
         }
     }
+
+    private static boolean contains(ImageBox node) {
+        for (ImageBox ib : selection) {
+            if (ib.equals(node))
+                return true;
+        }
+        return false;
+    }
+
     public static void log() {
         System.out.println("Items in model: " + selection);
     }
