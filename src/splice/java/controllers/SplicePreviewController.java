@@ -58,32 +58,36 @@ public class SplicePreviewController implements Initializable {
 //    @FXML
 //    private Image image5;
 
-    private Set<ImageModel> imageModelSet;
+
+    private ArrayList<ImageModel> imageModelList;
     private HomeController hc;
+    private JFXSnackbar snackbar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        scrollPane.setContent(new ImageView(new Image("file:/D:/result-2018-08-18-22-01-03.png")));
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         vBox.setAlignment(Pos.CENTER);
+
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
         //保存按钮设置自适应位置
         saveButton.translateYProperty().bind(rootPane.heightProperty().divide(15).multiply(5));
         saveButton.translateXProperty().bind(rootPane.widthProperty().divide(15).multiply(6));
+        snackbar = new JFXSnackbar(hc.getRootPane());
     }
 
     //先调用这个设置好图片，否则会导致空指针
-    public void setImageModelSet(Set<ImageModel> set) {
-        this.imageModelSet = set;
+    public void setImageModelList(ArrayList<ImageModel> set) {
+        this.imageModelList = set;
         scrollPane.setContent(vBox);
         int number = 0;
         //将图片加入到垂直盒子中
-        for (ImageModel im : imageModelSet) {
+        for (ImageModel im : imageModelList) {
             Image image = new Image(im.getImageFile().toURI().toString());
             ImageView imageView = new ImageView(image);
-            if (number==0){
+            if (number == 0) {
                 this.imageModel = im;
                 this.imageView = imageView;
                 number++;
@@ -95,32 +99,33 @@ public class SplicePreviewController implements Initializable {
             vBox.getChildren().add(imageView);
         }
 
-
     }
 
 
     //截图 = 保存
     @FXML
-    // FIXME: 2020/5/12 点完截图之后会卡住
     private void snap() {
         WritableImage wa = imageView.getParent().snapshot(null, null);
-        //设置图片名字为当前系统时间
+        //设置图片名字包含当前系统时间
         Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy_MM_dd_HH_mm");
-            try {
-                BufferedImage buff = SwingFXUtils.fromFXImage(wa, null);
-                ImageIO.write(buff, "png",
-                        //保存到当前文件夹
-                       new File(imageModel.getImageParentPath()+"\\" +"拼接"+ dateFormat.format(date) + ".png"));
-                //为了处理卡顿关闭该窗口
-                Stage stage =(Stage) imageView.getScene().getWindow();
-                stage.close();
-                hc.refreshImagesList();
-                JFXSnackbar snackbar = new JFXSnackbar(hc.getRootPane());
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接完成，已创建副本"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Stage stage = (Stage) imageView.getScene().getWindow();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        String prefix = imageModelList.get(0).getImageNameNoExt();
+
+        try {
+            BufferedImage buff = SwingFXUtils.fromFXImage(wa, null);
+            System.out.println("buff = " + buff);
+            ImageIO.write(buff, "png",
+                    //保存到当前文件夹
+                    new File(imageModel.getImageParentPath() + "\\" + prefix + "_more_" + dateFormat.format(date) + ".png"));
+            hc.refreshImagesList();
+            stage.close(); //为了处理卡顿关闭该窗口
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接完成，已创建副本")); //信息条提示
+        } catch (IOException e) {
+            stage.close();
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接失败，可能是图片过长"));
+            e.printStackTrace();
+        }
     }
 
 }

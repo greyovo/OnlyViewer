@@ -6,10 +6,7 @@ import home.java.controllers.ControllerUtil;
 import home.java.controllers.HomeController;
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.ArrayList;
 /**
  * 存放已选图片的工具类。
  * 包含一个集合Set，和一些对已选图片的显示状态的更改
@@ -18,16 +15,16 @@ import java.util.Set;
  */
 public class SelectionModel {
 
-    private static Set<ImageBox> selection = new HashSet<>();
+    private static ArrayList<ImageBox> selection = new ArrayList<>();
     @Getter
-    public static Set<ImageModel> imageModelSet = new HashSet<>();
+    public static ArrayList<ImageModel> imageModelList = new ArrayList<>();
     private static HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
     public static void add(ImageBox node) {
         JFXDepthManager.setDepth(node, 4);
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
         selection.add(node);
-        imageModelSet.add(node.getIm());
+        imageModelList.add(node.getIm());
         hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
         log();
     }
@@ -37,7 +34,7 @@ public class SelectionModel {
         node.getCheckBox().setSelected(false);
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() + 5);
         selection.remove(node);
-        imageModelSet.remove(node.getIm());
+        imageModelList.remove(node.getIm());
         hc.selectedNumLabel.setText("| 已选中 " + selection.size() + " 张");
         log();
     }
@@ -47,12 +44,7 @@ public class SelectionModel {
             remove(selection.iterator().next());
         }
     }
-
-    public static boolean contains(ImageBox node) {
-        return selection.contains(node);
-    }
-
     public static void log() {
-        System.out.println("Items in model: " + Arrays.asList(selection.toArray()));
+        System.out.println("Items in model: " + selection);
     }
 }

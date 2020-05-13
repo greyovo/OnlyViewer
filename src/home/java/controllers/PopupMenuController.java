@@ -5,11 +5,8 @@ import com.jfoenix.controls.JFXListView;
 import home.java.components.CustomDialog;
 import home.java.components.DialogType;
 import home.java.components.ImageBox;
-import home.java.model.ImageListModel;
-import home.java.model.ImageModel;
-import home.java.model.SelectedModel;
+import home.java.model.*;
 
-import home.java.model.SelectionModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -19,6 +16,7 @@ import splice.SplicePreviewWindow;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -65,14 +63,15 @@ public class PopupMenuController implements Initializable {
     @SuppressWarnings("unused")
     @FXML
     private void action() {
+        ArrayList<ImageModel> sourceList = SelectionModel.getImageModelList();
         switch (popupList.getSelectionModel().getSelectedIndex()) {
             case 0:
-                if (SelectionModel.getImageModelSet().isEmpty()) {
+                if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     System.out.println("复制图片源:" + im.getImageFilePath());
                 } else {
-                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
-                    System.out.println("复制图片源集合" + SelectionModel.getImageModelSet());
+                    SelectedModel.setSourcePath(sourceList);
+                    System.out.println("复制图片源集合" + sourceList);
                 }
                 SelectedModel.setCopyOrMove(0);
 
@@ -81,12 +80,12 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 1:
-                if (SelectionModel.getImageModelSet().isEmpty()) {
+                if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     System.out.println("剪切图片源:" + im.getImageFilePath());
                 } else {
-                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
-                    System.out.println("剪切图片源集合" + SelectionModel.getImageModelSet());
+                    SelectedModel.setSourcePath(sourceList);
+                    System.out.println("剪切图片源集合" + sourceList);
                 }
                 SelectedModel.setCopyOrMove(1);
 
@@ -95,12 +94,12 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 2:
-                if (SelectionModel.getImageModelSet().isEmpty()) {
+                if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     System.out.println("重命名图片源:" + im.getImageFilePath());
                 } else {
-                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
-                    System.out.println("重命名图片源集合" + SelectionModel.getImageModelSet());
+                    SelectedModel.setSourcePath(sourceList);
+                    System.out.println("重命名图片源集合" + sourceList);
                 }
                 new CustomDialog(hc, DialogType.RENAME, im,
                         "重命名图片").show();
@@ -110,12 +109,12 @@ public class PopupMenuController implements Initializable {
                 System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
 
-                if (SelectionModel.getImageModelSet().isEmpty()) {
+                if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     System.out.println("压缩图片源:" + im.getImageFilePath());
                 } else {
-                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
-                    System.out.println("压缩图片源集合" + SelectionModel.getImageModelSet());
+                    SelectedModel.setSourcePath(sourceList);
+                    System.out.println("压缩图片源集合" + sourceList);
                 }
                 int success = SelectedModel.compressImage(800);
 
@@ -125,20 +124,18 @@ public class PopupMenuController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success +"张图片并创建副本"));
+                if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
                 else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;
             case 4:
                 System.out.println("拼接功能");
-                // TODO: 2020/5/12 图片拼接功能对接
-                Set<ImageModel> imSet = SelectionModel.getImageModelSet();
-                if (imSet.isEmpty() || imSet.size() == 1) {
+                if (sourceList.isEmpty() || sourceList.size() == 1) {
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张以上图片进行拼接"));
                 } else {
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("在做啦在做啦^^"));
                     SplicePreviewWindow previewWindow = new SplicePreviewWindow();
-                    previewWindow.initImageSet(imSet);
+                    previewWindow.initImageList(sourceList);
                     //打开窗口
                     try {
                         previewWindow.start(new Stage());
@@ -149,31 +146,46 @@ public class PopupMenuController implements Initializable {
                 imageBox.getPopUpMenu().hide();
                 break;
             case 5:
-                if (SelectionModel.getImageModelSet().isEmpty()) {
+                if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     System.out.println("删除图片源:" + im.getImageFilePath());
                     new CustomDialog(hc, DialogType.DELETE, im,
                             "确认删除",
                             "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
                 } else {
-                    SelectedModel.setSourcePath(SelectionModel.getImageModelSet());
-                    System.out.println("删除图片源集合" + SelectionModel.getImageModelSet());
+                    SelectedModel.setSourcePath(sourceList);
+                    System.out.println("删除图片源集合" + sourceList);
                     new CustomDialog(hc, DialogType.DELETE, im,
                             "确认删除",
-                            "要删除这" + SelectionModel.getImageModelSet().size() + "个文件吗？\n\n你可以在回收站处找回。").show();
+                            "要删除这" + sourceList.size() + "个文件吗？\n\n你可以在回收站处找回。").show();
                 }
                 imageBox.getPopUpMenu().hide();
                 break;
             case 6:
                 Image image = new Image(im.getImageFile().toURI().toString());
                 StringBuilder info = new StringBuilder();
-                info.append("尺寸：").append(image.getWidth()).append(" × ").append(image.getHeight()).append("\n");
-                info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
-                info.append("大小：").append(im.getFormatSize()).append("\n");
-                info.append("日期：").append(im.getFormatTime()).append("\n");
-                info.append("\n位置：").append(im.getImageFilePath());
-                new CustomDialog(hc, DialogType.INFO, im,
-                        im.getImageName(), info.toString()).show();
+
+                if (sourceList.isEmpty() || sourceList.size() == 1) {
+                    info.append("尺寸：").append(image.getWidth()).append(" × ").append(image.getHeight()).append("\n");
+                    info.append("类型：").append(im.getImageType().toUpperCase()).append("\n");
+                    info.append("大小：").append(im.getFormatSize()).append("\n");
+                    info.append("日期：").append(im.getFormatTime()).append("\n");
+                    info.append("\n位置：").append(im.getImageFilePath());
+                    new CustomDialog(hc, DialogType.INFO, im,
+                            im.getImageName(), info.toString()).show();
+                } else {
+                    info.append("数量：").append(sourceList.size()).append(" 个\n");
+                    long totalSize = 0;
+                    for (ImageModel im : sourceList) {
+                        totalSize += im.getFileLength();
+                    }
+                    info.append("大小：").append(GenUtilModel.getFormatSize(totalSize)).append("\n");
+                    info.append("位置：").append(im.getImageParentPath()).append("\n");
+                    CustomDialog dialog = new CustomDialog(hc, DialogType.INFO, null, "多个文件", info.toString());
+                    dialog.getBodyTextArea().setPrefHeight(150);
+                    dialog.show();
+                }
+
                 imageBox.getPopUpMenu().hide();
                 break;
             default:

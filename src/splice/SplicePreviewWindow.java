@@ -15,14 +15,13 @@ import splice.java.controllers.SplicePreviewController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class SplicePreviewWindow extends Application {
 
     public static double windowWidth;
     public static double windowHeight;
     private SplicePreviewController sp;
-    private Set<ImageModel> imageModelSet;
+    private ArrayList<ImageModel> imageModelList;
 
     @Override
     public void init() throws Exception {
@@ -51,7 +50,7 @@ public class SplicePreviewWindow extends Application {
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例
-        sp.setImageModelSet(imageModelSet);
+        sp.setImageModelList(imageModelList);
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -64,8 +63,8 @@ public class SplicePreviewWindow extends Application {
     }
 
 
-    public void initImageSet(Set<ImageModel> imageModelSet){
-        this.imageModelSet = imageModelSet;
+    public void initImageList(ArrayList<ImageModel> imageModelList){
+        this.imageModelList = imageModelList;
     }
 
 }

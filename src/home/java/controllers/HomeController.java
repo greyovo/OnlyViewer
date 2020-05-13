@@ -133,7 +133,7 @@ public class HomeController extends AbstractController implements Initializable 
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         SelectionModel.clear();
-        SelectedModel.getSourcePathSet().clear();
+//        SelectedModel.getSourcePathList().clear();
         unSelectAll();
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值
@@ -213,7 +213,7 @@ public class HomeController extends AbstractController implements Initializable 
      */
     public void refreshImagesList() {
         SelectionModel.clear();
-        SelectedModel.getSourcePathSet().clear();
+        SelectedModel.getSourcePathList().clear();
         placeImages(ImageListModel.refreshList(currentPath), currentPath);
         System.out.println("已刷新。");
     }
@@ -223,7 +223,7 @@ public class HomeController extends AbstractController implements Initializable 
      */
     private void refreshImagesList(String sort) {
         SelectionModel.clear();
-        SelectedModel.getSourcePathSet().clear();
+        SelectedModel.getSourcePathList().clear();
         placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
         System.out.println("已排序。");
     }
@@ -386,13 +386,13 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void paste() {
-        if (SelectionModel.getImageModelSet().isEmpty()) {
+        if (SelectionModel.getImageModelList().isEmpty()) {
             // 粘贴一张图片
             SelectedModel.setWaitingPasteNum(1);
             SelectedModel.pasteImage(currentPath);
         } else {
             // 粘贴多张图片
-            SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelSet().size());
+            SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelList().size());
             SelectedModel.pasteImage(currentPath);
         }
         System.out.println("getHavePastedNum: " + SelectedModel.getHavePastedNum());

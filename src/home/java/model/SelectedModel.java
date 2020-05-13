@@ -19,9 +19,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 
 /**
@@ -45,7 +43,7 @@ public class SelectedModel {
     @Getter
     private static Path sourcePath;
     @Getter
-    private static Set<Path> sourcePathSet = new HashSet<>();
+    private static ArrayList<Path> sourcePathList = new ArrayList<>();
     private static Path targetPath;
 
     @Setter
@@ -91,11 +89,11 @@ public class SelectedModel {
     /**
      * 多选时直接传入一个列表即可 同时singleOrMultiple=1
      */
-    public static boolean setSourcePath(Set<ImageModel> imList) {
-        sourcePathSet.clear();    // 每次点击都需要清空List, 不创建对象以节约空间与时间
+    public static boolean setSourcePath(ArrayList<ImageModel> imList) {
+        sourcePathList.clear();    // 每次点击都需要清空List, 不创建对象以节约空间与时间
         for (ImageModel im : imList) {
             setSourcePath(im);
-            sourcePathSet.add(sourcePath);
+            sourcePathList.add(sourcePath);
         }
         singleOrMultiple = 1;
         return true;
@@ -119,7 +117,7 @@ public class SelectedModel {
         } else if (singleOrMultiple == 1) {
             try {
                 coverImage = 0;
-                for (Path p : sourcePathSet) {
+                for (Path p : sourcePathList) {
                     sourcePath = p;
                     microPaste(path);
                 }
@@ -132,6 +130,7 @@ public class SelectedModel {
                 return false;
             }
         }
+        hc.refreshImagesList();
         return true;
     }
 
@@ -240,8 +239,8 @@ public class SelectedModel {
                 return false;
             }
         } else if (singleOrMultiple == 1) {
-            Path[] imArray = new Path[sourcePathSet.size()];
-            sourcePathSet.toArray(imArray);
+            Path[] imArray = new Path[sourcePathList.size()];
+            sourcePathList.toArray(imArray);
             for (int i = 0; i < imArray.length; i++) {
                 sourcePath = imArray[i];
                 try {
@@ -279,7 +278,7 @@ public class SelectedModel {
                 return 0;
             }
         } else if (singleOrMultiple == 1) {
-            for (Path p : sourcePathSet) {
+            for (Path p : sourcePathList) {
                 sourcePath = p;
                 try {
                     microDelete();
@@ -321,7 +320,7 @@ public class SelectedModel {
             return 1;
         } else if (singleOrMultiple == 1) {
             int success = 0;
-            for (Path p : sourcePathSet) {
+            for (Path p : sourcePathList) {
                 sourcePath = p;
                 try {
                     if (microCompress(desSize))
