@@ -85,7 +85,11 @@ public class DisplayWindowController extends AbstractController implements Initi
             return;
         }
 
-        imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
+        if (hc.isComboBoxClicked()) {
+            imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent(), hc.getSortComboBox().getValue());
+        } else {
+            imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
+        }
         this.imageModel = im;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);

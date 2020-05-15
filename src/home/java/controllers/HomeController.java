@@ -3,7 +3,6 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -234,7 +233,7 @@ public class HomeController extends AbstractController implements Initializable 
     private void refreshImagesList(String sort) {
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
-        placeImages(ImageListModel.sortList(currentPath, sort), currentPath);
+        placeImages(ImageListModel.refreshList(currentPath, sort), currentPath);
         System.out.println("已排序。");
     }
 
