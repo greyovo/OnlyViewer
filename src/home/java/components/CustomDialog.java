@@ -48,7 +48,6 @@ public class CustomDialog extends JFXDialog {
     private JFXTextField bodyTextField;
 
     @Getter
-    private JFXDialog dialog = new JFXDialog();
     private JFXDialogLayout layout = new JFXDialogLayout();
 
     /**
@@ -175,7 +174,7 @@ public class CustomDialog extends JFXDialog {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("删除失败"));    //显示删除成功通知。
             }
             hc.refreshImagesList();
-            dialog.close();
+            this.close();
         });
     }
 
