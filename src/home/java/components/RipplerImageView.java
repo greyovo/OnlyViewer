@@ -7,15 +7,12 @@ import javafx.scene.paint.Color;
 
 public class RipplerImageView extends JFXRippler {
 
-    {
-        setAlignment(Pos.BOTTOM_CENTER);
-        setPrefHeight(170);
-        setPrefWidth(170);
-    }
-
     public RipplerImageView(Node control) {
         super(control);
         super.setRipplerFill(Color.WHITE);
+        setAlignment(Pos.BOTTOM_CENTER);
+        setPrefHeight(170);
+        setPrefWidth(170);
     }
 
 }

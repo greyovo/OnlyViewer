@@ -4,7 +4,6 @@ import com.jfoenix.effects.JFXDepthManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
 /**
  * 继承自JavaFX的ImageView。
  * 默认使用JFXDepthManager添加投影。
@@ -13,15 +12,12 @@ import javafx.scene.image.ImageView;
  * */
 public class ImageView2 extends ImageView {
 
-    {
-        setImageDepth();
-        preserveRatioProperty().setValue(true);
-        setFitHeight(150);
-        setFitWidth(150);
-    }
-
     public ImageView2(Image image) {
         super(image);
+        setImageDepth();
+        setPreserveRatio(true);
+        setFitHeight(150);
+        setFitWidth(150);
     }
 
     private void setImageDepth() {

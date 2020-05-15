@@ -18,7 +18,7 @@ import lombok.Setter;
  *
  * @author Grey
  */
-public class CustomDialog {
+public class CustomDialog extends JFXDialog {
 
     @Setter
     private ImageModel targetImage;
@@ -71,7 +71,7 @@ public class CustomDialog {
         setCloseAction(leftButton);
         setCloseAction(rightButton);
 
-        dialog.setOverlayClose(true);
+        this.setOverlayClose(true);
         layout.setMaxWidth(500);
 
         if (type == DialogType.DELETE) {
@@ -156,7 +156,7 @@ public class CustomDialog {
 
     private void setCloseAction(JFXButton button) {
         button.setOnAction(event -> {
-            dialog.close();
+            this.close();
             System.out.println("关闭对话框");
         });
     }
@@ -184,7 +184,7 @@ public class CustomDialog {
         rightButton.setOnAction(event -> {
             if (SelectedModel.renameImage(bodyTextField.getText()))
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
-            dialog.close();
+            this.close();
             hc.refreshImagesList();
         });
     }
@@ -200,7 +200,7 @@ public class CustomDialog {
         rightButton.setStyle("-fx-text-fill: BLUE;");
         leftButton.setOnAction(event -> {
             System.out.println("选择跳过");
-            dialog.close();
+            this.close();
             controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("选择跳过"));
             hc.refreshImagesList();
 //            SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
@@ -211,7 +211,7 @@ public class CustomDialog {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("替换成功"));
             }
             hc.refreshImagesList();
-            dialog.close();
+            this.close();
             SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
         });
     }
@@ -219,17 +219,14 @@ public class CustomDialog {
     /**
      * 展示对话框
      */
+    @Override
     public void show() {
         if (leftButton != null && rightButton != null)
             layout.setActions(leftButton, rightButton);
         else
             System.out.println("ERROR: 未指定对话框按钮");
-        dialog.setContent(layout);
-        dialog.show(controller.getRootPane());
-    }
-
-    public void close() {
-        dialog.close();
+        this.setContent(layout);
+        this.show(controller.getRootPane());
     }
 
 }

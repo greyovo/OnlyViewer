@@ -36,11 +36,6 @@ import java.util.ArrayList;
 @Setter
 public class ImageBox extends VBox {
 
-    {
-        setMaxSize(170, 170);
-        setAlignment(Pos.BOTTOM_CENTER);
-    }
-
     private ImageModel im;
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
@@ -65,7 +60,6 @@ public class ImageBox extends VBox {
                 true));
         this.imageView2 = imageView;                                //图片
         RipplerImageView riv = new RipplerImageView(imageView);     //一个水波纹点击效果的包装
-
         ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
         imageLabel.setStyle("-fx-padding:7 0 7 -2;");
 
@@ -73,7 +67,9 @@ public class ImageBox extends VBox {
         hBox.setAlignment(Pos.CENTER);
         hBox.setStyle("-fx-padding:5 5 3 5;");
 
-        this.getChildren().addAll(riv, hBox);
+        getChildren().addAll(riv, hBox);
+        setMaxSize(170, 170);
+        setAlignment(Pos.BOTTOM_CENTER);
 
         //设置文件信息tips
         String tooltip = String.format("名称: %s\n大小: %s", im.getImageName(), im.getFormatSize());
