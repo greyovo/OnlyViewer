@@ -106,13 +106,11 @@ public class DisplayWindowController extends AbstractController implements Initi
             public void handle(ScrollEvent event) {
                 //如果滚轮向下滑动，缩小
                 if (event.getDeltaY() < 0) {
-                    Scale scale = new Scale(0.9, 0.9, event.getX(), event.getY());
-                    imageView.getTransforms().add(scale);
+                    zoomOut();
                 }
                 //如果滚轮向上滑动，放大
                 if (event.getDeltaY() > 0) {
-                    Scale scale = new Scale(1.1, 1.1, event.getX(), event.getY());
-                    imageView.getTransforms().add(scale);
+                    zoomIn();
                 }
             }
         });
