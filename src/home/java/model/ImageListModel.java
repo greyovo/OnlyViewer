@@ -87,8 +87,8 @@ public class ImageListModel {
         return list;
     }
 
-    // 对文件夹排序 mode->排序模式
-    public static ArrayList<ImageModel> sortList(String path, String mode) {
+    // 带排序的刷新 对文件夹排序 mode->排序模式
+    public static ArrayList<ImageModel> refreshList(String path, String mode) {
         ArrayList<ImageModel> list = refreshList(path);
         switch (mode) {
             case SortParam.SBND:
