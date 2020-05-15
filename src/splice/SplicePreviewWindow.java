@@ -46,7 +46,6 @@ public class SplicePreviewWindow extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assert root != null;
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例

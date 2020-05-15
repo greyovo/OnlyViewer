@@ -70,6 +70,7 @@ public class DisplayWindow extends Application {
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
+        dwController.initStage();
     }
 
     public void setImage(ImageModel im) {

@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
+
 /**
  * TODO 自定义、可复用的对话框
  *
@@ -170,6 +172,13 @@ public class CustomDialog extends JFXDialog {
             n = SelectedModel.deleteImage();
             if (n > 0) {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("成功删除 " + n + " 张图片"));    //显示删除成功通知。
+                if (dwc!=null) {
+                    try {
+                        dwc.showNextImg();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("删除失败"));    //显示删除成功通知。
             }

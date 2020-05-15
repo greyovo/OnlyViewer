@@ -45,6 +45,15 @@
             </graphic>
         </JFXButton>
 
+        <JFXButton buttonType="FLAT" onAction="#fullScreen"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/full-screen.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
         <JFXButton buttonType="FLAT" onAction="#showPreviousImg"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
             <graphic>
@@ -86,6 +95,15 @@
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/info.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#compress"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/compress.png"/>
                 </ImageView>
             </graphic>
         </JFXButton>

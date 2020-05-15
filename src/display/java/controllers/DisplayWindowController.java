@@ -1,5 +1,6 @@
 package display.java.controllers;
 
+import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXSnackbar;
 import display.DisplayWindow;
 import display.java.model.Ocr;
@@ -7,15 +8,18 @@ import home.java.components.CustomDialog;
 import home.java.components.DialogType;
 import home.java.controllers.AbstractController;
 import home.java.controllers.ControllerUtil;
+import home.java.controllers.HomeController;
 import home.java.model.ImageListModel;
 import home.java.model.ImageModel;
 import display.java.model.SwitchPics;
 import home.java.model.SelectedModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -42,8 +46,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     @Getter
     public StackPane rootPane;
-
     public HBox toolbar;
+    private Stage stage; //获取当前窗口
 
     @FXML
     @Setter
@@ -53,15 +57,13 @@ public class DisplayWindowController extends AbstractController implements Initi
     @Setter
     @Getter
     private Image image;
-
     private ImageModel imageModel;
-
     public ArrayList<ImageModel> imageModelArrayList;
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
-
     private SwitchPics sw;
+    private HomeController hc;
 
     public DisplayWindowController() {
 
@@ -70,12 +72,18 @@ public class DisplayWindowController extends AbstractController implements Initi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
+        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
     }
 
-    // TODO: 2020/5/7 设置窗口标题随图片名称变化
     public void initImage(ImageModel im) {
+
+        if (im == null) {
+            this.imageModel = null;
+            imageView.setImage(null);
+            return;
+        }
 
         imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         this.imageModel = im;
@@ -94,7 +102,6 @@ public class DisplayWindowController extends AbstractController implements Initi
             imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
         System.out.println("cur list:\n" + imageModelArrayList);
-
         setImageMouseAction();
 
     }
@@ -134,6 +141,44 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         });
 
+        //以下实现定时隐藏工具栏，当鼠标不动3秒后隐藏，每隔3秒执行一次
+
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                Platform.runLater(() -> {
+//                    toolbar.setVisible(false); //定时任务中安排隐藏工具栏
+//                });
+//            }
+//        };
+//        timer2.scheduleAtFixedRate(task2, delay2, intervalPeriod2); // 定时器执行
+//        new Timer().schedule(task, delay);
+
+        //移动鼠标时工具栏出现
+//        imageView.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                Timer timer = new Timer();
+//                toolbar.setVisible(true);
+//                Thread task = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        Platform.runLater(() -> {
+//                            toolbar.setVisible(false); //定时任务中安排隐藏工具栏
+//                        });
+//                    }
+//                };
+//                task.start();
+//                long delay = 5000; // 定义开始等待时间
+//                try {
+//                    task.wait(delay);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                timer.schedule(task, delay);
+//            }
+//        });
+
     }
 
     /**
@@ -167,17 +212,45 @@ public class DisplayWindowController extends AbstractController implements Initi
         initStatus();
         System.out.println("上一张");
         //为了防止删除后显示空白，自动刷新
-        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+        if (imageModel != null)
+            imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
 
-        if (imageModelArrayList.size() == 0) {
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
+        if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
+            System.out.println("此文件夹中的图片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
+            initImage(null);
+            stage.setTitle("无图片");
         } else {
             initImage(sw.lastImage(imageModel));
+            stage.setTitle(imageModel.getImageName()); //更新图片名字
 //            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
-        //更新图片名字
-        Stage stage = (Stage) imageView.getScene().getWindow();
-        stage.setTitle(imageModel.getImageName());
+    }
+
+    //下一张图
+    @FXML
+    public void showNextImg() throws IOException {
+        initStatus();
+        System.out.println("下一张");
+
+        //为了防止删除后显示空白，自动刷新
+        if (imageModel != null)
+            imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+
+        if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
+            System.out.println("此文件夹中的图片已空！");
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
+            this.imageModel = null;
+            imageView.setImage(null);
+            stage.setTitle("无图片");
+        } else {
+//            imageModel = sw.nextImage(imageModel);
+//            image = new Image(imageModel.getImageFile().toURI().toString());
+//            imageView.setImage(image);
+            initImage(sw.nextImage(imageModel));
+            stage.setTitle(imageModel.getImageName()); //更新图片名字
+//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
+        }
     }
 
     @FXML
@@ -188,35 +261,8 @@ public class DisplayWindowController extends AbstractController implements Initi
         //使工具栏不可见
         toolbar.setVisible(false);
         //以下设置窗口为全屏
-        Stage stage = (Stage) imageView.getScene().getWindow();
         stage.setFullScreen(true);
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映，点击任意键结束"));
-
-        //以下实现隐藏工具栏定时器
-        TimerTask task2 = new TimerTask() {
-            @Override
-            public void run() {
-                //定时任务中安排隐藏工具栏
-                Platform.runLater(() -> {
-                    toolbar.setVisible(false);
-                });
-            }
-        };
-        Timer timer2 = new Timer();
-        // 定义开始等待时间
-        long delay2 = 5000;
-        //每次执行的间隔
-        long intervalPeriod2 = 5000;
-        // 定时器执行
-        timer2.scheduleAtFixedRate(task2, delay2, intervalPeriod2);
-
-        //移动鼠标时工具栏出现
-        imageView.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                toolbar.setVisible(true);
-            }
-        });
 
         //以下实现定时器功能翻页
         TimerTask task = new TimerTask() {
@@ -233,18 +279,15 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         };
         Timer timer = new Timer();
-        // 定义开始等待时间
-        long delay = 3000;
-        //每次执行的间隔
-        long intervalPeriod = 3000;
-        // 定时器执行
-        timer.scheduleAtFixedRate(task, delay, intervalPeriod);
+        long delay = 5000;  // 定义开始等待时间
+        long intervalPeriod = 5000;  //每次执行的间隔
+        timer.scheduleAtFixedRate(task, delay, intervalPeriod); // 定时器执行
 
         //当鼠标点击时，暂停计时器，恢复工具栏
         imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                stopSlide(timer, timer2, stage);
+                stopSlide(timer, stage);
             }
         });
 
@@ -252,41 +295,23 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                stopSlide(timer, timer2, stage);
+                stopSlide(timer, stage);
             }
         });
     }
 
     //停止幻灯片播放
-    private void stopSlide(Timer timer, Timer timer2, Stage stage) {
-        timer2.cancel();
+    private void stopSlide(Timer timer, Stage stage) {
         timer.cancel();
         toolbar.setVisible(true);
         stage.setFullScreen(false);
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
 
         //清空事件
-        imageView.getScene().setOnKeyPressed(event -> {});
-        imageView.setOnMouseClicked(event -> {});
-    }
-
-    //下一张图
-    @FXML
-    private void showNextImg() throws IOException {
-        initStatus();
-        System.out.println("下一张");
-        //为了防止删除后显示空白，自动刷新
-        imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
-        if (imageModelArrayList.size() == 0) {
-            System.out.println("此文件夹中的照片已空！");
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹照片已空"));
-        } else {
-            initImage(sw.nextImage(imageModel));
-//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
-        }
-        //更新图片名字
-        Stage stage = (Stage) imageView.getScene().getWindow();
-        stage.setTitle(imageModel.getImageName());
+        imageView.getScene().setOnKeyPressed(event -> {
+        });
+        imageView.setOnMouseClicked(event -> {
+        });
     }
 
     @FXML
@@ -314,7 +339,6 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         };
         ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
             CustomDialog dialog = new CustomDialog(dwc, DialogType.INFO, imageModel, "识别结果");
             dialog.setBodyLabel(newValue);
             dialog.show();
@@ -324,6 +348,10 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     public void showInfo() {
+        if (imageModel == null) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无属性展示"));
+            return;
+        }
         Image image = new Image(imageModel.getImageFile().toURI().toString());
         StringBuilder info = new StringBuilder();
         info.append("尺寸：").append(image.getWidth()).append(" × ").append(image.getHeight()).append("\n");
@@ -333,11 +361,16 @@ public class DisplayWindowController extends AbstractController implements Initi
         info.append("\n位置：").append(imageModel.getImageFilePath());
         new CustomDialog(this, DialogType.INFO, imageModel,
                 imageModel.getImageName(), info.toString()).show();
+
     }
 
     //删除
     @FXML
     private void delete() {
+        if (imageModel == null) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无文件可删除"));
+            return;
+        }
         System.out.println("删除");
         SelectedModel.setSourcePath(imageModel);
         new CustomDialog(this, DialogType.DELETE, imageModel,
@@ -345,6 +378,41 @@ public class DisplayWindowController extends AbstractController implements Initi
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }
 
+    @FXML
+    private void fullScreen() {
+        Scene scene = rootPane.getScene();
+        if (stage.isFullScreen()) {
+            stage.setFullScreen(false);
+            stage.sizeToScene();
+//            stage.setWidth(winWidth+2);
+//            stage.setHeight(winHeight+2);
+        } else {
+            stage.setFullScreen(true);
+        }
+    }
+
+    @FXML
+    private void compress() {
+        SelectedModel.setSourcePath(imageModel.getImageFilePath());
+        int success = SelectedModel.compressImage(800);
+        if (success != 0) {
+            initImage(imageModel);
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
+            try {
+                // 手动实现刷新
+                hc.placeImages(ImageListModel.initImgList(imageModel.getImageParentPath()),
+                        imageModel.getImageParentPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("没有图片进行压缩\n压缩条件:大于800KB"));
+        }
+    }
+
+
+    public void initStage() {
+        stage = (Stage) rootPane.getScene().getWindow();
+    }
 
 }
-

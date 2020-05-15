@@ -376,8 +376,8 @@ public class HomeController extends AbstractController implements Initializable 
         } else {
             ArrayList<ImageModel> list = ImageListModel.refreshList(path);
             // placeImages方法中已处理列表为空时的情况
-            assert list != null;
-            placeImages(list, path);
+            if (list != null)
+                placeImages(list, path);
         }
     }
 
