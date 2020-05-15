@@ -141,8 +141,8 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         });
 
-        //以下实现定时隐藏工具栏，当鼠标不动3秒后隐藏，每隔3秒执行一次
-
+        // TODO 以下尝试实现定时隐藏工具栏，当鼠标不动5秒后隐藏，每隔5秒执行一次
+        // FIXME: 2020/5/15 当此方法调用次数过多(鼠标移动次数大于若干次)，定时器的执行就会出现异常
 //        TimerTask task = new TimerTask() {
 //            @Override
 //            public void run() {
@@ -153,14 +153,13 @@ public class DisplayWindowController extends AbstractController implements Initi
 //        };
 //        timer2.scheduleAtFixedRate(task2, delay2, intervalPeriod2); // 定时器执行
 //        new Timer().schedule(task, delay);
-
         //移动鼠标时工具栏出现
 //        imageView.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
 //            @Override
 //            public void handle(MouseEvent event) {
 //                Timer timer = new Timer();
 //                toolbar.setVisible(true);
-//                Thread task = new Thread() {
+//                TimerTask task = new TimerTask() {
 //                    @Override
 //                    public void run() {
 //                        Platform.runLater(() -> {
@@ -168,13 +167,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 //                        });
 //                    }
 //                };
-//                task.start();
-//                long delay = 5000; // 定义开始等待时间
-//                try {
-//                    task.wait(delay);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+//                long delay = 5000; // 等待时间
 //                timer.schedule(task, delay);
 //            }
 //        });
