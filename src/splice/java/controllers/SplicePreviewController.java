@@ -119,7 +119,7 @@ public class SplicePreviewController implements Initializable {
             ImageIO.write(buff, "png",
                     //保存到当前文件夹
                     new File(imageModel.getImageParentPath() + "\\" + prefix + "_more_" + dateFormat.format(date) + ".png"));
-            hc.refreshImagesList();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
             stage.close(); //为了处理卡顿关闭该窗口
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接完成，已创建副本")); //信息条提示
         } catch (IOException e) {

@@ -130,7 +130,7 @@ public class SelectedModel {
                 return false;
             }
         }
-        hc.refreshImagesList();
+        hc.refreshImagesList(hc.getSortComboBox().getValue());
         return true;
     }
 

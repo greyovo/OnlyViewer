@@ -118,12 +118,7 @@ public class PopupMenuController implements Initializable {
                 }
                 int success = SelectedModel.compressImage(800);
 
-                try {
-                    // 手动实现刷新
-                    hc.placeImages(ImageListModel.initImgList(im.getImageParentPath()), im.getImageParentPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                hc.refreshImagesList(hc.getSortComboBox().getValue());
                 if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
                 else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;

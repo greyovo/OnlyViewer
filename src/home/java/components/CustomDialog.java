@@ -182,7 +182,7 @@ public class CustomDialog extends JFXDialog {
             } else {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("删除失败"));    //显示删除成功通知。
             }
-            hc.refreshImagesList();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
             this.close();
         });
     }
@@ -193,7 +193,7 @@ public class CustomDialog extends JFXDialog {
             if (SelectedModel.renameImage(bodyTextField.getText()))
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
             this.close();
-            hc.refreshImagesList();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
         });
     }
 
@@ -210,7 +210,7 @@ public class CustomDialog extends JFXDialog {
             System.out.println("选择跳过");
             this.close();
             controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("选择跳过"));
-            hc.refreshImagesList();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
 //            SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
         });
         rightButton.setOnAction(event -> {
@@ -218,7 +218,7 @@ public class CustomDialog extends JFXDialog {
             if (SelectedModel.replaceImage()) {
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("替换成功"));
             }
-            hc.refreshImagesList();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
             this.close();
             SelectedModel.setHavePastedNum(SelectedModel.getHavePastedNum()+1);
         });

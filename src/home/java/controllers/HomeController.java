@@ -220,21 +220,21 @@ public class HomeController extends AbstractController implements Initializable 
     /**
      * 更新当前图片列表
      */
-    public void refreshImagesList() {
-        SelectionModel.clear();
-        SelectedModel.getSourcePathList().clear();
-        placeImages(ImageListModel.refreshList(currentPath), currentPath);
-        System.out.println("已刷新。");
-    }
+//    public void refreshImagesList() {
+//        SelectionModel.clear();
+//        SelectedModel.getSourcePathList().clear();
+//        placeImages(ImageListModel.refreshList(currentPath), currentPath);
+//        System.out.println("已刷新。");
+//    }
 
     /**
-     * 排序当前图片列表并更新到页面
+     * 排序当前图片列表并刷新图片列表
      */
-    private void refreshImagesList(String sort) {
+    public void refreshImagesList(String sort) {
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
         placeImages(ImageListModel.refreshList(currentPath, sort), currentPath);
-        System.out.println("已排序。");
+        System.out.println("已排序并刷新。");
     }
 
     public void initEnterFolder(String path) {
@@ -386,7 +386,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void refresh() {
         unSelectAll();
-        refreshImagesList();
+        refreshImagesList(sortComboBox.getValue());
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
     }
 
@@ -407,7 +407,7 @@ public class HomeController extends AbstractController implements Initializable 
         System.out.println("getWaitingPasteNum: " + SelectedModel.getWaitingPasteNum());
         if (SelectedModel.getHavePastedNum() == SelectedModel.getWaitingPasteNum()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
-            refreshImagesList();
+            refreshImagesList(sortComboBox.getValue());
         }
         if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
             pasteButton.setDisable(true);
@@ -437,7 +437,7 @@ public class HomeController extends AbstractController implements Initializable 
     private void closeSearch() {
         closeSearchButton.setVisible(false);
         searchTextField.setText("");
-        refreshImagesList();
+        refreshImagesList(sortComboBox.getValue());
     }
 
     /**
