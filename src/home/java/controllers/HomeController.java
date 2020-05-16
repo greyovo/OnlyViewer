@@ -128,15 +128,16 @@ public class HomeController extends AbstractController implements Initializable 
      */
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         //检查列表是否空，因为有可能处于初始页面
-        if (imageModelList == null)
+        if (imageModelList == null) {
             return;
+        }
 
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         SelectionModel.clear();
-//        SelectedModel.getSourcePathList().clear();
         unSelectAll();
+        sortComboBox.setVisible(true); //默认排序盒子不出现，除非触发了构建缩略图操作
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值
         int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值

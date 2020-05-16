@@ -158,8 +158,10 @@
                         </StackPane>
 
                         <!--排序盒子-->
+                        <!--默认不可见，除非触发了构建缩略图操作-->
                         <JFXComboBox fx:id="sortComboBox" prefWidth="220" prefHeight="20" promptText="  按名称升序"
-                                     styleClass="combo-box"/>
+                                     styleClass="combo-box" visible="false"/>
+
                     </ToolBar>
 
                     <!--缩略图们 -->
