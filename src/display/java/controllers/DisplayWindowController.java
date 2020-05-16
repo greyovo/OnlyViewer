@@ -302,6 +302,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         timer.cancel();
         toolbar.setVisible(true);
         stage.setFullScreen(false);
+        stage.sizeToScene();
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("幻灯片放映结束"));
 
         //清空事件
