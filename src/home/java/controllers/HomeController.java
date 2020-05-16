@@ -370,7 +370,8 @@ public class HomeController extends AbstractController implements Initializable 
     private void gotoPath() {
         String path = pathTextField.getText();
         //用于处理以反斜杠 "\" 结尾的情况，需去掉反斜杠
-        if (path.endsWith("\\"))
+        //(导航至磁盘根目录 即路径地址长度等于3的情况 除外)
+        if (path.endsWith("\\") && path.length() != 3)
             path = path.substring(0, path.length() - 1);
 
         File directory = new File(path);
