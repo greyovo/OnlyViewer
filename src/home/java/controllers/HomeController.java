@@ -128,15 +128,16 @@ public class HomeController extends AbstractController implements Initializable 
      */
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         //检查列表是否空，因为有可能处于初始页面
-        if (imageModelList == null)
+        if (imageModelList == null) {
             return;
+        }
 
         // 每次点击就重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         SelectionModel.clear();
-//        SelectedModel.getSourcePathList().clear();
         unSelectAll();
+        sortComboBox.setVisible(true); //默认排序盒子不出现，除非触发了构建缩略图操作
 
         //设置初始加载数目,更改时需要更改滚动内的初始index值
         int firstLoad = Math.min(imageModelList.size(), 80);    // 修改了firstLoad 取值为列表与80之间的最小值
@@ -234,7 +235,7 @@ public class HomeController extends AbstractController implements Initializable 
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
         placeImages(ImageListModel.refreshList(currentPath, sort), currentPath);
-        System.out.println("已排序并刷新。");
+        System.out.println("刷新已排序列表。");
     }
 
     public void initEnterFolder(String path) {
@@ -369,6 +370,11 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void gotoPath() {
         String path = pathTextField.getText();
+        //用于处理以反斜杠 "\" 结尾的情况，需去掉反斜杠
+        //(导航至磁盘根目录 即路径地址长度等于3的情况 除外)
+        if (path.endsWith("\\") && path.length() != 3)
+            path = path.substring(0, path.length() - 1);
+
         File directory = new File(path);
         if (!directory.exists()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
@@ -386,6 +392,8 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void refresh() {
         unSelectAll();
+        closeSearch();
+        refreshImagesList();
         refreshImagesList(sortComboBox.getValue());
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
     }
@@ -445,25 +453,22 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void selectAll() {
-        boolean flag = false; //用于标记是否有可选的内容
+        //如果没有可选的内容
+        if (imageListPane.getChildren().isEmpty()) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无内容可选"));
+            return;
+        }
+
         SelectionModel.clear();
-
         for (Node node : imageListPane.getChildren()) {
-            ImageBox imageBox;
-            imageBox = (ImageBox) node;
+            ImageBox imageBox = (ImageBox) node;
             imageBox.getCheckBox().setSelected(true);
-            if (!flag)
-                flag = true;
-
         }
+        selectAllButton.setText("取消全选");
+        selectAllButton.setOnAction(event -> {
+            unSelectAll();
+        });
 
-        //如果没有可选的内容，按钮不必变化
-        if (flag) {
-            selectAllButton.setText("取消全选");
-            selectAllButton.setOnAction(event -> {
-                unSelectAll();
-            });
-        }
     }
 
     /**
