@@ -369,6 +369,10 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void gotoPath() {
         String path = pathTextField.getText();
+        //用于处理以反斜杠 "\" 结尾的情况，需去掉反斜杠
+        if (path.endsWith("\\"))
+            path = path.substring(0, path.length() - 1);
+
         File directory = new File(path);
         if (!directory.exists()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
@@ -386,6 +390,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void refresh() {
         unSelectAll();
+        closeSearch();
         refreshImagesList();
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
     }
@@ -445,25 +450,20 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void selectAll() {
-        boolean flag = false; //用于标记是否有可选的内容
+        //如果没有可选的内容
+        if (imageListPane.getChildren().isEmpty())
+            return;
+
         SelectionModel.clear();
-
         for (Node node : imageListPane.getChildren()) {
-            ImageBox imageBox;
-            imageBox = (ImageBox) node;
+            ImageBox imageBox = (ImageBox) node;
             imageBox.getCheckBox().setSelected(true);
-            if (!flag)
-                flag = true;
-
         }
+        selectAllButton.setText("取消全选");
+        selectAllButton.setOnAction(event -> {
+            unSelectAll();
+        });
 
-        //如果没有可选的内容，按钮不必变化
-        if (flag) {
-            selectAllButton.setText("取消全选");
-            selectAllButton.setOnAction(event -> {
-                unSelectAll();
-            });
-        }
     }
 
     /**
