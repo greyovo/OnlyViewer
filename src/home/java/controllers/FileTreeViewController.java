@@ -119,9 +119,8 @@ public class FileTreeViewController implements Initializable {
 //                        hc.getPathStack2().clear();
 //                    }
                     hc.initEnterFolder(path);
-                    // 只要点击一次排序后以后每次进入新页面就置为"默认排序"
-                    if (hc.isComboBoxClicked())
-                        hc.getSortComboBox().setValue(SortParam.SBNR);
+                    // 只要点击一次排序后以后每次进入新页面就置为"按名字升序"
+                    hc.getSortComboBox().setValue(SortParam.SBNR);
                     addItems(newValue, 0);
                 } catch (IOException e) {
                     e.printStackTrace();
