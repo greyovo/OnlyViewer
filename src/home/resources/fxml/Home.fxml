@@ -145,7 +145,8 @@
 
                         </JFXButton>
 
-                        <Pane HBox.hgrow="ALWAYS" minWidth="100"/>
+                        <!--占位面板-->
+                        <Pane HBox.hgrow="ALWAYS" minWidth="10"/>
 
                         <!--当前状态信息栏-->
                         <StackPane>
