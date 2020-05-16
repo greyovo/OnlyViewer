@@ -451,8 +451,10 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void selectAll() {
         //如果没有可选的内容
-        if (imageListPane.getChildren().isEmpty())
+        if (imageListPane.getChildren().isEmpty()) {
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无内容可选"));
             return;
+        }
 
         SelectionModel.clear();
         for (Node node : imageListPane.getChildren()) {
