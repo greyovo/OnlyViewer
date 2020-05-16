@@ -393,7 +393,6 @@ public class HomeController extends AbstractController implements Initializable 
     private void refresh() {
         unSelectAll();
         closeSearch();
-        refreshImagesList();
         refreshImagesList(sortComboBox.getValue());
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已刷新"));
     }
