@@ -16,7 +16,7 @@ import lombok.Setter;
 import java.io.IOException;
 
 /**
- * TODO 自定义、可复用的对话框
+ * 自定义、可复用的对话框
  *
  * @author Grey
  */
@@ -54,7 +54,7 @@ public class CustomDialog extends JFXDialog {
 
     /**
      * @param controller  对话框出现所在的界面的控制器
-     *                    如需要在主界面弹出，则传入{@linkplain HomeController}的实例
+     *                    如：需要在主界面弹出，则传入{@linkplain HomeController}的实例
      * @param type        对话框种类，详见{@link DialogType}
      * @param targetImage 待处理的目标图片对象
      */

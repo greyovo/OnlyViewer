@@ -3,6 +3,7 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -458,27 +459,20 @@ public class HomeController extends AbstractController implements Initializable 
             return;
         }
 
+        //避免重复选择，先清空已选
         SelectionModel.clear();
         for (Node node : imageListPane.getChildren()) {
             ImageBox imageBox = (ImageBox) node;
             imageBox.getCheckBox().setSelected(true);
         }
-        selectAllButton.setText("取消全选");
-        selectAllButton.setOnAction(event -> {
-            unSelectAll();
-        });
-
     }
 
     /**
-     * 取消全选
+     * 清空选择
      */
+    @FXML
     private void unSelectAll() {
         SelectionModel.clear();
-        selectAllButton.setText("全选");
-        selectAllButton.setOnAction(event -> {
-            selectAll();
-        });
     }
 
     @FXML
@@ -509,4 +503,5 @@ public class HomeController extends AbstractController implements Initializable 
         dialog.setBodyContent(vBox);
         dialog.show();
     }
+
 }

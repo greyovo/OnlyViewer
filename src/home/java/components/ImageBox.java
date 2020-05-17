@@ -53,8 +53,8 @@ public class ImageBox extends VBox {
         //传送排序后的列表
         this.ilist = ilist;
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
-                120,
-                120,
+                100,
+                100,
                 true,
                 true,
                 true));
@@ -77,7 +77,7 @@ public class ImageBox extends VBox {
 
         JFXDepthManager.setDepth(this, 0);
         initMouseAction();
-        initPopUpMenu();
+//        initPopUpMenu();
         initCheckBox();
     }
 
@@ -129,6 +129,7 @@ public class ImageBox extends VBox {
                 dw.start(new Stage());
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 // 鼠标右键菜单
+                initPopUpMenu();
                 popUpMenu.show(this,
                         JFXPopup.PopupVPosition.TOP,
                         JFXPopup.PopupHPosition.LEFT,

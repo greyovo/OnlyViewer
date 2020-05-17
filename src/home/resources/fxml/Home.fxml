@@ -109,8 +109,6 @@
             <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" dividerPositions="0.2" style="-fx-background:white;">
 
                 <!--左侧目录树-->
-
-
                 <AnchorPane fx:id="folderPane">
                     <fx:include source="FileTreeView.fxml"/>
                 </AnchorPane>
@@ -124,6 +122,11 @@
 
                         <!--全选按钮-->
                         <JFXButton fx:id="selectAllButton" onAction="#selectAll" buttonType="FLAT" text="全选"
+                                   styleClass="normal-button">
+                        </JFXButton>
+
+                        <!--清空选择按钮-->
+                        <JFXButton fx:id="clearSelectionButton" onAction="#unSelectAll" buttonType="FLAT" text="清空选择"
                                    styleClass="normal-button">
                         </JFXButton>
 
@@ -178,11 +181,6 @@
 
         </VBox>
 
-
-        <!--TODO 右下角，幻灯片放映按钮 -->
-        <!--实现方法有点强硬，可能无法灵活添加更多按钮，需改善 -->
-        <!--实现方法：使用栈面板，在上方放置icon，下方放置JFXButton，通过像素定位使其中心对齐并堆叠起来。
-            原因是直接在JFXButton下添加png图标，会被背景色覆盖；而使用FontIcon又会报错，原因未解。-->
 
     </AnchorPane>
 
