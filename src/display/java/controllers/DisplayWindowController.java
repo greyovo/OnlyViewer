@@ -75,6 +75,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
+        stage = DisplayWindow.getStage();
     }
 
     public void initImage(ImageModel im) {
@@ -112,7 +113,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     private void setImageMouseAction() {
         //以下实现滚轮的放大缩小
-        imageView.setOnScroll(new EventHandler<ScrollEvent>() {
+        stage.getScene().setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
                 //如果滚轮向下滑动，缩小
@@ -406,11 +407,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("没有图片进行压缩\n压缩条件:大于800KB"));
         }
-    }
-
-
-    public void initStage() {
-        stage = (Stage) rootPane.getScene().getWindow();
     }
 
 }

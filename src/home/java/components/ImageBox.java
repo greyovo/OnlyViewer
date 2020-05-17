@@ -105,8 +105,6 @@ public class ImageBox extends VBox {
     private void initPopUpMenu() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
         loader.setController(new PopupMenuController(this));
-//        PopupMenuController controller = loader.getController();
-//        controller.setTargetImage(this);
         try {
             popUpMenu = new JFXPopup(loader.load());
         } catch (IOException e) {

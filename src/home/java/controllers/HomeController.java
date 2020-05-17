@@ -200,9 +200,7 @@ public class HomeController extends AbstractController implements Initializable 
 
             @Override
             public void handle(ScrollEvent event) {
-
                 int times = 30; // 每次滚动加载30张
-
                 while (times > 0) {
                     index++;
                     if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
