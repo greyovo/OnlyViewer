@@ -3,7 +3,6 @@ package home.java.controllers;
 import com.jfoenix.controls.*;
 import home.java.components.*;
 import home.java.model.*;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -89,6 +88,8 @@ public class HomeController extends AbstractController implements Initializable 
     private Stack<String> pathStack1 = new Stack<>();
     @Getter
     private Stack<String> pathStack2 = new Stack<>();
+    //当前图片列表
+    private ArrayList<ImageModel> curImgList = new ArrayList<>();
 
     public HomeController() {
         //将本类的实例添加到全局映射中
@@ -162,7 +163,7 @@ public class HomeController extends AbstractController implements Initializable 
         int i;
         //初始加载缩略图
         for (i = 0; i < firstLoad; i++) {
-            ImageBox imageBox = new ImageBox(imageModelList.get(i), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
 
@@ -207,7 +208,7 @@ public class HomeController extends AbstractController implements Initializable 
                     if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
 //                    WAR/WAW ERROR
 //                    index = loadPic(imageModelList, imageListPane, index);
-                        ImageBox imageBox = new ImageBox(imageModelList.get(index), imageModelList); //装图片和文件名的盒子，一上一下放置图片和文件名
+                        ImageBox imageBox = new ImageBox(imageModelList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
                         imageListPane.getChildren().add(imageBox);
                     } else {
                         break;
@@ -219,7 +220,7 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    /**
+    /*
      * 更新当前图片列表
      */
 //    public void refreshImagesList() {
@@ -232,10 +233,12 @@ public class HomeController extends AbstractController implements Initializable 
     /**
      * 排序当前图片列表并刷新图片列表
      */
+
     public void refreshImagesList(String sort) {
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
-        placeImages(ImageListModel.refreshList(currentPath, sort), currentPath);
+        curImgList =ImageListModel.refreshList(currentPath, sort);
+        placeImages(curImgList, currentPath);
         System.out.println("刷新已排序列表。");
     }
 
@@ -319,7 +322,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void moveBack() {
         if (!pathStack1.isEmpty()) {
-            String path = null;
+            String path;
             if (pathStack1.peek().equals(currentPath)) {
                 pathStack1.pop();
             }
@@ -337,7 +340,7 @@ public class HomeController extends AbstractController implements Initializable 
         if (!pathStack2.isEmpty()) {
 //            String path = pathStack2.pop();
 //            String path = pathStack2.peek();
-            String path = null;
+            String path;
             path = pathStack2.pop();
             pathStack1.push(currentPath);
             placeImages(ImageListModel.refreshList(path), path);
@@ -427,7 +430,7 @@ public class HomeController extends AbstractController implements Initializable 
         String key = searchTextField.getText();
         if (key.equals("")) return; // 搜索内容为空时即返回
         ArrayList<ImageModel> result =
-                SearchImageModel.fuzzySearch(key, ImageListModel.refreshList(currentPath));
+                SearchImageModel.fuzzySearch(key, curImgList);
         placeImages(result, currentPath);
         if (result.size() == 0) {
             folderInfoLabel.setText("未找到图片");

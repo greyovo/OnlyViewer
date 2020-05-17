@@ -39,7 +39,7 @@ public class ImageBox extends VBox {
     private ImageModel im;
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
-    private ArrayList<ImageModel> ilist;
+//    private ArrayList<ImageModel> ilist;
     @Getter
     private JFXCheckBox checkBox = new JFXCheckBox();
 
@@ -48,10 +48,10 @@ public class ImageBox extends VBox {
      *
      * @param im 图片文件类
      */
-    public ImageBox(ImageModel im, ArrayList<ImageModel> ilist) {
+    public ImageBox(ImageModel im) {
         this.im = im;
         //传送排序后的列表
-        this.ilist = ilist;
+//        this.ilist = ilist;
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 100,
                 100,
