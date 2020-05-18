@@ -7,11 +7,9 @@ import java.io.*;
 import java.net.URLEncoder;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: Util
- * @Author: Kevin
- * @Time: 2020/4/7 21:16
- * @Describe: OCR
+ * @author  Kevin
+ * @since   2020/4
+ * OCR
  **/
 
 public class Ocr extends GenAIP {
@@ -98,16 +96,6 @@ public class Ocr extends GenAIP {
 
     @Test
     public void Test() {
-        // 测试样例
-        String path1 = "src/display/java/model/1.jpg";
-
-        // 改变参数
-        String choose = path1;
-        File file = new File(choose);
-        if (!file.exists()) {
-            System.out.println("图片不存在!");
-        }
-        String s = doOcr(choose, Ocr.ENG);
-        System.out.println(s);
+        System.out.println("This is a Test");
     }
 }
