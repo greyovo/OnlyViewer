@@ -47,19 +47,19 @@ public class FileTreeViewController implements Initializable {
     private void setFileTreeView() {
         //定义目录树
         File[] rootList = File.listRoots();
-        TreeItem<File> a = new TreeItem<>(rootList[0]);
+        TreeItem<File> mainTreeItem = new TreeItem<>(rootList[0]);
 
         for (File root : rootList) {
-            TreeItem<File> c = new TreeItem<>(root);
+            TreeItem<File> rootItem = new TreeItem<>(root);
             try {
-                addItems(c, 0);
+                addItems(rootItem, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            a.getChildren().add(c);
+            mainTreeItem.getChildren().add(rootItem);
         }
 
-        fileTreeView.setRoot(a);
+        fileTreeView.setRoot(mainTreeItem);
         fileTreeView.setShowRoot(false);
 
         //自定义单元格，设置文件夹图片
