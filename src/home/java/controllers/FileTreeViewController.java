@@ -139,20 +139,20 @@ public class FileTreeViewController implements Initializable {
             if (flag == 0) {
                 in.getChildren().remove(0, in.getChildren().size());
             }
-
             if (filelist.length > 0) {
-                for (int i = 0; i < filelist.length; i++) {
-                    if (filelist[i].isDirectory() & !filelist[i].isHidden()) {
-                        TreeItem<File> b = new TreeItem<File>(filelist[i]);
+                for(File f:filelist){
+                    if(f.isDirectory()&!f.isHidden()){
+                        TreeItem<File> newItem = new TreeItem<File>(f);
                         if (flag < 1) {
-                            addItems(b, flag + 1);
+                            addItems(newItem, flag + 1);
                         }
-                        in.getChildren().add(b);
+                        in.getChildren().add(newItem);
+                    }
                     }
                 }
             }
         }
-    }
+
 
     /**
      * 判断是否为根目录
