@@ -1,7 +1,7 @@
  <p align="center">
- <img src="https://uploader.shimo.im/f/a53yyklEbytzAS4Y.png" alt="RSSHub" width="100">
+ <img src="https://uploader.shimo.im/f/a53yyklEbytzAS4Y.png!thumbnail" alt="OnlyViewer" width="100">
  </p>
- <h1 align="center">RSSHub</h1>
+ <h1 align="center">OnlyViewer</h1>
 
 >🎈Only when you view the images more delightly😊 shall we be happier.
 # Introduction
