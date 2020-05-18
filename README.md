@@ -66,24 +66,24 @@ We also maintain some creative features in this app for you :
 We use [JFoenix](http://www.jfoenix.com) to compose a wonderful user interface with Material Design.
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/UAWB6zjMCKVmX9tW.png!thumbnail" alt="The welcome page" width="600px">
+ <img src="https://uploader.shimo.im/f/UAWB6zjMCKVmX9tW.png!thumbnail" alt="The welcome page" width="800px">
  </p>
 <p align="center">(The welcome page)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/FQ1gjLInsuzaMZ9M.png!thumbnail" alt="Treeview & Thumbnails" width="600px">
+ <img src="https://uploader.shimo.im/f/FQ1gjLInsuzaMZ9M.png!thumbnail" alt="Treeview & Thumbnails" width="800px">
  </p>
 
 <p align="center">(Treeview & Thumbnails)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/DR7buL0fqB7mNt2z.png!thumbnail" alt="Dialog" width="600px">
+ <img src="https://uploader.shimo.im/f/DR7buL0fqB7mNt2z.png!thumbnail" alt="Dialog" width="800px">
  </p>
 
 <p align="center">(Dialog)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/L2kmZpUwROSHNSlq.png!thumbnail" alt="Display Window" width="600px">
+ <img src="https://uploader.shimo.im/f/L2kmZpUwROSHNSlq.png!thumbnail" alt="Display Window" width="800px">
  </p>
 
 <p align="center">(Display window)</p> 
