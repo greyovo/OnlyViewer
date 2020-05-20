@@ -6,7 +6,9 @@
 >🎈Only when you view the images more delightly😊 shall we be happier.
 # Introduction
 
->Gitee repository: [https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
+>Gitee: [https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
+>
+>Github: [https://github.com/greyovo/onlyviewer](hhttps://github.com/greyovo/onlyviewer)
 
 The application is of our course's design work: realizing a picture viewing and management software. It's a very powerful and useful tool that you can easily handle the pictures in your personal computer, enjoy your time with your photos and enjoy our app😘.If you have more ideas, email us please.
 
@@ -114,9 +116,12 @@ Copyright [2020] [OnlyViewer Maintainer]
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
+
     http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
+See the License for the specific language governing permissions and 
+limitations under the License.
 ```
