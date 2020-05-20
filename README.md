@@ -1,14 +1,16 @@
  <p align="center">
- <img src="https://uploader.shimo.im/f/a53yyklEbytzAS4Y.png!thumbnail" alt="OnlyViewer" width="100">
+ <img src="src/home/resources/icons/app_icon_300px.png" alt="OnlyViewer" width="100">
  </p>
  <h1 align="center">OnlyViewer</h1>
+ 
+ ![pic](src/home/resources/icons/app_icon_300px.png)
 
 >🎈Only when you view the images more delightly😊 shall we be happier.
 # Introduction
 
 >Gitee: [https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
 >
->Github: [https://github.com/greyovo/onlyviewer](hhttps://github.com/greyovo/onlyviewer)
+>Github: [https://github.com/greyovo/onlyviewer](https://github.com/greyovo/onlyviewer)
 
 The application is of our course's design work: realizing a picture viewing and management software. It's a very powerful and useful tool that you can easily handle the pictures in your personal computer, enjoy your time with your photos and enjoy our app😘.If you have more ideas, email us please.
 
