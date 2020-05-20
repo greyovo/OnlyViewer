@@ -1,6 +1,9 @@
  <p align="center">
- <img src="https://uploader.shimo.im/f/a53yyklEbytzAS4Y.png!thumbnail" alt="OnlyViewer" width="100">
+ <img src="https://i.loli.net/2020/05/21/aIDzRnsFWYP6Zfe.png" alt="OnlyViewer" width="100">
  </p>
+ 
+ <a href="https://sm.ms/image/aIDzRnsFWYP6Zfe" target="_blank"><img src="https://i.loli.net/2020/05/21/aIDzRnsFWYP6Zfe.png" ></a>
+ 
  <h1 align="center">OnlyViewer</h1>
 
 >🎈Only when you view the images more delightly😊 shall we be happier.
@@ -35,8 +38,7 @@ We also maintain some creative features in this app for you :
 * Sorting
 * More...
 
----
-
+# 简介
 
 >码云仓库地址：[https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
 >
@@ -70,24 +72,24 @@ We also maintain some creative features in this app for you :
 We use [JFoenix](http://www.jfoenix.com) to compose a wonderful user interface with Material Design.
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/UAWB6zjMCKVmX9tW.png!thumbnail" alt="The welcome page" width="800px">
+ <img src="https://i.loli.net/2020/05/21/UqpAJzVoPY2dGbf.png" alt="The welcome page" width="800px">
  </p>
 <p align="center">(The welcome page)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/FQ1gjLInsuzaMZ9M.png!thumbnail" alt="Treeview & Thumbnails" width="800px">
+ <img src="https://i.loli.net/2020/05/21/LdNrXgZOp7s1Kni.png" alt="TreeView & Thumbnails" width="800px">
  </p>
 
 <p align="center">(Treeview & Thumbnails)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/DR7buL0fqB7mNt2z.png!thumbnail" alt="Dialog" width="800px">
+ <img src="https://i.loli.net/2020/05/21/pxSNr76VA5Ybtq1.png" alt="Dialog" width="800px">
  </p>
 
 <p align="center">(Dialog)</p> 
 
 <p align="center">
- <img src="https://uploader.shimo.im/f/L2kmZpUwROSHNSlq.png!thumbnail" alt="Display Window" width="800px">
+ <img src="https://i.loli.net/2020/05/21/VxNOIAuWoCTKy87.png" alt="Display Window" width="800px">
  </p>
 
 <p align="center">(Display window)</p> 
