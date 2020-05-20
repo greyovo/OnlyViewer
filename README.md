@@ -42,7 +42,7 @@ We also maintain some creative features in this app for you :
 
 >码云仓库地址：[https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
 >
->Github仓库地址: [https://github.com/greyovo/onlyviewer](hhttps://github.com/greyovo/onlyviewer)
+>Github仓库地址: [https://github.com/greyovo/onlyviewer](https://github.com/greyovo/onlyviewer)
 
 本应用为学校的课程设计作业：实现一个图片查看、管理系统。该应用利用JFoenix实现了精美的界面，同时也包含一些基本图片管理功能，如：
 
