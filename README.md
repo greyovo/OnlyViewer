@@ -1,9 +1,7 @@
  <p align="center">
- <img src="src/home/resources/icons/app_icon_300px.png" alt="OnlyViewer" width="100">
+ <img src="https://uploader.shimo.im/f/a53yyklEbytzAS4Y.png!thumbnail" alt="OnlyViewer" width="100">
  </p>
  <h1 align="center">OnlyViewer</h1>
- 
- ![pic](src/home/resources/icons/app_icon_300px.png)
 
 >🎈Only when you view the images more delightly😊 shall we be happier.
 # Introduction
