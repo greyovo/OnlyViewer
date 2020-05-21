@@ -70,12 +70,13 @@ We useÂ [JFoenix](http://www.jfoenix.com) to compose a wonderful user interfaceÂ
 <p align="center">
  <img src="https://i.loli.net/2020/05/21/UqpAJzVoPY2dGbf.png" alt="The welcome page" width="800px">
  </p>
+ 
 <p align="center">(The welcome page)</p> 
 
 <p align="center">
- <img src="https://i.loli.net/2020/05/21/LdNrXgZOp7s1Kni.png" alt="TreeView & Thumbnails" width="800px">
+ <img src="https://i.loli.net/2020/05/21/VxNOIAuWoCTKy87.png" alt="TreeView & Thumbnails" width="800px">
  </p>
-
+ 
 <p align="center">(Treeview & Thumbnails)</p> 
 
 <p align="center">
@@ -85,9 +86,9 @@ We useÂ [JFoenix](http://www.jfoenix.com) to compose a wonderful user interfaceÂ
 <p align="center">(Dialog)</p> 
 
 <p align="center">
- <img src="https://i.loli.net/2020/05/21/VxNOIAuWoCTKy87.png" alt="Display Window" width="800px">
+ <img src="https://i.loli.net/2020/05/21/LdNrXgZOp7s1Kni.png" alt="Display Window" width="800px">
  </p>
-
+ 
 <p align="center">(Display window)</p> 
 
 # Platform and Libraries
