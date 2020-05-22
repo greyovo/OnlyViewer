@@ -112,12 +112,7 @@ public class FileTreeViewController implements Initializable {
                 String path = newValue.getValue().getAbsolutePath();
                 System.out.println(path);
                 try {
-//                    hc.placeImages(ImageListModel.initImgList(path), path);
-//                    //入栈以便于后续前进后退
-//                    if (hc.getPathStack1().isEmpty() || !hc.getPathStack1().peek().equals(path)) {
-//                        hc.getPathStack1().push(path);
-//                        hc.getPathStack2().clear();
-//                    }
+                    //入栈以便于后续前进后退
                     hc.initEnterFolder(path);
                     // 只要点击一次排序后以后每次进入新页面就置为"按名字升序"
                     hc.getSortComboBox().setValue(SortParam.SBNR);

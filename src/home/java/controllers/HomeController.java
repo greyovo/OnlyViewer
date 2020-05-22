@@ -235,7 +235,7 @@ public class HomeController extends AbstractController implements Initializable 
     public void refreshImagesList(String sort) {
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
-        curImgList =ImageListModel.refreshList(currentPath, sort);
+        curImgList = ImageListModel.refreshList(currentPath, sort);
         placeImages(curImgList, currentPath);
         System.out.println("刷新已排序列表。");
     }
@@ -320,14 +320,12 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void moveBack() {
         if (!pathStack1.isEmpty()) {
-            String path;
             if (pathStack1.peek().equals(currentPath)) {
                 pathStack1.pop();
             }
-            path = pathStack1.pop();
+            String path = pathStack1.pop();
             pathStack2.push(currentPath);
             placeImages(ImageListModel.refreshList(path), path);
-            System.out.println("后退到：" + path);
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("后退到底啦"));
         }
@@ -336,13 +334,9 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private void moveForward() {
         if (!pathStack2.isEmpty()) {
-//            String path = pathStack2.pop();
-//            String path = pathStack2.peek();
-            String path;
-            path = pathStack2.pop();
+            String path = pathStack2.pop();
             pathStack1.push(currentPath);
             placeImages(ImageListModel.refreshList(path), path);
-            System.out.println("前进到：" + path);
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("前进到尽头啦"));
         }
@@ -361,7 +355,6 @@ public class HomeController extends AbstractController implements Initializable 
         } else {
             parent = currentPath.substring(0, currentPath.lastIndexOf("\\"));
         }
-//        initEnterFolder(parent);
         placeImages(ImageListModel.refreshList(parent), parent);
         pathStack1.push(parent);
     }

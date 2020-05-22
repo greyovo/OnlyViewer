@@ -142,13 +142,11 @@ public class PopupMenuController implements Initializable {
             case 5:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    System.out.println("删除图片源:" + im.getImageFilePath());
                     new CustomDialog(hc, DialogType.DELETE, im,
                             "确认删除",
                             "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    System.out.println("删除图片源集合" + sourceList);
                     new CustomDialog(hc, DialogType.DELETE, im,
                             "确认删除",
                             "要删除这" + sourceList.size() + "个文件吗？\n\n你可以在回收站处找回。").show();
