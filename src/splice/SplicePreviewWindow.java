@@ -16,6 +16,12 @@ import splice.java.controllers.SplicePreviewController;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * 图片拼接窗口
+ *
+ * @author Grey
+ * @since 2020.05
+ */
 public class SplicePreviewWindow extends Application {
 
     public static double windowWidth;

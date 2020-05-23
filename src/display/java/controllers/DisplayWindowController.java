@@ -40,10 +40,11 @@ import java.util.TimerTask;
 /**
  * 展示窗口的控制器
  *
+ * @author Grey
+ * @author tudou daren
  * @see home.java.controllers.AbstractController
- * @author Grey, tudou daren
  * @since 2020.05
- * */
+ */
 public class DisplayWindowController extends AbstractController implements Initializable {
 
     @FXML
@@ -76,9 +77,11 @@ public class DisplayWindowController extends AbstractController implements Initi
     public void initialize(URL location, ResourceBundle resources) {
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
         stage = DisplayWindow.getStage();
+
         System.out.println("Display window initialization done...");
     }
 
@@ -95,6 +98,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         } else {
             imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
         }
+
         this.imageModel = im;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);
@@ -105,13 +109,27 @@ public class DisplayWindowController extends AbstractController implements Initi
         //适应图片比例，避免宽度过大显示不全
         double ratio = image.getWidth() / image.getHeight();
         double sysRatio = DisplayWindow.windowWidth / DisplayWindow.windowHeight;
-        if (ratio > sysRatio) {
-            imageView.fitWidthProperty().bind(rootPane.widthProperty());
-        } else {
-            imageView.fitHeightProperty().bind(rootPane.heightProperty());
-        }
-        setImageMouseAction();
 
+        System.out.println("image = " + image.getWidth() + " x " + image.getHeight());
+        System.out.println("DisplayWindow.windowHeight = " + DisplayWindow.windowHeight);
+        System.out.println("DisplayWindow.windowWidth = " + DisplayWindow.windowWidth);
+
+        //若图片长或宽比窗口大，缩小至窗口大小并随窗口绑定长宽，否则以原尺寸显示
+        if (image.getWidth() > DisplayWindow.windowWidth ||
+                image.getHeight() > DisplayWindow.windowHeight) {
+            if (ratio > sysRatio) {
+                imageView.fitWidthProperty().bind(rootPane.widthProperty());
+            } else {
+                imageView.fitHeightProperty().bind(rootPane.heightProperty());
+            }
+        } else {
+            imageView.fitWidthProperty().unbind();
+            imageView.fitHeightProperty().unbind();
+            imageView.setFitWidth(image.getWidth());
+            imageView.setFitHeight(image.getHeight());
+        }
+
+        setImageMouseAction();
     }
 
     private void setImageMouseAction() {
