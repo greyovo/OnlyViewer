@@ -10,7 +10,6 @@ import home.java.model.SelectionModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,7 +21,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 /**
@@ -59,7 +57,7 @@ public class ImageBox extends VBox {
                 true,
                 true));
         this.imageView2 = imageView;                                //图片
-        RipplerImageView riv = new RipplerImageView(imageView);     //一个水波纹点击效果的包装
+        WhiteRippler riv = new WhiteRippler(imageView);     //一个水波纹点击效果的包装
         ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
         imageLabel.setStyle("-fx-padding:7 0 7 -2;");
 

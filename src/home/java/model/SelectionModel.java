@@ -10,9 +10,10 @@ import java.util.ArrayList;
 
 /**
  * 存放已选图片的工具类。
- * 包含一个集合Set，和一些对已选图片的显示状态的更改
+ * 包含一个列表{@link ArrayList}，和一些对已选图片的显示状态的更改
  *
  * @author Grey
+ * @since 2020.05
  */
 public class SelectionModel {
 

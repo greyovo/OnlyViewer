@@ -1,6 +1,5 @@
 package display.java.controllers;
 
-import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXSnackbar;
 import display.DisplayWindow;
 import display.java.model.Ocr;
@@ -15,11 +14,9 @@ import display.java.model.SwitchPics;
 import home.java.model.SelectedModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -27,7 +24,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -41,6 +37,13 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * 展示窗口的控制器
+ *
+ * @see home.java.controllers.AbstractController
+ * @author Grey, tudou daren
+ * @since 2020.05
+ * */
 public class DisplayWindowController extends AbstractController implements Initializable {
 
     @FXML
@@ -106,7 +109,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         } else {
             imageView.fitHeightProperty().bind(rootPane.heightProperty());
         }
-        System.out.println("cur list:\n" + imageModelArrayList);
         setImageMouseAction();
 
     }
@@ -194,34 +196,29 @@ public class DisplayWindowController extends AbstractController implements Initi
     private void zoomIn() {
         imageView.setScaleX(imageView.getScaleX() * 1.25);
         imageView.setScaleY(imageView.getScaleY() * 1.25);
-        System.out.println("放大" + imageView.getScaleX() + " x " + imageView.getScaleY());
     }
 
     @FXML
     private void zoomOut() {
         imageView.setScaleX(imageView.getScaleX() * 0.75);
         imageView.setScaleY(imageView.getScaleY() * 0.75);
-        System.out.println("缩小" + imageView.getScaleX() + " x " + imageView.getScaleY());
     }
 
     //上一张图
     @FXML
     private void showPreviousImg() throws IOException {
         initStatus();
-        System.out.println("上一张");
         //为了防止删除后显示空白，自动刷新
         if (imageModel != null)
             imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
 
         if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
-            System.out.println("此文件夹中的图片已空！");
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
             initImage(null);
             stage.setTitle("无图片");
         } else {
             initImage(sw.lastImage(imageModel));
             stage.setTitle(imageModel.getImageName()); //更新图片名字
-//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
     }
 
@@ -229,37 +226,28 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     public void showNextImg() throws IOException {
         initStatus();
-        System.out.println("下一张");
 
         //为了防止删除后显示空白，自动刷新
         if (imageModel != null)
             imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
 
         if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
-            System.out.println("此文件夹中的图片已空！");
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
             this.imageModel = null;
             imageView.setImage(null);
             stage.setTitle("无图片");
         } else {
-//            imageModel = sw.nextImage(imageModel);
-//            image = new Image(imageModel.getImageFile().toURI().toString());
-//            imageView.setImage(image);
             initImage(sw.nextImage(imageModel));
             stage.setTitle(imageModel.getImageName()); //更新图片名字
-//            imageView.setImage(new Image(imageModel.getImageFile().toURI().toString()));
         }
     }
 
     @FXML
     //幻灯片放映
     private void playSlide() {
-        //比例重新设定
-        initStatus();
-        //使工具栏不可见
-        toolbar.setVisible(false);
-        //以下设置窗口为全屏
-        stage.setFullScreen(true);
+        initStatus();   //比例重新设定
+        toolbar.setVisible(false);  //使工具栏不可见
+        stage.setFullScreen(true);  //设置窗口为全屏
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映，点击任意键结束"));
 
         //以下实现定时器功能翻页
@@ -315,34 +303,32 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     private void ocr() {
-        System.out.println("OCR");
         CustomDialog loading = new CustomDialog(this, DialogType.INFO, imageModel, "正在处理");
         loading.setLoadingSpinner();
         loading.show();
 
-        DisplayWindowController dwc = (DisplayWindowController) ControllerUtil.controllers.get(this.getClass().getSimpleName());
-
         Task ocrTask = new Task() {
             @Override
             protected Object call() throws Exception {
+                //执行OCR识别，在成功后关闭加载窗口
                 String path = imageModel.getImageFilePath();
                 File file = new File(path);
                 if (!file.exists()) {
                     System.out.println("图片不存在!");
                 }
                 String result = Ocr.doOcr(path, Ocr.ENG);
-                System.out.println(result);
                 loading.close();
-                updateMessage(result);
+                updateMessage(result);   //向监听器更新结果
                 return true;
             }
         };
+        //设置加载任务的监听，在接收到信息回传时展示结果
         ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
-            CustomDialog dialog = new CustomDialog(dwc, DialogType.INFO, imageModel, "识别结果");
+            CustomDialog dialog = new CustomDialog(this, DialogType.INFO, imageModel, "识别结果");
             dialog.setBodyLabel(newValue);
             dialog.show();
         });
-        new Thread(ocrTask).start();
+        new Thread(ocrTask).start(); //启动新的线程进行识别任务
     }
 
     @FXML
@@ -360,7 +346,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         info.append("\n位置：").append(imageModel.getImageFilePath());
         new CustomDialog(this, DialogType.INFO, imageModel,
                 imageModel.getImageName(), info.toString()).show();
-
     }
 
     //删除
@@ -370,7 +355,6 @@ public class DisplayWindowController extends AbstractController implements Initi
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无文件可删除"));
             return;
         }
-        System.out.println("删除");
         SelectedModel.setSourcePath(imageModel);
         new CustomDialog(this, DialogType.DELETE, imageModel,
                 "删除图片",
@@ -379,12 +363,9 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     private void fullScreen() {
-        Scene scene = rootPane.getScene();
         if (stage.isFullScreen()) {
             stage.setFullScreen(false);
             stage.sizeToScene();
-//            stage.setWidth(winWidth+2);
-//            stage.setHeight(winHeight+2);
         } else {
             stage.setFullScreen(true);
         }
@@ -398,14 +379,14 @@ public class DisplayWindowController extends AbstractController implements Initi
             initImage(imageModel);
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
             try {
-                // 手动实现刷新
+                // 刷新缩略图列表
                 hc.placeImages(ImageListModel.initImgList(imageModel.getImageParentPath()),
                         imageModel.getImageParentPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("没有图片进行压缩\n压缩条件:大于800KB"));
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("没有图片执行压缩。压缩条件:大于800KB"));
         }
     }
 

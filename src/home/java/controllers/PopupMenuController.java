@@ -14,11 +14,17 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import splice.SplicePreviewWindow;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Set;
+
+/**
+ * 缩略图的右键菜单控制器
+ *
+ * @see home.java.controllers.AbstractController
+ * @author Grey
+ * @since 2020.04
+ */
 
 public class PopupMenuController implements Initializable {
 
@@ -35,11 +41,8 @@ public class PopupMenuController implements Initializable {
     public PopupMenuController() {
         //将本类的实例添加到全局映射中
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-//        System.out.println("put PopupMenuCon in Map...");
-
         //获取HomeController实例
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
-//        System.out.println("hc in PopMenuCon: " + hc);
     }
 
     @Override
@@ -54,12 +57,6 @@ public class PopupMenuController implements Initializable {
         this.im = imageBox.getIm();
     }
 
-//    @SuppressWarnings("unused")
-//    public void setTargetImage(ImageBox imageBox){
-//        this.imageBox = imageBox;
-//        this.im = imageBox.getIm();
-//    }
-
     @SuppressWarnings("unused")
     @FXML
     private void action() {
@@ -68,10 +65,8 @@ public class PopupMenuController implements Initializable {
             case 0:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    System.out.println("复制图片源:" + im.getImageFilePath());
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    System.out.println("复制图片源集合" + sourceList);
                 }
                 SelectedModel.setCopyOrMove(0);
 
@@ -82,10 +77,8 @@ public class PopupMenuController implements Initializable {
             case 1:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    System.out.println("剪切图片源:" + im.getImageFilePath());
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    System.out.println("剪切图片源集合" + sourceList);
                 }
                 SelectedModel.setCopyOrMove(1);
 
@@ -96,25 +89,19 @@ public class PopupMenuController implements Initializable {
             case 2:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    System.out.println("重命名图片源:" + im.getImageFilePath());
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    System.out.println("重命名图片源集合" + sourceList);
                 }
-                new CustomDialog(hc, DialogType.RENAME, im,
-                        "重命名图片").show();
+                new CustomDialog(hc, DialogType.RENAME, im, "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
-                System.out.println("点击压缩图片 压缩图片源:" + im.getImageFilePath());
                 imageBox.getPopUpMenu().hide();
 
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    System.out.println("压缩图片源:" + im.getImageFilePath());
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    System.out.println("压缩图片源集合" + sourceList);
                 }
                 int success = SelectedModel.compressImage(800);
 
@@ -123,10 +110,9 @@ public class PopupMenuController implements Initializable {
                 else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;
             case 4:
-                System.out.println("拼接功能");
                 if (sourceList.isEmpty() || sourceList.size() == 1) {
                     //未选择或只选了一张图片
-                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张以上图片进行拼接"));
+                    snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张或以上图片进行拼接"));
                 } else {
                     SplicePreviewWindow previewWindow = new SplicePreviewWindow();
                     previewWindow.initImageList(sourceList);

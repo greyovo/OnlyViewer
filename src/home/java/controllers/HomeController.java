@@ -27,15 +27,14 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * 主窗口界面的控制器。
+ * 主窗口界面的控制器
  *
+ * @see home.java.controllers.AbstractController
  * @author Grey
+ * @since 2020.03
  */
 
 public class HomeController extends AbstractController implements Initializable {
-    @FXML
-    //缩略图上方工具(信息)栏
-    private ToolBar infoBar;
 
     //文件夹工具(信息)栏功能按钮
     @FXML
@@ -55,6 +54,10 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     private JFXButton refreshButton;
 
+    @FXML
+    //缩略图上方工具(信息)栏
+    private ToolBar infoBar;
+
     //状态信息
     @FXML
     private Label folderInfoLabel;
@@ -72,6 +75,7 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
 
+    //面板
     @FXML
     @Getter
     private StackPane rootPane;
@@ -82,7 +86,7 @@ public class HomeController extends AbstractController implements Initializable 
     @FXML
     private AnchorPane folderPane;
 
-    // 存储信息的变量
+    //存储信息的变量
     private String currentPath = "";
     @Getter
     private Stack<String> pathStack1 = new Stack<>();
@@ -94,7 +98,6 @@ public class HomeController extends AbstractController implements Initializable 
     public HomeController() {
         //将本类的实例添加到全局映射中
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-//        System.out.println("put HomeCon in Map...");
     }
 
     /**
@@ -107,7 +110,6 @@ public class HomeController extends AbstractController implements Initializable 
         imageListPane.setHgap(10);
         imageListPane.setCache(true);
         SplitPane.setResizableWithParent(folderPane, false);
-
 
         snackbar = new JFXSnackbar(rootPane);
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
@@ -126,15 +128,14 @@ public class HomeController extends AbstractController implements Initializable 
     /**
      * 生成并往面板中放置图像组。
      * 一个缩略图单元{@link ImageBox}包含：
-     * 一个图片ImageView（由{@link RipplerImageView}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
+     * 一个图片ImageView（由{@link WhiteRippler}包装从而实现水波纹效果）和一个标签 {@link ImageLabel}
      */
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {
         //检查列表是否空，因为有可能处于初始页面
-        if (imageModelList == null) {
+        if (imageModelList == null)
             return;
-        }
 
-        // 每次点击就重置
+        // 每次生成前重置
         imageListPane.getChildren().clear();
         scrollPane.setContent(imageListPane);
         SelectionModel.clear();
@@ -157,40 +158,15 @@ public class HomeController extends AbstractController implements Initializable 
             String size = ImageListModel.getListImgSize(imageModelList);
             folderInfoLabel.setText(String.format("%d 张图片，共 %s ", total, size));
             selectedNumLabel.setText("| 已选中 0 张");
-            System.out.println(imageModelList);
         }
 
+        //TODO 新建新线程执行加载任务 可大幅缓解在图片较多时的卡顿情况
+        //初始加载 firstload 张缩略图
         int i;
-        //初始加载缩略图
         for (i = 0; i < firstLoad; i++) {
             ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
             imageListPane.getChildren().add(imageBox);
         }
-
-        //以下实现延迟加载，减少卡顿
-//        int[] finalI = {i};
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                Platform.runLater(() -> {
-//                    int times = 100;
-//                    while (times > 0) {
-//                        if (finalI[0] >= imageModelList.size()) {
-//                            this.cancel();
-//                            return;
-//                        } else {
-//                            ImageBox imageBox = new ImageBox(imageModelList.get(finalI[0]), imageModelList);
-//                            imageListPane.getChildren().add(imageBox);
-//                            finalI[0]++;
-//                            times--;
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//        long delay = 500; //延迟加载
-//        long intervalPeriod = 300; //每次加载后等待
-//        new Timer().scheduleAtFixedRate(task, delay, intervalPeriod);
 
         //加载后续的缩略图
         //2020/5/11 可以尝试设置在等待一段时间后，断续加载后面的而不用等滑动事件触发
@@ -218,26 +194,14 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    /*
-     * 更新当前图片列表
-     */
-//    public void refreshImagesList() {
-//        SelectionModel.clear();
-//        SelectedModel.getSourcePathList().clear();
-//        placeImages(ImageListModel.refreshList(currentPath), currentPath);
-//        System.out.println("已刷新。");
-//    }
-
     /**
      * 排序当前图片列表并刷新图片列表
      */
-
     public void refreshImagesList(String sort) {
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
         curImgList = ImageListModel.refreshList(currentPath, sort);
         placeImages(curImgList, currentPath);
-        System.out.println("刷新已排序列表。");
     }
 
     public void initEnterFolder(String path) {
@@ -250,7 +214,7 @@ public class HomeController extends AbstractController implements Initializable 
         placeImages(ImageListModel.refreshList(currentPath), currentPath);
     }
 
-    // 初始化操作---------
+    // 以下是一些初始化操作----------------
 
     /**
      * 在初始启动时显示欢迎页面
@@ -264,7 +228,6 @@ public class HomeController extends AbstractController implements Initializable 
         hBox.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
-        System.out.println(welcomeImage);
     }
 
     public void showNotFoundPage() {
@@ -275,7 +238,6 @@ public class HomeController extends AbstractController implements Initializable 
         hBox.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane(hBox);
         scrollPane.setContent(stackPane);
-        System.out.println(img);
     }
 
     /**
@@ -312,7 +274,7 @@ public class HomeController extends AbstractController implements Initializable 
         }
     }
 
-    //各按钮事件操作---------
+    //各按钮事件操作------------------
 
     /**
      * 前进、后退和返回父目录
@@ -347,7 +309,7 @@ public class HomeController extends AbstractController implements Initializable 
         String parent;
         if (currentPath.lastIndexOf("\\") == 2) {
             if (currentPath.length() == 3) {
-                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("到达根目录啦"));
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("到达根目录"));
                 return;
             } else {
                 parent = currentPath.substring(0, currentPath.lastIndexOf("\\") + 1);
@@ -405,8 +367,6 @@ public class HomeController extends AbstractController implements Initializable 
             SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelList().size());
         }
         SelectedModel.pasteImage(currentPath);
-        System.out.println("getHavePastedNum: " + SelectedModel.getHavePastedNum());
-        System.out.println("getWaitingPasteNum: " + SelectedModel.getWaitingPasteNum());
         if (SelectedModel.getHavePastedNum() == SelectedModel.getWaitingPasteNum()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
             refreshImagesList(sortComboBox.getValue());
@@ -452,7 +412,6 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无内容可选"));
             return;
         }
-
         //避免重复选择，先清空已选
         SelectionModel.clear();
         for (Node node : imageListPane.getChildren()) {
@@ -469,6 +428,9 @@ public class HomeController extends AbstractController implements Initializable 
         SelectionModel.clear();
     }
 
+    /**
+     * 展示软件关于页面
+     */
     @FXML
     private void showAboutDetail() {
         VBox vBox = new VBox();
