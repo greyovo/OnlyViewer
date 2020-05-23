@@ -110,10 +110,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         double ratio = image.getWidth() / image.getHeight();
         double sysRatio = DisplayWindow.windowWidth / DisplayWindow.windowHeight;
 
-        System.out.println("image = " + image.getWidth() + " x " + image.getHeight());
-        System.out.println("DisplayWindow.windowHeight = " + DisplayWindow.windowHeight);
-        System.out.println("DisplayWindow.windowWidth = " + DisplayWindow.windowWidth);
-
         //若图片长或宽比窗口大，缩小至窗口大小并随窗口绑定长宽，否则以原尺寸显示
         if (image.getWidth() > DisplayWindow.windowWidth ||
                 image.getHeight() > DisplayWindow.windowHeight) {
