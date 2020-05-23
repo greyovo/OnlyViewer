@@ -5,27 +5,23 @@ import lombok.Data;
 import java.io.File;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: ImageModel
- * @Author: Kevin
- * @Describe: 单元图片类
- */
+ * 单元图片类
+ *
+ * @author Kevin
+ * @since 2020/3/16
+ **/
 
 @Data
 public class ImageModel {
 
-    private String imageFilePath; // *绝对路径
+    private String imageFilePath;   // *绝对路径
     private String imageParentPath; // 图片所在文件夹路径
     private File imageFile;
     private String imageName;
-    private String imageNameNoExt; // 不含拓展名的名字
+    private String imageNameNoExt;  // 不含拓展名的名字
     private String imageType;
     private long fileLength;
     private long imageLastModified; // 图片修改时间
-
-    // 暂且先不考虑获取图片宽高，其耗时较多
-//    private int imageWidth;
-//    private int imageHeight;
 
     public ImageModel(File file) {
         this.imageFile = file;
@@ -47,10 +43,6 @@ public class ImageModel {
         this.imageType = imageName.substring(imageName.indexOf(".") + 1).toLowerCase();
         this.fileLength = imageFile.length(); // 返回的单位是byte
         this.imageLastModified = imageFile.lastModified();
-    }
-
-    private void init() {
-
     }
 
     public String getFormatSize() {

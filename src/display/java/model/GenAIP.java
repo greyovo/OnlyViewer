@@ -12,11 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: GenAIP
- * @Author: Kevin
- * @Time:2020/4/27 21:19
- * @Describe: From https://ai.baidu.com/ai-doc/OCR 有修改
+ * https://ai.baidu.com/ai-doc/OCR 有修改
+ *
+ * @author Kevin
+ * @since 2020/4/27
  **/
 
 public class GenAIP {
@@ -55,21 +54,15 @@ public class GenAIP {
             connection.connect();
             // 获取所有响应头字段
             Map<String, List<String>> map = connection.getHeaderFields();
-//            // 遍历所有的响应头字段
-//            for (String key : map.keySet()) {
-//                System.out.println(key + "--->" + map.get(key));
-//            }
-            // 定义 BufferedReader输入流来读取URL的响应
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder result = new StringBuilder(32);
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-            /**
+            /*
              * 返回结果示例
              */
-//            System.out.println("result:" + result);
             JSONObject jsonObject = new JSONObject(result.toString());
             return jsonObject.getString("access_token");
         } catch (Exception e) {
@@ -105,7 +98,6 @@ public class GenAIP {
      * Base64
      *
      * @param from
-     * @return
      */
     static String encode(byte[] from) {
         StringBuilder to = new StringBuilder((int) ((double) from.length * 1.34D) + 3);
@@ -159,7 +151,6 @@ public class GenAIP {
      * @param requestUrl
      * @param accessToken
      * @param params
-     * @return
      * @throws Exception
      */
     static String post(String requestUrl, String accessToken, String params)
@@ -205,11 +196,6 @@ public class GenAIP {
         // 建立实际的连接
         connection.connect();
 
-        // 获取所有响应头字段
-        // String headers = connection.getRequestProperty("words_result");
-        // 遍历所有的响应头字段
-        // System.out.println(headers);
-
         // 定义 BufferedReader输入流来读取URL的响应
         BufferedReader in = null;
         in = new BufferedReader(
@@ -221,7 +207,6 @@ public class GenAIP {
         }
         in.close();
         String totalStr = result.toString();
-        System.out.println(totalStr);
         return jsonWords(totalStr);
     }
 
@@ -230,7 +215,7 @@ public class GenAIP {
         net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(totalStr);
         net.sf.json.JSONArray wordsArray = net.sf.json.JSONArray.fromObject(json.getString("words_result"));
         StringBuilder sb = new StringBuilder(32);
-        for (int i=0; i<wordsArray.size(); i++) {
+        for (int i = 0; i < wordsArray.size(); i++) {
             net.sf.json.JSONObject words = wordsArray.getJSONObject(i);
             sb.append(words.getString("words")).append("\n");
         }
@@ -239,7 +224,7 @@ public class GenAIP {
         return null;
     }
 
-    // 正则表达式提取words内容 不需要用到了
+    // 正则表达式提取words内容 曾经使用的提取方法
     static String regexWords(String totalStr) {
         String words = totalStr.split("\"words_result\":")[1];
 
@@ -258,7 +243,6 @@ public class GenAIP {
         }
         StringBuilder sb = new StringBuilder(32);
         for (int i = 0; i < strList.size(); i++) {
-//            System.out.println(strList.get(i));
             sb.append(strList.get(i)).append("\n");
         }
         return sb.toString();

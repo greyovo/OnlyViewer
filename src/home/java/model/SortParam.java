@@ -1,11 +1,8 @@
 package home.java.model;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: SortParam
- * @Author: Kevin
- * @Time:2020/4/30 16:52
- * @Describe: 排序参数
+ * @author Kevin
+ * @since 2020/4/30
  **/
 
 public final class SortParam {

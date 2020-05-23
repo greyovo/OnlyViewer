@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.coobird.thumbnailator.Thumbnails;
-import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -23,22 +22,19 @@ import java.util.Objects;
 
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: SelectedModel
- * @Author: Kevin
- * @Time:2020/3/22 0:00
- * @Describe: 对被选中的图片进行操作
- * 1.初始化源 2.粘贴 3.剪切 4.重命名 5.删除 6.压缩
+ * 被选中图片操作类
+ * 1.初始化源 2.复制 3.剪切 4.粘贴 5.重命名 6.删除 7.压缩
+ *
+ * @author Kevin
+ * @since 2020/3/22
  **/
 
 public class SelectedModel {
     /**
      * 复制：如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
-     *                       -> 2.若是在不同文件夹，可选择覆盖或跳过
+     * -> 2.若是在不同文件夹，可选择覆盖或跳过
      * 剪切：如果遇到文件重复 -> 直接覆盖
      * 重命名：如果遇到文件重复 -> 直接覆盖
-     * 支持多选操作的有：
-     * 1.复制 2.剪切 3.删除 4.压缩 5.重命名
      */
     @Getter
     private static Path sourcePath;
@@ -47,20 +43,22 @@ public class SelectedModel {
     private static Path targetPath;
 
     @Setter
-    @Getter // 选择复制/剪切 0->复制 1->剪切
-    private static int copyOrMove = -1;
+    @Getter
+    private static int copyOrMove = -1; // 选择复制/剪切 0->复制 1->剪切
 
     @Getter
-    @Setter // 选择单选/多选 0->单选 1->多选
-    private static int singleOrMultiple = -1;
+    @Setter
+    private static int singleOrMultiple = -1; // 选择单选/多选 0->单选 1->多选
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private static int waitingPasteNum = 0;
-    @Getter @Setter
+    @Getter
+    @Setter
     private static int havePastedNum = 0;
     private static int coverImage = 0;
 
-    private static HomeController hc = (HomeController)ControllerUtil.controllers.get("HomeController");
+    private static HomeController hc = (HomeController) ControllerUtil.controllers.get("HomeController");
 
     /**
      * 1.初始化源 复制/剪切/重命名/删除/压缩选项调用
@@ -106,7 +104,6 @@ public class SelectedModel {
      */
     public static boolean pasteImage(String path) {
         havePastedNum = 0;
-        System.out.println("调用paste时copyOrMove: " + copyOrMove);
         if (singleOrMultiple == 0) {
             try {
                 microPaste(path);
@@ -121,8 +118,7 @@ public class SelectedModel {
                     sourcePath = p;
                     microPaste(path);
                 }
-                System.out.println("coverImage: " + coverImage);
-                if (coverImage !=0){
+                if (coverImage != 0) {
                     hc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
                 }
             } catch (IOException e) {
@@ -135,31 +131,18 @@ public class SelectedModel {
     }
 
     public static boolean replaceImage() {
-        System.out.println("调用覆盖时copyOrMove: " + copyOrMove);
-        switch (copyOrMove) {
-            case 0:
-                try {
-                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-                break;
-//            case 1:
-//                try {
-//                    Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return false;
-//                }
-//                break;
+        try {
+            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("替换失败!");
+            return false;
         }
         return true;
     }
 
     // 粘贴的微操作
-    private static void microPaste(String path) throws IOException{
-        if (copyOrMove == 0){
+    private static void microPaste(String path) throws IOException {
+        if (copyOrMove == 0) {
             //复制粘贴
             if (getBeforePath().equals(path)) {
                 // 情况1
@@ -200,13 +183,14 @@ public class SelectedModel {
         }
     }
 
-    /** 粘贴前需要判断是否有重复图片 */
+    /**
+     * 粘贴前需要判断是否有重复图片
+     */
     private static boolean imageRepeat(String path) {
         String targetImageName = targetPath.getFileName().toString();
         try {
             if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
                 // 找到有重复的图片
-                System.out.println("有重复图片");
                 if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
                     // 有重复图片
                     return true;
@@ -264,10 +248,11 @@ public class SelectedModel {
 
     /**
      * 4.删除图片选项
+     *
      * @return 返回删除成功的图片个数
      */
     public static int deleteImage() {
-        int success=0;
+        int success = 0;
         // 删除图片文件进入回收站，不直接删除
         if (singleOrMultiple == 0) {
             try {
@@ -344,7 +329,6 @@ public class SelectedModel {
             return false;
         }
         double accuracy = 0;
-        System.out.println("进行压缩");
         if (imageBytes.length > desSize * 1024) {
             accuracy = getAccuracy(imageBytes.length / 1024.0);
             ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
@@ -356,7 +340,6 @@ public class SelectedModel {
 //                        .toFile(newFile);  // 速度略慢
             imageBytes = bos.toByteArray();
         }
-        System.out.println("压缩完毕");
         String newImagePath = suffixName(getBeforePath(), "_only");
         File newFile = new File(newImagePath);
         return GenUtilModel.getFileByByte(imageBytes, newFile);
@@ -420,44 +403,4 @@ public class SelectedModel {
         sb.append(checkPath(newPath)).append(nameBefore).append(suffix).append(nameAfter);
         return sb.toString();
     }
-
-    @Test
-    public void Test() {
-        /** 复制 686个 2.94G 1m30s
-         剪切 686个 2.94G 4 - 7s
-         删除 686个 2.94G 3 - 4s **/
-        try {
-            String path = "D:\\TestImg2\\test";
-            ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
-            long timef = System.currentTimeMillis();
-            long timel = System.currentTimeMillis();
-            System.out.printf("耗时 %d ms\n", timel - timef);
-            System.out.println("操作成功");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        File file = new File("H:\\Ding\\test2");
-//        String[] list = file.list();
-//        System.out.println(list); // [Ljava.lang.String;@6bf2d08e
-//        String path = "H:\\Ding\\test2\\P70125-214324.jpg";
-//        System.out.println(path.substring(0, path.lastIndexOf("\\"))); //H:\Ding\test2
-//        for (String s : list){ ;
-//            System.out.println(s.substring(0, s.indexOf("."))); //P70125-214324
-//            System.out.println(s.substring(s.indexOf("."))); //.jpg
-//
-//        }
-    }
-    //    // 剪切图片 目前如果遇到文件重复则直接覆盖
-//    public static boolean moveImage(String path) {
-//        targetPath = new File(otherPath(path)).toPath();
-//        try {
-//            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-//        } catch (IOException e) {
-//            // 剪切失败
-//            return false;
-//        }
-//        // 复制/剪切完了以后就置 -1->按粘贴键没反应
-//        option = -1;
-//        return true;
-//    }
 }

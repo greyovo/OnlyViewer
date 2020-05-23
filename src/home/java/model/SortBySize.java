@@ -3,10 +3,8 @@ package home.java.model;
 import java.util.Comparator;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: SortBySize
- * @Author: Kevin
- * @Time: 2020/4/30 11:52
+ * @author Kevin
+ * @since 2020/4/30
  **/
 
 public class SortBySize implements Comparator<ImageModel> {

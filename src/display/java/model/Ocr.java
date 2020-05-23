@@ -1,15 +1,15 @@
 package display.java.model;
 
 import home.java.model.SelectedModel;
-import org.junit.Test;
 
 import java.io.*;
 import java.net.URLEncoder;
 
 /**
- * @author  Kevin
- * @since   2020/4
- * OCR
+ * OCR文本识别
+ *
+ * @author Kevin
+ * @since 2020/4/26
  **/
 
 public class Ocr extends GenAIP {
@@ -32,7 +32,6 @@ public class Ocr extends GenAIP {
         String beforeName = imagePath.substring(0, imagePath.lastIndexOf("."));
         String afterName = imagePath.substring(imagePath.lastIndexOf("."));
         String newImagePath = beforeName + "_only" + afterName;
-        System.out.println(newImagePath);
         File image = new File(newImagePath);
         String result = null;
         if (image.exists()) {
@@ -55,8 +54,7 @@ public class Ocr extends GenAIP {
         }
         if (!flag) {
             SelectedModel.setSourcePath(newImagePath);
-            if (SelectedModel.deleteImage() != 0)
-                System.out.println("删除压缩图片");
+            SelectedModel.deleteImage();
         }
         return result;
     }
@@ -92,10 +90,5 @@ public class Ocr extends GenAIP {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Test
-    public void Test() {
-        System.out.println("This is a Test");
     }
 }
