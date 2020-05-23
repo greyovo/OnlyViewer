@@ -77,6 +77,7 @@ public class DisplayWindow extends Application {
         dwController.initImage(im);
 
         stage.show();
+        System.out.println("Starting a new display window...");
     }
 
     public void setImage(ImageModel im) {

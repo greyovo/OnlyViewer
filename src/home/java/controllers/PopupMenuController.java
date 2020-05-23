@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
  * 缩略图的右键菜单控制器
  *
  * @see home.java.controllers.AbstractController
+ * @link home/resources/fxml/PopupMenu.fxml
  * @author Grey
  * @since 2020.04
  */

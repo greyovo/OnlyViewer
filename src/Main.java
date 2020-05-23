@@ -34,10 +34,10 @@ public class Main extends Application{
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("home/resources/css/home.css").toExternalForm());
 
-//        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icons/app.png")));
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/home/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
+        System.out.println("Starting Only Viewer...");
     }
 
     public static void main(String[] args) {

@@ -79,6 +79,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
         stage = DisplayWindow.getStage();
+        System.out.println("Display window initialization done...");
     }
 
     public void initImage(ImageModel im) {

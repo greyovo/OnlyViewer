@@ -29,6 +29,7 @@ import java.io.IOException;
  * 继承自{@link VBox}，添加特定的样式。
  *
  * @author Grey
+ * @since 2020.04
  */
 @Getter
 @Setter
@@ -37,7 +38,6 @@ public class ImageBox extends VBox {
     private ImageModel im;
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
-//    private ArrayList<ImageModel> ilist;
     @Getter
     private JFXCheckBox checkBox = new JFXCheckBox();
 
@@ -48,8 +48,6 @@ public class ImageBox extends VBox {
      */
     public ImageBox(ImageModel im) {
         this.im = im;
-        //传送排序后的列表
-//        this.ilist = ilist;
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 100,
                 100,
@@ -115,7 +113,6 @@ public class ImageBox extends VBox {
      * 图片对鼠标操作的反馈
      */
     private void initMouseAction() {
-
         //鼠标点击事件
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -135,13 +132,11 @@ public class ImageBox extends VBox {
 
         //当鼠标指向时
         this.setOnMouseMoved(event -> {
-//            JFXDepthManager.setDepth(this, 3);
             this.setStyle("-fx-background-color:rgba(0, 0, 0, 0.07);");
         });
 
         //当鼠标离开时
         this.setOnMouseExited(event -> {
-//            JFXDepthManager.setDepth(this, 0);
             this.setStyle("-fx-background-color:transparent;");
         });
 

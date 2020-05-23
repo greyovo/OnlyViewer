@@ -34,9 +34,7 @@ public class FileTreeViewController implements Initializable {
     public FileTreeViewController() {
         //将本类的实例添加到全局映射中
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-        System.out.println("put FileTreeViewCon in Map...");
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
-        System.out.println("hc in FileTreeViewCon: " + hc);
     }
 
     @Override
@@ -101,8 +99,6 @@ public class FileTreeViewController implements Initializable {
                 return treeCell;
             }
         });
-
-        System.out.println("hc: " + hc);
 
         //获取点击操作并刷新当前结点
         fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
