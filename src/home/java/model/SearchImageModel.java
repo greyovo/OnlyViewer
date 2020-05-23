@@ -1,7 +1,6 @@
 package home.java.model;
 
 import lombok.Getter;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,20 +61,4 @@ public class SearchImageModel {
         //未找到
         return result;
     }
-
-    @Test
-    public void Test() throws IOException {
-
-        String path = "F:\\手机中的照片和视频\\2017-2019老照片";
-        ArrayList<ImageModel> ilist = ImageListModel.initImgList(path);
-        long timef = System.currentTimeMillis();
-        String name = "img";
-        fuzzySearch(name, ilist);
-        long timel = System.currentTimeMillis();
-        System.out.printf("查找耗时 %d ms\n", timel - timef);
-        System.out.println("共有" + ilist.size() + "张照片");
-        System.out.println("共找到" + foundNumbers + "张照片");
-
-    }
-
 }

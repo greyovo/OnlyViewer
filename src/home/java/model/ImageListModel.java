@@ -1,7 +1,6 @@
 package home.java.model;
 
 import lombok.Data;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -10,18 +9,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * @ProjName: OnlyViewer
- * @ClassName: ImageListModel
- * @Author: Kevin
- * @Time:2020/3/18 11:11
- * @Describe: 文件夹内的图片列表2.0
  * 1.文件筛选 2.计算图片数 3.创建图片列表 4.计算文件夹所有图片的大小
+ *
+ * @author Kevin
+ * @since 2020/3/18
  **/
 
 @Data
 public class ImageListModel {
-
-    // 判断文件是否为图片 支持jpg/jpeg/png/gif/bmp,暂不支持psd
+    // 判断文件是否为图片 支持jpg/jpeg/png/gif/bmp
     public static boolean isSupportedImg(String fileName) {
         return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") ||
                 fileName.endsWith(".png") || fileName.endsWith(".gif") ||
@@ -55,7 +51,6 @@ public class ImageListModel {
             // 处理访问系统文件的异常
             @Override
             public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                System.out.println("不访问系统文件夹");
                 return FileVisitResult.SKIP_SUBTREE;
             }
         });
@@ -114,31 +109,6 @@ public class ImageListModel {
                 Collections.reverse(list);
                 return list;
         }
-
         return list;
-    }
-
-    @Test
-    public void Test1() throws IOException {
-        String filePath = "D:\\Projects\\OnlyViewer\\src\\home\\resources\\sample";
-        long timef;
-        long timel;
-        timef = System.currentTimeMillis();
-        ArrayList<ImageModel> list = initImgList(filePath);
-        timel = System.currentTimeMillis();
-        System.out.printf("初始化耗时：%d ms\n", (timel - timef));
-        if (list.size() == 0) {
-            System.out.println("There is no image!");
-        } else {
-            for (ImageModel i : list) {
-                System.out.println("imgName:" + i.getImageName() +
-                        "\t\timgLastModified:" + i.getFormatTime() +
-                        "\t\timgSize:" + i.getFormatSize());
-            }
-            System.out.println("totalImgNum:" + getListImgNum(list));
-            System.out.println("totalImgSize:" + getListImgSize(list));
-        }
-
-        System.out.println("测试成功!");
     }
 }
