@@ -3,14 +3,14 @@
  </p>
 <h1 align="center">OnlyViewer</h1>
 
-> 🎈Only when you view the images more delightly😊 shall we be happier.
+> 🎈 Only when you view the images more delightfully shall we be happier.
 # Introduction
 
 >Gitee: [https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
 >
 >Github: [https://github.com/greyovo/onlyviewer](https://github.com/greyovo/onlyviewer)
 
-The application is of our course's design work: realizing a picture viewing and management software. It's a very powerful and useful tool that you can easily handle the pictures in your personal computer, enjoy your time with your photos and enjoy our app😘.If you have more ideas, email us please.
+This is an end-project of our Java course: to realize a software (system) with the function of viewing pictures and management. It's a very powerful and useful tool that you can easily handle pictures in your personal computer, enjoy your time with your photos and enjoy our app 😘. If you have any ideas or advice, just open an issue or create a pull request.
 
 Here are some basic functions:
 
