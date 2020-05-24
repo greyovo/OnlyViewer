@@ -106,23 +106,34 @@ public class DisplayWindowController extends AbstractController implements Initi
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
-        //适应图片比例，避免宽度过大显示不全
-        double ratio = image.getWidth() / image.getHeight();
-        double sysRatio = DisplayWindow.windowWidth / DisplayWindow.windowHeight;
+        //以下适应图片比例，避免宽度过大显示不全
+        //获取当前窗口高度比例
+        double winWidth, winHeight;
+        if (stage != null) {
+            winWidth = stage.getScene().getWidth();
+            winHeight = stage.getScene().getHeight();
+        } else {
+            winWidth = DisplayWindow.windowWidth;
+            winHeight = DisplayWindow.windowHeight;
+        }
+        double sysRatio = winWidth / winHeight;                 //窗口长宽比
+        double ratio = image.getWidth() / image.getHeight();    //图片长宽比
+
+        //清空上次设置后遗留下的数据
+        imageView.fitWidthProperty().unbind();
+        imageView.fitHeightProperty().unbind();
+        imageView.setFitHeight(0);
+        imageView.setFitWidth(0);
 
         //若图片长或宽比窗口大，缩小至窗口大小并随窗口绑定长宽，否则以原尺寸显示
-        if (image.getWidth() > DisplayWindow.windowWidth ||
-                image.getHeight() > DisplayWindow.windowHeight) {
+        if (image.getWidth() > winWidth || image.getHeight() > winHeight) {
             if (ratio > sysRatio) {
                 imageView.fitWidthProperty().bind(rootPane.widthProperty());
             } else {
                 imageView.fitHeightProperty().bind(rootPane.heightProperty());
             }
         } else {
-            imageView.fitWidthProperty().unbind();
-            imageView.fitHeightProperty().unbind();
-            imageView.setFitWidth(image.getWidth());
-            imageView.setFitHeight(image.getHeight());
+            imageView.fitWidthProperty().setValue(image.getWidth());
         }
 
         setImageMouseAction();
@@ -192,6 +203,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     private void showPreviousImg() throws IOException {
         initStatus();
+
         //为了防止删除后显示空白，自动刷新
         if (imageModel != null)
             imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
