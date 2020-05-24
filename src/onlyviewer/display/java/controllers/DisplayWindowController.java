@@ -1,6 +1,7 @@
 package onlyviewer.display.java.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
+import javafx.scene.transform.Scale;
 import onlyviewer.display.DisplayWindow;
 import onlyviewer.display.java.model.Ocr;
 import onlyviewer.home.java.components.CustomDialog;
@@ -141,16 +142,18 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     private void setImageMouseAction() {
         //以下实现滚轮的放大缩小
-        stage.getScene().setOnScroll(new EventHandler<ScrollEvent>() {
+        imageView.getScene().setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
                 //如果滚轮向下滑动，缩小
                 if (event.getDeltaY() < 0) {
-                    zoomOut();
+                    Scale scale = new Scale(0.9, 0.9, event.getX(), event.getY());
+                    imageView.getTransforms().add(scale);
                 }
                 //如果滚轮向上滑动，放大
                 if (event.getDeltaY() > 0) {
-                    zoomIn();
+                    Scale scale = new Scale(1.1, 1.1, event.getX(), event.getY());
+                    imageView.getTransforms().add(scale);
                 }
             }
         });
