@@ -142,7 +142,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     private void setImageMouseAction() {
         //以下实现滚轮的放大缩小
-        imageView.getScene().setOnScroll(new EventHandler<ScrollEvent>() {
+        imageView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
                 //如果滚轮向下滑动，缩小
