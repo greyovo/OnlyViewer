@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="onlyviewer.home.java.controllers.HomeController">
+    <AnchorPane fx:id="anchorPane">
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+
+            <VBox alignment="CENTER_LEFT" styleClass="toolbar">
+                <JFXToolbar fx:id="toolbar">
+                    <leftItems>
+                        <!--关于按钮-->
+                        <JFXButton fx:id="aboutButton" onAction="#showAboutDetail" ripplerFill="white"
+                                   styleClass="toolbar-button" style="-fx-padding:10px;">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../icons/app.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!--帮助按钮-->
+                        <JFXButton fx:id="introButton" onAction="#initIntroPage" ripplerFill="white"
+                                   styleClass="toolbar-button" style="-fx-padding:11px;">
+                            <graphic>
+                                <ImageView fitWidth="25" preserveRatio="true">
+                                    <Image url="@../icons/help.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!--后退按钮-->
+                        <JFXButton fx:id="backButton" onAction="#moveBack" ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../icons/back_96px.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!--前进按钮-->
+                        <JFXButton fx:id="forwardButton" onAction="#moveForward" ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../icons/forward_96px.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!--上层文件夹按钮-->
+                        <JFXButton fx:id="parentDirButton" onAction="#toParentDir" ripplerFill="white" styleClass="toolbar-button">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../icons/level_up_96px.png"/>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+
+                        <!-- 地址栏 -->
+                        <JFXRippler maskType="RECT" ripplerFill="white">
+                            <BorderPane.margin>
+                                <Insets left="50"/>
+                            </BorderPane.margin>
+                            <JFXTextField fx:id="pathTextField" styleClass="search-box" prefWidth="330"
+                                          unFocusColor="white" focusColor="white"
+                                          style="-fx-font-size:18px; -fx-text-fill:white;"/>
+                        </JFXRippler>
+
+                        <JFXButton fx:id="gotoButton" onAction="#gotoPath" buttonType="FLAT" text="GO"
+                                   styleClass="normal-button" style=" -fx-text-fill:white;">
+                            <HBox.margin>
+                                <Insets right="10" top="5"/>
+                            </HBox.margin>
+                        </JFXButton>
+
+                    </leftItems>
+
+                    <rightItems>
+                        <HBox alignment="CENTER_RIGHT">
+                            <children>
+                                <!--搜索输入栏-->
+                                <JFXRippler maskType="RECT" ripplerFill="white">
+                                    <JFXTextField prefWidth="160.0" fx:id="searchTextField"
+                                                  unFocusColor="white" focusColor="white"
+                                                  styleClass="search-box">
+                                    </JFXTextField>
+                                </JFXRippler>
+                                <!--搜索按钮-->
+                                <JFXButton buttonType="FLAT" onAction="#searchImage" contentDisplay="CENTER"
+                                           ripplerFill="white"
+                                           style="-fx-font-size:18px; -fx-text-fill:white;" text="搜索">
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                    </rightItems>
+
+                </JFXToolbar>
+            </VBox>
+
+
+            <SplitPane fx:id="splitPane" VBox.vgrow="ALWAYS" dividerPositions="0.2" style="-fx-background:white;">
+
+                <!--左侧目录树-->
+                <AnchorPane fx:id="folderPane">
+                    <fx:include source="FileTreeView.fxml"/>
+                </AnchorPane>
+
+
+                <!-- 右侧 文件夹信息 + 缩略图群 -->
+                <AnchorPane fx:id="mainPane">
+                    <!--上方信息栏+按钮-->
+                    <ToolBar fx:id="infoBar" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"
+                             prefHeight="33">
+
+                        <!--全选按钮-->
+                        <JFXButton fx:id="selectAllButton" onAction="#selectAll" buttonType="FLAT" text="全选"
+                                   styleClass="normal-button">
+                        </JFXButton>
+
+                        <!--清空选择按钮-->
+                        <JFXButton fx:id="clearSelectionButton" onAction="#unSelectAll" buttonType="FLAT" text="清空选择"
+                                   styleClass="normal-button">
+                        </JFXButton>
+
+                        <!--刷新按钮-->
+                        <JFXButton fx:id="refreshButton" onAction="#refresh" buttonType="FLAT" text="刷新"
+                                   styleClass="normal-button">
+
+                        </JFXButton>
+
+                        <!--粘贴按钮-->
+                        <JFXButton fx:id="pasteButton" onAction="#paste" buttonType="FLAT" text="粘贴"
+                                   styleClass="normal-button">
+
+                        </JFXButton>
+
+                        <!--取消搜索按钮，未搜索时不可见-->
+                        <JFXButton fx:id="closeSearchButton" onAction="#closeSearch" buttonType="FLAT" text="关闭搜索"
+                                   styleClass="normal-button" style="-fx-text-fill:#009688;">
+
+                        </JFXButton>
+
+                        <!--占位面板-->
+                        <Pane HBox.hgrow="ALWAYS" minWidth="10"/>
+
+                        <!--当前状态信息栏-->
+                        <StackPane>
+                            <Label fx:id="folderInfoLabel" styleClass="normal-text-b"
+                                   style="-fx-padding:10 1 10 1px;" minWidth="50" alignment="CENTER_RIGHT"/>
+                        </StackPane>
+                        <StackPane>
+                            <Label fx:id="selectedNumLabel" styleClass="normal-text-b"
+                                   style="-fx-padding:10 1 10 1px;" minWidth="0" alignment="CENTER_RIGHT"/>
+                        </StackPane>
+
+                        <!--排序盒子-->
+                        <!--默认不可见，除非触发了构建缩略图操作-->
+                        <JFXComboBox fx:id="sortComboBox" prefWidth="220" prefHeight="20" promptText="  按名称升序"
+                                     styleClass="combo-box" visible="false"/>
+
+                    </ToolBar>
+
+                    <!--缩略图们 -->
+                    <ScrollPane fx:id="scrollPane"
+                                fitToHeight="true" fitToWidth="true"
+                                style="-fx-background-color: transparent;-fx-control-inner-background: transparent;"
+                                AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
+                                AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="70">
+                    </ScrollPane>
+
+                </AnchorPane>
+            </SplitPane>
+
+        </VBox>
+
+
+    </AnchorPane>
+
+</StackPane>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import com.jfoenix.controls.JFXButton?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="rootPane"
+           fx:controller="onlyviewer.display.java.controllers.DisplayWindowController">
+
+    <ImageView fx:id="imageView">
+
+    </ImageView>
+
+    <HBox fx:id="toolbar" alignment="CENTER"
+          styleClass="bottom-toolbar" maxHeight="33" maxWidth="300" style="-fx-padding:0 6 0 6;">
+
+        <JFXButton buttonType="FLAT" onAction="#zoomIn"
+                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   style="-fx-background-radius: 9 0 0 9;">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/zoom_in.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#zoomOut"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/zoom_out.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#initStatus"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/one_to_one.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#fullScreen"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/full-screen.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showPreviousImg"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/previous.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#playSlide"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="45" preserveRatio="true">
+                    <Image url="@../icons2/play.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showNextImg"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/next.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#ocr"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/ocr2.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#showInfo"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/info.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#compress"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/compress.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
+        <JFXButton buttonType="FLAT" onAction="#delete"
+                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   style="-fx-background-radius: 3 9 9 3;">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/delete.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+    </HBox>
+
+</StackPane>
