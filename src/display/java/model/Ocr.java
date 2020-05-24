@@ -16,10 +16,10 @@ import java.net.URLEncoder;
 public class Ocr extends GenAIP {
     /**
      * 三十日更新一次
-     * Latest: 2020/4/27
+     * Latest: 2020/5/24
      */
-    private static final String API_KEY = "mOmi2LXLqhls75BVZLGY4nr5";
-    private static final String SECRET_KEY = "ShPdHkVbpHcgiexcZfA6SV9XkkGxCDsI";
+    private static final String API_KEY = "bKZOcPVr8Ln9t5kBUm7mYWn1";
+    private static final String SECRET_KEY = "puXuxEdvZpV3SynEY9kptIvopWDYcBOX";
 
     // 中英文模式 mode
     public static final int ENG = 0;
