@@ -1,6 +1,7 @@
 package display.java.model;
 
 import home.java.model.SelectedModel;
+import javafx.scene.control.SelectionMode;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -28,33 +29,21 @@ public class Ocr extends GenAIP {
     // mode默认情况为ENG，模式指的是使用该模式下的标点符号，非识别中英文参数
     // mode可选参数 Ocr.ENG / Ocr.CHI
     public static String doOcr(String imagePath, int mode) {
-        boolean flag = false;
         String beforeName = imagePath.substring(0, imagePath.lastIndexOf("."));
         String afterName = imagePath.substring(imagePath.lastIndexOf("."));
         String newImagePath = beforeName + "_only" + afterName;
         File image = new File(newImagePath);
-        String result = null;
+        String result;
         if (image.exists()) {
-            flag = true;
             result = OCR(newImagePath, mode);
-            if (result == null) {
-                result = "图中无可识别文字";
-            }
         } else {
-            SelectedModel.setSourcePath(imagePath);
-            if (SelectedModel.compressImage(800) != 0)
-                result = OCR(newImagePath, mode);
-            else {
-                result = OCR(imagePath, mode);
-                flag = true;
-            }
-            if (result == null) {
-                result = "图中无可识别文字";
-            }
+            result = OCR(imagePath, mode);
         }
-        if (!flag) {
-            SelectedModel.setSourcePath(newImagePath);
-            SelectedModel.deleteImage();
+        if (result == null) {
+            result = "图中无可识别文字";
+        }
+        if (result.equals("Expired")) {
+            result = "请联系作者更新Access Token!";
         }
         return result;
     }

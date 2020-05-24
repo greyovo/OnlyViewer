@@ -213,6 +213,12 @@ public class GenAIP {
     // JSONObject处理API返回的数据
     private static String jsonWords(String totalStr) {
         net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(totalStr);
+        String s = null;
+        if (json.has("error_code")) {
+            s = json.getString("error_code");
+            if (s.equals("110"))
+                return "Expired";
+        }
         net.sf.json.JSONArray wordsArray = net.sf.json.JSONArray.fromObject(json.getString("words_result"));
         StringBuilder sb = new StringBuilder(32);
         for (int i = 0; i < wordsArray.size(); i++) {
