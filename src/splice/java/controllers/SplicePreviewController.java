@@ -32,7 +32,15 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-// TODO: 2020/5/12 拼接功能 
+/**
+ * @ProjName: OnlyViewer
+ * @ClassName: SplicePreviewController
+ * @Author: tudou daren
+ * @Author: grey
+ * @Describe: 拼接窗口Controller
+ * @since 2020.05
+ */
+
 public class SplicePreviewController implements Initializable {
     @FXML
     private StackPane rootPane;
@@ -46,18 +54,6 @@ public class SplicePreviewController implements Initializable {
     private VBox vBox;
 
     private ImageModel imageModel;
-
-//    @FXML
-//    private Image image1;
-//    @FXML
-//    private Image image2;
-//    @FXML
-//    private Image image3;
-//    @FXML
-//    private Image image4;
-//    @FXML
-//    private Image image5;
-
 
     private ArrayList<ImageModel> imageModelList;
     private HomeController hc;

@@ -10,9 +10,10 @@ import java.util.ArrayList;
 
 /**
  * @ProjName: OnlyViewer
- * @ClassName: FindImageModel
- * @Author: tudoudaren233
- * @Describe: 用于处理上下张图片的问题，暂未起用
+ * @ClassName: SwitchPics
+ * @Author: tudou daren
+ * @Describe: 用于处理上下张图片切换类
+ * @since 2020.05
  */
 
 public class SwitchPics {

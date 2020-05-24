@@ -20,9 +20,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * 左侧文件目录树
- *
- * @author tudou daren
+ * 左侧文件目录树展示
+ * @ProjName: OnlyViewer
+ * @ClassName: FileTreeViewController
+ * @Author: tudou daren
+ * @Describe: 左侧目录树Controller
+ * @since 2020.05
  */
 public class FileTreeViewController implements Initializable {
 
@@ -71,8 +74,8 @@ public class FileTreeViewController implements Initializable {
                         if (!empty) {
                             super.updateItem(item, empty);
                             HBox hBox = new HBox();
+                            //对根目录进行单独判断定义文字
                             Label label = new Label(isListRoots(item));
-
                             this.setGraphic(hBox);
 
                             if (this.getTreeItem().isExpanded()) {
@@ -80,7 +83,6 @@ public class FileTreeViewController implements Initializable {
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片
-                                //this.setDisclosureNode(folderImage);
                                 this.setGraphic(hBox);
                             } else if (!this.getTreeItem().isExpanded()) {
                                 ImageView folderImage = new ImageView("icons/folder.png");
