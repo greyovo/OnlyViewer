@@ -104,6 +104,7 @@ public class SelectedModel {
      */
     public static boolean pasteImage(String path) {
         havePastedNum = 0;
+        coverImage = 0;
         if (singleOrMultiple == 0) {
             try {
                 microPaste(path);
@@ -113,18 +114,17 @@ public class SelectedModel {
             }
         } else if (singleOrMultiple == 1) {
             try {
-                coverImage = 0;
                 for (Path p : sourcePathList) {
                     sourcePath = p;
                     microPaste(path);
-                }
-                if (coverImage != 0) {
-                    hc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
+        }
+        if (coverImage != 0) {
+            hc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
         }
         hc.refreshImagesList(hc.getSortComboBox().getValue());
         return true;
