@@ -66,8 +66,10 @@ public class PopupMenuController implements Initializable {
             case 0:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
+                    SelectedModel.setWaitingPasteNum(1);
                 } else {
                     SelectedModel.setSourcePath(sourceList);
+                    SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
                 SelectedModel.setCopyOrMove(0);
 
@@ -78,8 +80,10 @@ public class PopupMenuController implements Initializable {
             case 1:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
+                    SelectedModel.setWaitingPasteNum(1);
                 } else {
                     SelectedModel.setSourcePath(sourceList);
+                    SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
                 SelectedModel.setCopyOrMove(1);
 

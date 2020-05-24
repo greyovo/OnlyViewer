@@ -360,13 +360,6 @@ public class HomeController extends AbstractController implements Initializable 
      */
     @FXML
     private void paste() {
-        if (SelectionModel.getImageModelList().isEmpty()) {
-            // 粘贴一张图片
-            SelectedModel.setWaitingPasteNum(1);
-        } else {
-            // 粘贴多张图片
-            SelectedModel.setWaitingPasteNum(SelectionModel.getImageModelList().size());
-        }
         SelectedModel.pasteImage(currentPath);
         if (SelectedModel.getHavePastedNum() == SelectedModel.getWaitingPasteNum()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
