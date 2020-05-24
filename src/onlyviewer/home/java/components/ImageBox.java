@@ -99,7 +99,7 @@ public class ImageBox extends VBox {
      * 加载右键菜单
      */
     private void initPopUpMenu() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/onlyviewer/home/resources/fxml/PopupMenu.fxml"));
         loader.setController(new PopupMenuController(this));
         try {
             popUpMenu = new JFXPopup(loader.load());

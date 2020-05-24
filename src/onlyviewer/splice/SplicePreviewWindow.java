@@ -44,7 +44,7 @@ public class SplicePreviewWindow extends Application {
 
     @Override
     public void start(Stage stage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/splice/resources/fxml/SplicePreview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/onlyviewer/splice/resources/fxml/SplicePreview.fxml"));
 
         Parent root = null;
         try {
@@ -59,10 +59,10 @@ public class SplicePreviewWindow extends Application {
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(this.getClass().getResource("/splice/resources/css/splice.css").toExternalForm());
+        stylesheets.addAll(this.getClass().getResource("/onlyviewer/splice/resources/css/splice.css").toExternalForm());
 
         stage.setTitle("图片拼接预览");
-        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/home/resources/icons/app.png")));
+        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/onlyviewer/home/resources/icons/app.png")));
         stage.setScene(scene);
         stage.show();
     }
