@@ -19,9 +19,18 @@ target/
 *.zip
 *.tar.gz
 *.rar
+/output
+/META-INF
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
 #IDEA files
 .idea/
+
+#settings file
+.project
+.classpath
+.factorypath
+.settings/
+src/META-INF/MANIFEST.MF
