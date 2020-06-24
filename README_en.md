@@ -82,7 +82,7 @@ This project is based on Java 8 (JavaFX 2.0). We use Maven to manage our externa
 We recommend you to open this project in IDEA.
 
 ### Why the OCR is unavailable?
-Thre OCR function depends on Baidu OCR API, which needs to be updated monthly. Sign up your Baidu account [here](https://login.bce.baidu.com/) (English is supported) and follow the instruction to get your own key. Replace the `API_KEY` and `SECRET_KEY` at [\onlyviewer\display\java\model\Ocr.java](src\onlyviewer\display\java\model\Ocr.java) to your own ones. Then rebuild the project.
+Thre OCR function depends on Baidu OCR API, which needs to be updated monthly. Sign up your Baidu account [here](https://login.bce.baidu.com/) (English is supported) and follow the instruction to get your own key. Replace the strings `API_KEY` and `SECRET_KEY` at [src/onlyviewer/display/java/model/Ocr.java](src/onlyviewer/display/java/model/Ocr.java) with your own ones. Then rebuild the project.
 
 Also you can use Google's OCR as a replacement.
 
