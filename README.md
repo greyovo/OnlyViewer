@@ -4,36 +4,8 @@
 <h1 align="center">OnlyViewer</h1>
 
 > 🎈 Only when you view the images more delightfully shall we be happier.
-# Introduction
 
->Gitee: [https://gitee.com/kevin996/OnlyViewer](https://gitee.com/kevin996/OnlyViewer)
->
->Github: [https://github.com/greyovo/onlyviewer](https://github.com/greyovo/onlyviewer)
-
-This is an end-project of our Java course: to realize a software (system) with the function of viewing pictures and management. It's a very powerful and useful tool that you can easily handle pictures in your personal computer, enjoy your time with your photos and enjoy our app 😘. If you have any ideas or advice, just open an issue or create a pull request.
-
-Here are some basic functions:
-
-* Copy / Cut and paste
-* Delete
-* Rename
-* Check out the attributes
-* Multiple Selection
-
-By double-clicking the thumbnail, it will show the picture in a separate window with some features below:
-
-* Zoom in / Zoom out
-* Switch pictures
-* Slide show
-
-We also maintain some creative features in this app for you :
-
-* OCR text recognition
-* Picture compression
-* History records
-* Picture stitching
-* Sorting
-* More...
+[English Version README](README_en.md)
 
 # 简介
 
@@ -41,7 +13,7 @@ We also maintain some creative features in this app for you :
 >
 >Github仓库地址: [https://github.com/greyovo/onlyviewer](https://github.com/greyovo/onlyviewer)
 
-本应用为学校的课程设计作业：实现一个图片查看、管理系统。该应用利用JFoenix实现了精美的界面，同时也包含一些基本图片管理功能，如：
+本项目为学校的课程设计作业：实现一个图片查看、管理应用程序，包含一些基本图片管理功能，如：
 
 * 复制 / 剪切 和 粘贴
 * 删除
@@ -56,7 +28,7 @@ We also maintain some creative features in this app for you :
 * 切换图片
 * 幻灯片展示
 
-此外，在实现基本功能的情况下加入一些扩展功能，如
+此外，在实现基本功能的情况下加入一些扩展功能，如：
 
 * OCR文本识别
 * 压缩图片
@@ -64,52 +36,80 @@ We also maintain some creative features in this app for you :
 * 图片拼接
 * 排序
 * 搜索等
-# Appearance
 
-We use [JFoenix](http://www.jfoenix.com) to compose a wonderful user interface with Material Design.
+# 运行界面
+
+我们借助JFoenix[JFoenix](http://www.jfoenix.com)实现了Material Design风格的界面。
 
 <p align="center">
  <img src="https://i.loli.net/2020/05/21/UqpAJzVoPY2dGbf.png" alt="The welcome page" width="800px">
  </p>
  
-<p align="center">(The welcome page)</p> 
+<p align="center">(启动页)</p> 
 
 <p align="center">
  <img src="https://i.loli.net/2020/05/21/VxNOIAuWoCTKy87.png" alt="TreeView & Thumbnails" width="800px">
  </p>
  
-<p align="center">(Treeview & Thumbnails)</p> 
+<p align="center">(目录树 & 缩略图)</p> 
 
 <p align="center">
  <img src="https://i.loli.net/2020/05/21/pxSNr76VA5Ybtq1.png" alt="Dialog" width="800px">
  </p>
 
-<p align="center">(Dialog)</p> 
+<p align="center">(对话框样式)</p> 
 
 <p align="center">
  <img src="https://i.loli.net/2020/05/21/LdNrXgZOp7s1Kni.png" alt="Display Window" width="800px">
  </p>
- 
-<p align="center">(Display window)</p> 
 
-# Platform and Libraries
+<p align="center">(单独预览窗口)</p> 
 
-We use Maven to manage our external libraries, such as: 
+# 使用的库
 
-* Java 8
-* JavaFX
+本项目基于Java 8（JavaFX 2.0），使用Maven进行项目管理，包含以下依赖：
+
 * JFoenix
 * Lombok
 * Thumbnailator
 * Baidu AI
-# Special Thanks
+
+> 注意：使用IDEA或Eclipse时，请安装IDE对应的**Lombok插件**，避免编辑器误报错误。
+
+# FAQ
+
+推荐使用IDEA打开本项目。若更新图片资源文件后重新编译出错的问题，请尝试执行Maven的clean命令。
+
+## 为什么文字识别功能失效了？
+文字识别功能需要联网使用，并且依赖百度的API，该API Key需每隔30天更新一次。请前往 [https://login.bce.baidu.com/](https://login.bce.baidu.com/) 注册申请该API的使用权限，之后在[\onlyviewer\display\java\model\Ocr.java](src\onlyviewer\display\java\model\Ocr.java) 更新其中的`API_KEY`和`SECRET_KEY`字段，重新编译运行即可。
+
+## Maven已经全部下好依赖了，但为什么还是出现许多错误提示？（如某getter、setter方法不存在等）
+注意，在使用IDEA或Eclipse时，请安装IDE对应的**Lombok插件**，避免编辑器误报错误。
+
+## 还有问题？
+请提issue。
+
+# 优化方向
+
+尽管在提交项目评分之时我们已尽力做到最好，但因为时间紧迫加上水平有限，缺陷总是在所难免的。这是一些已知的可优化的方向，我们不一定会实现，仅作记录。
+
+- [ ] 多线程加载缩略图以提高运行速度
+- [ ] 优化内存占用
+- [ ] 多语言支持
+- [ ] 记忆上次浏览的文件夹
+- [ ] 自动更新文字识别API
+- [ ] 更多...
+
+
+# 特别感谢
 
 * [aleksandarstojkovski](https://github.com/aleksandarstojkovski) / [PictureX-Image-Processor](https://github.com/aleksandarstojkovski/PictureX-Image-Processor)
 * [coobird](https://github.com/coobird) / [thumbnailator](https://github.com/coobird/thumbnailator)
 * [jfoenixadmin](https://github.com/jfoenixadmin) / [JFoenix](https://github.com/jfoenixadmin/JFoenix)
-# Authors
 
-Authored and maintained by [Kevin](https://github.com/Kevin996233), [Grey](https://github.com/greyovo) and [tudou daren](https://github.com/tudoudaren233). 
+# 关于作者
+
+由 [Kevin](https://github.com/Kevin996233), [Grey](https://github.com/greyovo) 和 [tudou daren](https://github.com/tudoudaren233) 共同协作完成。
 
 # Licence
 
