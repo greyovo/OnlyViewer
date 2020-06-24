@@ -80,13 +80,13 @@
 
 推荐使用IDEA打开本项目。若更新图片资源文件后重新编译出错的问题，请尝试执行Maven的clean命令。
 
-## 为什么文字识别功能失效了？
+### 为什么文字识别功能失效了？
 文字识别功能需要联网使用，并且依赖百度的API，该API Key需每隔30天更新一次。请前往 [https://login.bce.baidu.com/](https://login.bce.baidu.com/) 注册申请该API的使用权限，之后在[\onlyviewer\display\java\model\Ocr.java](src\onlyviewer\display\java\model\Ocr.java) 更新其中的`API_KEY`和`SECRET_KEY`字段，重新编译运行即可。
 
-## Maven已经全部下好依赖了，但为什么还是出现许多错误提示？（如某getter、setter方法不存在等）
+### Maven已经全部下好依赖了，但为什么还是出现许多错误提示？（如某getter、setter方法不存在等）
 注意，在使用IDEA或Eclipse时，请安装IDE对应的**Lombok插件**，避免编辑器误报错误。
 
-## 还有问题？
+### 还有问题？
 请提issue。
 
 # 优化方向
