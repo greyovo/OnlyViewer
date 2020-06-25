@@ -81,11 +81,6 @@ This project is based on Java 8 (JavaFX 2.0). We use Maven to manage our externa
 
 We recommend you to open this project in IDEA.
 
-### Why the OCR is unavailable?
-Thre OCR function depends on Baidu OCR API, which needs to be updated monthly. Sign up your Baidu account [here](https://login.bce.baidu.com/) (English is supported) and follow the instruction to get your own key. Replace the strings `API_KEY` and `SECRET_KEY` at [src/onlyviewer/display/java/model/Ocr.java](src/onlyviewer/display/java/model/Ocr.java) with your own ones. Then rebuild the project.
-
-Also you can use Google's OCR as a replacement.
-
 ### I have downloaded all the dependencies, why still so many errors? (say some getter or setter doesn't exist)
 Install the **Lombok Plugin** in your IDEA or Eclipse, otherwise the editor would come up with false alarms.
 
@@ -100,7 +95,6 @@ The list below shows how we can improve this app. Notice that we may not accompl
 - [ ] Optimize memory usuage
 - [ ] Multi-language support
 - [ ] Remember where the user last visited
-- [ ] Update OCR API automatically
 - [ ] etc...
 
 # Special Thanks

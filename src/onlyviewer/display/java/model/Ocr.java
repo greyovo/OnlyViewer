@@ -11,10 +11,6 @@ import java.net.URLEncoder;
  **/
 
 public class Ocr extends GenAIP {
-    /**
-     * 三十日更新一次
-     * Latest: 2020/5/24
-     */
     private static final String API_KEY = "bKZOcPVr8Ln9t5kBUm7mYWn1";
     private static final String SECRET_KEY = "puXuxEdvZpV3SynEY9kptIvopWDYcBOX";
 
@@ -63,7 +59,6 @@ public class Ocr extends GenAIP {
             // 可自动检测图像朝向
             String param = "image=" + imgParam + "&detect_direction=true";
 
-            // 此获取Token方法每三十日需要更新一次
             String accessToken = getAuth(API_KEY, SECRET_KEY);
 
             if (mode == 0)
