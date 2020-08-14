@@ -84,6 +84,10 @@ We recommend you to open this project in IDEA.
 ### I have downloaded all the dependencies, why still so many errors? (say some getter or setter doesn't exist)
 Install the **Lombok Plugin** in your IDEA or Eclipse, otherwise the editor would come up with false alarms.
 
+### Can not use OCR?
+OCR need support from ai.baidu, please go to the website -> click into the console -> OCR -> build a new application to get API_KEY and SECRET_KEY, then update src/onlyviewer/display/java/Ocr.java
+[百度AI](https://ai.baidu.com/)
+
 ### More questions?
 Please leave an issue.
 

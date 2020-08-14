@@ -83,6 +83,10 @@
 ### Maven已经全部下好依赖了，但为什么还是出现许多错误提示？（如某getter、setter方法不存在等）
 注意，在使用IDEA或Eclipse时，请安装IDE对应的**Lombok插件**，避免编辑器误报错误。
 
+### 文字识别不能使用？
+文字识别调用的是百度AI的接口，需要您自行前往百度AI -> 控制台 -> 文字识别 -> 添加应用获取API_KEY与SECRET_KEY, 更新src/onlyviewer/display/java/Ocr.java
+[百度AI](https://ai.baidu.com/)
+
 ### 还有问题？
 请提issue。
 
